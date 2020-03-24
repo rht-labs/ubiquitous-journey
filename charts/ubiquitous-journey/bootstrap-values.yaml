@@ -1,0 +1,42 @@
+
+namespaces:
+  - name: labs-ci-cd
+    bindings:
+      - name: labs-dev
+        kind: Group
+        role: edit
+      - name: labs-admins
+        kind: Group
+        role: admin
+      - name: dummy-sa
+        kind: ServiceAccount
+        role: admin
+        namespace: labs-ci-cd
+  - name: labs-dev
+    bindings:
+      - name: labs-dev
+        kind: Group
+        role: edit
+      - name: labs-admins
+        kind: Group
+        role: admin
+      - name: dummy-sa
+        kind: ServiceAccount
+        role: admin
+        name: labs-ci-cd
+  - name: labs-test
+    bindings:
+      - name: labs-dev
+        kind: Group
+        role: edit
+      - name: labs-admins
+        kind: Group
+        role: admin
+      - name: dummy-sa
+        kind: ServiceAccount
+        role: admin
+        namespace: labs-ci-cd
+
+serviceaccounts:
+  - name: dummy-sa
+    namespace: labs-ci-cd
