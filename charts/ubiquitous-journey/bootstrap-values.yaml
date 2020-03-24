@@ -66,3 +66,11 @@ buildconfigs:
     source_repo_ref: "v1.20"
     builder_image_name: "registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7"
     builder_image_tag: "latest"
+
+imagestreams:
+  - name: jenkins-slave-mvn
+    namespace: labs-ci-cd
+  - name: jenkins-slave-argocd
+    namespace: labs-ci-cd
+  - name: jenkins-slave-helm
+    namespace: labs-ci-cd

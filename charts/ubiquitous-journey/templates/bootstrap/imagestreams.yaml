@@ -1,0 +1,11 @@
+{{- if .Values.imagestreams }}
+{{- range $is := .Values.imagestreams }}
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: "{{ $is.name }}"
+  namespace: "{{ $is.namespace }}"
+spec: {}
+{{- end }}
+{{- end }}
