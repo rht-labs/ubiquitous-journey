@@ -1,4 +1,17 @@
 
+applications:
+  - name: jenkins
+    enabled:
+    source:
+    path:
+    project
+    source_ref:
+    valueFile:
+  - name: nexus
+    source:
+    path:
+    source_ref:
+
 argo-cd:
   enabled: true
   installCRDs: false
