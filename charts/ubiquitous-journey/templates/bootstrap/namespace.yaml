@@ -1,0 +1,9 @@
+{{- if .Values.namespaces }}
+{{- range $key := .Values.namespaces }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ $.Values.prefix }}{{- if ne $.Values.prefix "" }}-{{- else }}{{ end }}{{ .name }}"
+{{- end }}
+{{- end }}
