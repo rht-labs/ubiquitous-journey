@@ -40,3 +40,29 @@ namespaces:
 serviceaccounts:
   - name: dummy-sa
     namespace: labs-ci-cd
+
+buildconfigs:
+  - name: "jenkins-slave-mvn"
+    namespace: "labs-ci-cd"
+    strategy_type: "Docker"
+    source_context_dir: "jenkins-slaves/jenkins-slave-mvn"
+    source_repo: "https://github.com/redhat-cop/containers-quickstarts"
+    source_repo_ref: "v1.20"
+    builder_image_name: "quay.io/openshift/origin-jenkins-agent-maven"
+    builder_image_tag: "4.2"
+  - name: "jenkins-slave-helm"
+    namespace: "labs-ci-cd"
+    strategy_type: "Docker"
+    source_context_dir: "jenkins-slaves/jenkins-slave-helm"
+    source_repo: "https://github.com/redhat-cop/containers-quickstarts"
+    source_repo_ref: "v1.20"
+    builder_image_name: "registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7"
+    builder_image_tag: "latest"
+  - name: "jenkins-slave-argocd"
+    namespace: "labs-ci-cd"
+    strategy_type: "Docker"
+    source_context_dir: "jenkins-slaves/jenkins-slave-argocd"
+    source_repo: "https://github.com/redhat-cop/containers-quickstarts"
+    source_repo_ref: "v1.20"
+    builder_image_name: "registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7"
+    builder_image_tag: "latest"
