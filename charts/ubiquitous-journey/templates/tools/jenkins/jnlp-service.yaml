@@ -1,0 +1,19 @@
+
+{{- if .Values.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}-jnlp
+spec:
+  ports:
+    - name: agent
+      nodePort: 0
+      port: 50000
+      protocol: TCP
+      targetPort: 50000
+  selector:
+    name: {{ .Values.name }}
+  sessionAffinity: None
+  type: ClusterIP
+{{ end }}
