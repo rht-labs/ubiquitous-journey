@@ -3,6 +3,50 @@ appName: &name jenkins
 
 route: true
 
+deployment:
+    # should this be enabled or just t / f 
+  openshiftauth: true
+  imagestream:
+    name: jenkins
+    tag: latest
+    namespace: openshift
+  limits:
+    memory_request: 2Gi
+    memory_limit: 6Gi
+    cpu_request: 500m
+    cpu_limit: 1
+  env_vars:
+    - name: JVM_ARCH
+      value: "x86_64"
+    - name: DISABLE_ADMINISTRATIVE_MONITORS
+      value: false
+    - name: ENABLE_FATAL_ERROR_LOG_FILE
+      value: false
+    - name: JENKINS_OPTS
+      value: "--sessionTimeout=0"
+    - name: SLACK_BASE_URL
+      value: ""
+    - name: SLACK_ROOM
+      value: ""
+    - name: SLACK_TOKEN_CREDENTIAL_ID
+      value: ""
+    - name: SLACK_TEAM
+      value: ""
+    - name: SHARED_LIB_REPO
+      value: ""
+    - name: SHARED_LIB_NAME
+      value: ""
+    - name: SHARED_LIB_REF
+      value: ""
+    - name: SHARED_LIB_SECRET
+      value: ""
+    - name: GITLAB_HOST
+      value: ""
+    - name: GITLAB_TOKEN
+      value: ""
+    - name: GITLAB_GROUP_NAME
+      value: rht-labs
+
 persistence:
   enabled: true
   accessModes: ReadWriteOnce
