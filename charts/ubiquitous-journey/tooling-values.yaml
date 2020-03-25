@@ -1,10 +1,19 @@
+---
+applications:
+  - name: jenkins
+    enabled:
+    source:
+    path:
+    project:
+    source_ref:
+    valueFile:
 
 argo-cd:
   enabled: true
   installCRDs: false
 
   global:
-# Do we want this?
+    # Do we want this?
     clusterAdminAccess:
       enabled: true
 
@@ -13,7 +22,7 @@ argo-cd:
       tag: v2.22.0
 
   server:
-    extraArgs: {insecure: true }
+    extraArgs: { insecure: true }
     route:
       enabled: true
       termination_type: edge
