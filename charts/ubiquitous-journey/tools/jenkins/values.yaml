@@ -1,4 +1,20 @@
 ---
+appName: &name jenkins
 
+route: true
 
-name: "jenkins"
+services:
+  - name: *name
+    port_name: web
+    port: 80
+    target_port: 8080
+    selector: *name
+    annotations: service.alpha.openshift.io/dependencies
+  - name: jenkins-jnlp
+    port_name: agent
+    port: 50000
+    target_port: 5000
+    selector: *name
+
+serviceaccount:
+  - name: *name
