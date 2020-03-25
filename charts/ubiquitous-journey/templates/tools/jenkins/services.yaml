@@ -6,8 +6,7 @@ kind: Service
 metadata:
 {{- if .annotations }}
   annotations:
-    service.alpha.openshift.io/dependencies: '[{"name": "jenkins-jnlp", "namespace":
-      "", "kind": "Service"}]' {{ end }}
+    service.alpha.openshift.io/dependencies: '[{"name": "jenkins-jnlp", "namespace":"", "kind": "Service"}]' {{ end }}
   name: {{ .name }}
 spec:
   ports:

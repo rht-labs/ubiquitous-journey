@@ -3,6 +3,11 @@ appName: &name jenkins
 
 route: true
 
+persistence:
+  enabled: true
+  accessModes: ReadWriteOnce
+  volumeSize: 20Gi
+
 services:
   - name: *name
     port_name: web
@@ -15,6 +20,3 @@ services:
     port: 50000
     target_port: 5000
     selector: *name
-
-serviceaccount:
-  - name: *name
