@@ -1,10 +1,17 @@
+applications:
+  - name: hoverfly
+    enabled: true
+    source: https://github.com/helm/charts
+    path: incubator/hoverfly
+    project: default
+    destination: labs-ci-cd
 
 argo-cd:
-  enabled: true
+  enabled: false
   installCRDs: false
 
   global:
-# Do we want this?
+    # Do we want this?
     clusterAdminAccess:
       enabled: true
 
