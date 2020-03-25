@@ -4,9 +4,9 @@
 
 prefix: ""
 
-ci_cd_namespace: "labs-ci-cd"
-dev_namespace: "labs-dev"
-test_namespace: "labs-test"
+ci_cd_namespace: "ds-ci-cd"
+dev_namespace: "ds-dev"
+test_namespace: "ds-test"
 
 argo-cd:
   enabled: false
