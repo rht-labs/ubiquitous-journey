@@ -64,4 +64,3 @@ spec:
     namespace: {{ $app.destination }}
 
 {{ end }}
-{{ end }}
