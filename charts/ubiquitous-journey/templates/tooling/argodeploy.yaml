@@ -17,8 +17,14 @@ spec:
   source:
     helm:
       releaseName: {{ $app.name }}
+{{- if $app.valueFiles }}
       valueFiles: 
 {{- toYaml $app.valueFiles | nindent 8 }}
+{{- end }}
+{{- if $app.values }}
+      values: |
+{{- toYaml $app.values | nindent 8 }}
+{{- end }}
     path: {{ $app.source_path }} 
     repoURL: {{ $app.source }}
     targetRevision: {{ $app.source_ref | default "master" }}

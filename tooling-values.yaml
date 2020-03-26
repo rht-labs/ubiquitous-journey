@@ -1,16 +1,66 @@
 
+nexus: &nexus
+  nexus:
+    imageTag: 3.19.1
+    securityContext:
+      enabled: false
+      fsGroup: 2000
+    service:
+      type: ClusterIP
+    podAnnotations: {}
+  route:
+    enabled: true
+    name: nexus
+    portName: nexus-service
+    path: '""'
+  nexusProxy:
+    enabled: false
+  persistence:
+    storageSize: 5Gi
+  serviceAccount:
+    name: nexus
+    annotations: {}
+  deployment:
+    annotations: {}
+    initContainers:
+      - name: k8s-plugin-puller
+        image: curlimages/curl:latest
+        imagePullPolicy: Always
+        command: ['sh','-c']
+        args: ['curl -o /k8s-plugin/nexus-openshift-plugin.jar https://github.com/sonatype-nexus-community/nexus-kubernetes-openshift-releases/download/v0.2.8/nexus-openshift-plugin-0.2.8.jar']
+        volumeMounts:
+          - name: k8s-plugin
+            mountPath: /k8s-plugin
+    additionalVolumes:
+      - name: k8s-plugin
+        emptyDir: {}
+    additionalVolumeMounts:
+      - mountPath: /opt/sonatype/nexus/deploy/nexus-openshift-plugin.jar
+        name: k8s-plugin
+        subPath: nexus-openshift-plugin.jar
+  secret:
+    enabled: false
+    mountPath:
+    readOnly:
+    data:
+  service:
+    enabled: true
+    name: nexus-service
+    labels: {}
+    annotations: {}
+    portName: nexus-service
+    port: 8081
+    targetPort: 8081
+    ports: []
+
 applications:
-  - name: jenkins
-    enabled:
-    source:
-    path:
-    project:
-    source_ref:
-    valueFile:
   - name: nexus
-    source:
-    path:
-    source_ref:
+    enabled: true
+    source: https://github.com/tylerauerbeck/charts-2
+    source_path: charts/sonatype-nexus
+    source_ref: update-ocp
+    values: *nexus
+
 
 argo-cd:
   enabled: true
