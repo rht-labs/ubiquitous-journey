@@ -6,4 +6,4 @@ dependencies:
 - name: sonatype-nexus
   version: "1.26.1"
   repository: "https://oteemo.github.io/charts"
-  condition: nexus.enabled
+  condition: sonatype-nexus.enabled

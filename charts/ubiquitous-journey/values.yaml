@@ -4,9 +4,12 @@
 
 prefix: ""
 
-ci_cd_namespace: "labs-ci-cd"
+ci_cd_namespace: "tyler-test-junk"
 dev_namespace: "labs-dev"
 test_namespace: "labs-test"
 
 argo-cd:
+  enabled: false
+
+sonatype-nexus:
   enabled: false
