@@ -3,7 +3,7 @@ dependencies:
   version: "2.0.0"
   repository: "https://tylerauerbeck.github.io/argo-helm"
   condition: argo-cd.enabled
-- name: nexus
-  version: "sonatype-nexus-1.26.1"
+- name: sonatype-nexus
+  version: "1.26.1"
   repository: "https://oteemo.github.io/charts"
   condition: nexus.enabled
