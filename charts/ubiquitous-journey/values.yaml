@@ -4,7 +4,7 @@
 
 prefix: ""
 
-ci_cd_namespace: "tyler-test-junk"
+ci_cd_namespace: "labs-ci-cd"
 dev_namespace: "labs-dev"
 test_namespace: "labs-test"
 
