@@ -15,3 +15,6 @@ argo-cd:
 
 sonatype-nexus:
   enabled: false
+
+jenkins:
+  enabled: false
