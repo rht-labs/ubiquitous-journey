@@ -1,3 +1,4 @@
+# values to be over written from the jenkins chart default can be added here
 jenkins:
   enabled: true
   persistence: false
