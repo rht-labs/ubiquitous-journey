@@ -10,3 +10,6 @@ test_namespace: "labs-test"
 
 argo-cd:
   enabled: false
+
+sonatype-nexus:
+  enabled: false

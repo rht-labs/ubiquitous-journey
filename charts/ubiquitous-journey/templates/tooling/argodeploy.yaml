@@ -1,0 +1,33 @@
+{{- if .Values.applications }}
+{{- range $app := .Values.applications }}
+{{- if $app.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: {{ $app.name }}
+  namespace: {{ $.Values.ci_cd_namespace }}
+spec:
+  destination:
+    namespace: {{ $app.destination | default $.Values.ci_cd_namespace }}
+    server: {{ $app.cluster_api | default "https://kubernetes.default.svc" }}
+  project: {{ $app.project | default "default" }}
+  source:
+    helm:
+      releaseName: {{ $app.name }}
+{{- if $app.valueFiles }}
+      valueFiles: 
+{{- toYaml $app.valueFiles | nindent 8 }}
+{{- end }}
+{{- if $app.values }}
+      values: |
+{{- toYaml $app.values | nindent 8 }}
+{{- end }}
+    path: {{ $app.source_path }} 
+    repoURL: {{ $app.source }}
+    targetRevision: {{ $app.source_ref | default "master" }}
+{{- end }}
+{{- end }}
+{{- end }}
