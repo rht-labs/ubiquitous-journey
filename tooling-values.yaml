@@ -1,13 +1,9 @@
-
-sonatype-nexus:
-  enabled: true
-
 applications:
   - name: nexus
     enabled: true
     source: https://github.com/rht-labs/ubiquitous-journey
     source_path: charts/ubiquitous-journey
-    source_ref: init-apps
+    source_ref: master
     valueFiles:
     - apps/nexus/values.yaml
 
