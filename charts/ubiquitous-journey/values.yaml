@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-prefix: ""
+prefix: "uj"
 
 ci_cd_namespace: "labs-ci-cd"
 dev_namespace: "labs-dev"
@@ -10,6 +10,9 @@ test_namespace: "labs-test"
 
 
 # false here is to tell our dependency check (requirements.yaml) to pull down things
+bootstrap:
+  enabled: false
+  
 argo-cd:
   enabled: false
 
