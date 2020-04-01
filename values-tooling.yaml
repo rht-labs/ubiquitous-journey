@@ -28,3 +28,21 @@ applications:
           jsonPointers:        
           - /spec/triggers
           - /status
+  - name: hoverfly
+    enabled: true
+    source: https://github.com/helm/charts
+    source_path: incubator/hoverfly
+    source_ref: master
+    valueFiles:
+    - apps/hoverfly/values.yaml
+    ignore_differences:
+      ignoreDifferences:
+      - group: apps
+        kind: Deployment
+        jsonPointers:
+        - /spec/replicas
+      - group: route.openshift.io/v1
+        kind: Route
+        jsonPointers:
+        - /spec/host/
+        - /status/ingress/
