@@ -2,17 +2,17 @@
 applications:
   - name: nexus
     enabled: true
-    source: https://github.com/rht-labs/ubiquitous-journey
+    source: https://github.com/eformat/ubiquitous-journey
     source_path: charts/ubiquitous-journey
-    source_ref: master
+    source_ref: feature/sonarqube
     sync_policy_automated: true
     valueFiles:
     - apps/nexus/values.yaml
   - name: jenkins
     enabled: true 
-    source: https://github.com/rht-labs/ubiquitous-journey
+    source: https://github.com/eformat/ubiquitous-journey
     source_path: charts/ubiquitous-journey
-    source_ref: master
+    source_ref: feature/sonarqube
     sync_policy_automated: true
     valueFiles:
     - apps/jenkins/values.yaml
@@ -36,3 +36,10 @@ applications:
     sync_policy_automated: true
     valueFiles:
     - apps/sonarqube/values.yaml
+  - name: crw
+    enabled: true
+    noHelm: true
+    source: https://github.com/eformat/argocd
+    source_path: crw/base
+    source_ref: master
+    sync_policy_automated: true

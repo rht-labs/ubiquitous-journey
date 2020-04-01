@@ -15,6 +15,7 @@ spec:
     server: {{ $app.cluster_api | default "https://kubernetes.default.svc" }}
   project: {{ $app.project | default "default" }}
   source:
+{{- if not $app.noHelm }}
     helm:
       releaseName: {{ $app.name }}
 {{- if $app.valueFiles }}
@@ -24,6 +25,7 @@ spec:
 {{- if $app.values }}
       values: |
 {{- toYaml $app.values | nindent 8 }}
+{{- end }}
 {{- end }}
     path: {{ $app.source_path }} 
     repoURL: {{ $app.source }}
