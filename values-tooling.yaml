@@ -8,3 +8,10 @@ applications:
     sync_policy_automated: true
     valueFiles:
     - apps/nexus/values.yaml
+  - name: jenkins
+    enabled: true 
+    source: https://github.com/springdo/ubiquitous-journey
+    source_path: charts/ubiquitous-journey
+    source_ref: master
+    valueFiles:
+    - apps/jenkins/values.yaml

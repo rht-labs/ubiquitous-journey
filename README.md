@@ -14,7 +14,7 @@ helm template labs -f values-bootstrap.yaml --namespace labs-ci-cd charts/ubiqui
 
 ### Tooling
 ```
-helm template labs -f values-tooling.yaml charts/ubiquitous-journey | oc apply -n labs-ci-cd -f-
+helm template labs -f values-tooling.yaml --set ci_cd_namespace=labs-ci-cd charts/ubiquitous-journey | oc apply -f -
 ```
 
 ## How we work together
