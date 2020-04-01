@@ -99,7 +99,7 @@ argo-cd:
     extraArgs: {insecure: true }
     route:
       enabled: true
-      termination_type: edge
+      termination_type: passthrough
       termination_policy: Redirect
 
   configs:
