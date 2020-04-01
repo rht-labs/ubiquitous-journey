@@ -1,0 +1,9 @@
+# enabled true on an app is to tell helm to create an argo app cr for this item
+applications:
+  - name: nexus
+    enabled: true
+    source: https://github.com/rht-labs/ubiquitous-journey
+    source_path: charts/ubiquitous-journey
+    source_ref: master
+    valueFiles:
+    - apps/nexus/values.yaml
