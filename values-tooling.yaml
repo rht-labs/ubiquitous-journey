@@ -28,3 +28,11 @@ applications:
           jsonPointers:        
           - /spec/triggers
           - /status
+  - name: sonarqube
+    enabled: true 
+    source: https://github.com/eformat/ubiquitous-journey
+    source_path: charts/ubiquitous-journey
+    source_ref: feature/sonarqube
+    sync_policy_automated: true
+    valueFiles:
+    - apps/sonarqube/values.yaml
