@@ -34,7 +34,10 @@ spec:
       prune: true
       selfHeal: true
       validate: true
-{{- end }}
+{{- end }}      
+{{- if $app.ignore_differences}}
+{{ toYaml $app.ignore_differences | indent 2 }}
+{{- end }}    
 {{- end }}
 {{- end }}
 {{- end }}
