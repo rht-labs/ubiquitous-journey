@@ -12,6 +12,6 @@ dependencies:
   repository: "https://oteemo.github.io/charts"
   condition: sonatype-nexus.enabled
 - name: jenkins
-  version: "0.0.3"
+  version: "0.0.4"
   repository: https://rht-labs.github.io/charts
   condition: jenkins.enabled
