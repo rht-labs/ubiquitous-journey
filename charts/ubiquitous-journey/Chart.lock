@@ -2,5 +2,5 @@ dependencies:
 - name: argo-cd
   repository: https://tylerauerbeck.github.io/argo-helm
   version: 2.0.0
-digest: sha256:3fc11f82a751944ca8065007aaa0e4155c90f9f302a7757e0ae5c3e28dd27122
-generated: "2020-03-25T10:19:21.774853+01:00"
+digest: sha256:d08310eca4c97a8aaad5581641a2fb021810f24d2d9bb616313e1e246a82245e
+generated: "2020-03-24T01:24:24.762740089-04:00"
