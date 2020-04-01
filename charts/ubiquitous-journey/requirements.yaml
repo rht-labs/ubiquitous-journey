@@ -12,6 +12,6 @@ dependencies:
   repository: https://rht-labs.github.io/charts
   condition: jenkins.enabled
 - name: sonarqube
-  version: "0.0.3"
+  version: "0.0.4"
   repository: https://eformat.github.io/helm-charts
   condition: sonarqube.enabled
