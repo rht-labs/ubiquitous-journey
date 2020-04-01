@@ -38,6 +38,7 @@ applications:
     - apps/sonarqube/values.yaml
   - name: crw
     enabled: true
+    destination: crw
     noHelm: true
     source: https://github.com/eformat/argocd
     source_path: crw/base
