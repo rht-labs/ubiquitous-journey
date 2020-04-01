@@ -5,5 +5,6 @@ applications:
     source: https://github.com/rht-labs/ubiquitous-journey
     source_path: charts/ubiquitous-journey
     source_ref: master
+    sync_policy_automated: true
     valueFiles:
     - apps/nexus/values.yaml
