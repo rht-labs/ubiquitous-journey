@@ -9,7 +9,7 @@ dependencies:
   condition: sonatype-nexus.enabled
 - name: jenkins
   version: "0.0.1"
-  repository: https://rht-labs.github.io/helm-charts
+  repository: https://rht-labs.github.io/charts
   condition: jenkins.enabled
 - name: sonarqube
   version: "0.0.1"
