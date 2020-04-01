@@ -10,7 +10,7 @@ applications:
     - apps/nexus/values.yaml
   - name: jenkins
     enabled: true 
-    source: https://github.com/springdo/ubiquitous-journey
+    source: https://github.com/rht-labs/ubiquitous-journey
     source_path: charts/ubiquitous-journey
     source_ref: master
     valueFiles:
