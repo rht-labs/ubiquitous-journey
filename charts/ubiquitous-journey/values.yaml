@@ -10,6 +10,9 @@ test_namespace: "labs-test"
 
 
 # false here is to tell our dependency check (requirements.yaml) to pull down things
+bootstrap-project:
+  enabled: false
+  
 argo-cd:
   enabled: false
 
@@ -17,4 +20,7 @@ sonatype-nexus:
   enabled: false
 
 jenkins:
+  enabled: false
+
+sonarqube:
   enabled: false
