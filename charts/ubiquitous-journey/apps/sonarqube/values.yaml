@@ -1,2 +1,3 @@
 sonarqube:
   enabled: true
+  securityContext: {}
