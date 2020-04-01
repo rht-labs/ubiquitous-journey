@@ -28,6 +28,13 @@ spec:
     path: {{ $app.source_path }} 
     repoURL: {{ $app.source }}
     targetRevision: {{ $app.source_ref | default "master" }}
+{{- if $app.sync_policy_automated }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      validate: true
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
