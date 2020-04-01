@@ -9,7 +9,7 @@
 ### Bootstrap
 ```
 helm dep up charts/ubiquitous-journey
-helm template labs -f values-bootstrap.yaml --namespace labs-ci-cd charts/ubiquitous-journey | oc apply -f -
+helm template labs -f values-bootstrap.yaml --namespace labs-ci-cd charts/ubiquitous-journey | oc apply -f-
 ```
 
 ### Tooling
