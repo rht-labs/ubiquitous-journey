@@ -1,0 +1,61 @@
+
+sonatype-nexus:
+  enabled: true
+  nexus:
+    imageTag: 3.19.1
+    securityContext: []
+    service:
+      type: ClusterIP
+    podAnnotations: {}
+
+
+  route:
+    enabled: true
+    name: nexus
+    portName: nexus-service
+    path: null
+
+  nexusProxy:
+    enabled: false
+
+  persistence:
+    storageSize: 5Gi
+
+  serviceAccount:
+    name: nexus
+    annotations: {}
+
+  deployment:
+    annotations: {}
+    initContainers:
+      - name: k8s-plugin-puller
+        image: curlimages/curl:latest
+        imagePullPolicy: Always
+        command: ['sh','-c']
+        args: ['curl -o /k8s-plugin/nexus-openshift-plugin.jar https://github.com/sonatype-nexus-community/nexus-kubernetes-openshift-releases/download/v0.2.8/nexus-openshift-plugin-0.2.8.jar']
+        volumeMounts:
+          - name: k8s-plugin
+            mountPath: /k8s-plugin
+    additionalVolumes:
+      - name: k8s-plugin
+        emptyDir: {}
+    additionalVolumeMounts:
+      - mountPath: /opt/sonatype/nexus/deploy/nexus-openshift-plugin.jar
+        name: k8s-plugin
+        subPath: nexus-openshift-plugin.jar
+
+  secret:
+    enabled: false
+    mountPath:
+    readOnly:
+    data:
+  
+  service:
+    enabled: true 
+    name: nexus-service
+    labels: {}
+    annotations: {}
+    portName: nexus-service
+    port: 8081
+    targetPort: 8081
+    ports: [] 

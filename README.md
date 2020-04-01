@@ -8,14 +8,13 @@
 
 ### Bootstrap
 ```
-cd charts/ubiquitous-journey
-helm dep up
-helm template . | oc apply -f -
+helm dep up charts/ubiquitous-journey
+helm template labs -f values-bootstrap.yaml --namespace labs-ci-cd charts/ubiquitous-journey | oc apply -f-
 ```
 
 ### Tooling
 ```
-helm template uj -f tooling-values.yaml . | oc apply -f - -n labs-ci-cd
+helm template labs -f values-tooling.yaml --set ci_cd_namespace=labs-ci-cd charts/ubiquitous-journey | oc apply -f -
 ```
 
 ## How we work together

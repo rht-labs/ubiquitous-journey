@@ -8,5 +8,13 @@ ci_cd_namespace: "labs-ci-cd"
 dev_namespace: "labs-dev"
 test_namespace: "labs-test"
 
+
+# false here is to tell our dependency check (requirements.yaml) to pull down things
 argo-cd:
+  enabled: false
+
+sonatype-nexus:
+  enabled: false
+
+jenkins:
   enabled: false
