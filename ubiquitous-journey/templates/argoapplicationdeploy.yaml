@@ -8,10 +8,9 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
   name: {{ $app.name }}
-  namespace: {{ $.Values.ci_cd_namespace }}
 spec:
   destination:
-    namespace: {{ $app.destination | default $.Values.ci_cd_namespace }}
+    namespace: {{ $app.destination | default "labs-ci-cd" }}
     server: {{ $app.cluster_api | default "https://kubernetes.default.svc" }}
   project: {{ $app.project | default "default" }}
   source:

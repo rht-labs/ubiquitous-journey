@@ -1,0 +1,13 @@
+# Over rides for default values in Helm Charts
+
+##############
+# 🛎 Application Custom Values
+#############
+my_app:
+  version_tag: biscuits
+  image_tag: bananas
+
+##############
+# 🛎 Argo App of Apps declaration
+#############
+applications:
