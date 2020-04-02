@@ -1,0 +1,138 @@
+# Over rides for default values in Helm Charts
+destination: &ci_cd_ns labs-ci-cd
+
+##############
+# 🛎 Jenkins Custom Values
+#############
+jenkins_values: &jenkins_values
+  persistence: false
+  source_secret:
+    name: biscuit
+    username: gituser
+    password: thisisnotdefinitelymypassword  
+
+
+##############
+# 🛎 Sonarqube Custom Values
+#############
+
+
+##############
+# 🛎 Sonatype Nexus Custom Values
+#############
+nexus_values: &nexus_values
+  enabled: true
+  nexus:
+    imageTag: 3.19.1
+    securityContext: []
+    service:
+      type: ClusterIP
+    podAnnotations: {}
+
+  route:
+    enabled: true
+    name: nexus
+    portName: nexus-service
+    path: null
+
+  nexusProxy:
+    enabled: false
+
+  persistence:
+    storageSize: 5Gi
+
+  serviceAccount:
+    name: nexus
+    annotations: {}
+
+  deployment:
+    annotations: {}
+    initContainers:
+      - name: k8s-plugin-puller
+        image: curlimages/curl:latest
+        imagePullPolicy: Always
+        command: ['sh','-c']
+        args: ['curl -o /k8s-plugin/nexus-openshift-plugin.jar https://github.com/sonatype-nexus-community/nexus-kubernetes-openshift-releases/download/v0.2.8/nexus-openshift-plugin-0.2.8.jar']
+        volumeMounts:
+          - name: k8s-plugin
+            mountPath: /k8s-plugin
+    additionalVolumes:
+      - name: k8s-plugin
+        emptyDir: {}
+    additionalVolumeMounts:
+      - mountPath: /opt/sonatype/nexus/deploy/nexus-openshift-plugin.jar
+        name: k8s-plugin
+        subPath: nexus-openshift-plugin.jar
+
+  secret:
+    enabled: false
+    mountPath:
+    readOnly:
+    data:
+  
+  service:
+    enabled: true 
+    name: nexus-service
+    labels: {}
+    annotations: {}
+    portName: nexus-service
+    port: 8081
+    targetPort: 8081
+    ports: [] 
+
+
+##############
+# 🐙 Argo Ignore Differences 
+#############
+ignore_differences: &ignore_differences
+  ignoreDifferences:
+  - group: apps.openshift.io
+    kind: DeploymentConfig
+    jsonPointers:
+    - /spec/template/spec/containers/0/image
+    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+  - group: build.openshift.io
+    kind: BuildConfig
+    jsonPointers:        
+    - /spec/triggers
+
+
+##############
+# 🛎 Argo App of Apps declaration
+#############
+
+# enabled true on an app is to tell helm to create an argo app cr for this item
+applications:
+  - name: nexus
+    enabled: true
+    source: https://github.com/Oteemo/charts.git
+    source_path: charts/sonatype-nexus
+    source_ref: "sonatype-nexus-1.26.2"
+    sync_policy_automated: true
+    destination: *ci_cd_ns 
+    values:
+      sonatype-nexus: *nexus_values
+  - name: jenkins
+    enabled: true 
+    source: https://github.com/rht-labs/charts.git
+    source_path: charts/jenkins
+    source_ref: "jenkins-0.0.6"
+    sync_policy_automated: true
+    destination: *ci_cd_ns 
+    values:
+      jenkins: *jenkins_values
+    ignore_differences: *ignore_differences
+  - name: sonarqube
+    enabled: true 
+    source: https://github.com/rht-labs/charts.git
+    source_path: charts/sonarqube
+    source_ref: "sonarqube-0.0.4"
+    sync_policy_automated: true
+    destination: *ci_cd_ns
+  - name: crw
+    enabled: true
+    destination: crw
+    source: https://github.com/eformat/argocd
+    source_path: crw/base
+    source_ref: master
+    sync_policy_automated: true
