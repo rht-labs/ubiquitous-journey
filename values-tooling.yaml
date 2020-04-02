@@ -10,17 +10,18 @@ applications:
     - apps/nexus/values.yaml  
   - name: jenkins
     enabled: true 
-    source: https://github.com/rht-labs/ubiquitous-journey
+    source: https://github.com/ckavili/ubiquitous-journey
     source_path: charts/ubiquitous-journey
     source_ref: master
     sync_policy_automated: true
     values:
-      enabled: true
-      persistence: false
-      source_secret:
-        name: bitbucket
-        username: gituser
-        password: thisisnotdefinitelymypassword 
+      jenkins:
+        enabled: true
+        persistence: false
+        source_secret:
+          name: bananas
+          username: gituser
+          password: thisisnotdefinitelymypassword 
     ignore_differences:
       ignoreDifferences:
         - group: apps.openshift.io
