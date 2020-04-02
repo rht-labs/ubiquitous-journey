@@ -6,7 +6,7 @@ applications:
     source_path: charts/ubiquitous-journey
     source_ref: master
     sync_policy_automated: true
-    valueFiles:
+    helm_values:
     - apps/nexus/values.yaml
   - name: jenkins
     enabled: true 
@@ -14,7 +14,7 @@ applications:
     source_path: charts/ubiquitous-journey
     source_ref: master
     sync_policy_automated: true
-    valueFiles:
+    helm_values:
     - apps/jenkins/values.yaml
     ignore_differences:
       ignoreDifferences:
@@ -34,5 +34,12 @@ applications:
     source_path: charts/ubiquitous-journey
     source_ref: master
     sync_policy_automated: true
-    valueFiles:
+    helm_values:
     - apps/sonarqube/values.yaml
+  - name: crw
+    enabled: true
+    destination: crw
+    source: https://github.com/eformat/argocd
+    source_path: crw/base
+    source_ref: master
+    sync_policy_automated: true

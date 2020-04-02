@@ -15,11 +15,11 @@ spec:
     server: {{ $app.cluster_api | default "https://kubernetes.default.svc" }}
   project: {{ $app.project | default "default" }}
   source:
+{{- if $app.helm_values }}
     helm:
       releaseName: {{ $app.name }}
-{{- if $app.valueFiles }}
       valueFiles: 
-{{- toYaml $app.valueFiles | nindent 8 }}
+{{- toYaml $app.helm_values | nindent 8 }}
 {{- end }}
 {{- if $app.values }}
       values: |
