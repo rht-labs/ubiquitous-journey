@@ -3,7 +3,7 @@
 #############
 
 applications:
-  - name: Labs-DevEx
+  - name: labs-devex
     enabled: true
     source: https://github.com/rht-labs/ubiquitous-journey.git
     source_path: ubiquitous-journey/
