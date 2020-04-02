@@ -27,7 +27,6 @@ applications:
           kind: BuildConfig
           jsonPointers:        
           - /spec/triggers
-          - /status
   - name: sonarqube
     enabled: true 
     source: https://github.com/rht-labs/ubiquitous-journey
