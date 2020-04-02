@@ -136,3 +136,4 @@ applications:
     source_path: crw/base
     source_ref: master
     sync_policy_automated: true
+    no_helm: true
