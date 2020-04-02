@@ -40,13 +40,13 @@ helm dep up bootstrap
 helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
 
-### Tooling - Jenkins, Nexus, Sonarqube etc...
+### Tooling
 
 ##### deploy using argo app ...
 See: [ArgoCD App of Apps approach](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps)
 
 ```
-argocd login --grpc-web <route>
+argocd login --grpc-web $(oc get routes labs-argocd-server -o jsonpath='{.spec.host}')
 argocd app create stuff \
     --dest-namespace labs-ci-cd \
     --dest-server https://kubernetes.default.svc \

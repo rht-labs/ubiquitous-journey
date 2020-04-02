@@ -1,6 +1,6 @@
 bootstrap-project:
   enabled: true
-  prefix: "labs"
+  prefix: "sd"
     
 ### Argo CD is part of bootrap as all the App CRs will require it to be in existance
 

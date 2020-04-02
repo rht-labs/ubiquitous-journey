@@ -11,3 +11,4 @@ my_app:
 # 🛎 Argo App of Apps declaration
 #############
 applications:
+  - 

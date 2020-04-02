@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &ci_cd_ns labs-ci-cd
+destination: &ci_cd_ns sd-ci-cd
 
 ##############
 # 🛎 Jenkins Custom Values
@@ -129,4 +129,3 @@ applications:
     source_ref: "sonarqube-0.0.4"
     sync_policy_automated: true
     destination: *ci_cd_ns
-    
