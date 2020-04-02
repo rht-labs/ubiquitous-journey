@@ -1,3 +1,4 @@
+# Over rides for default values in Helm Charts
 # enabled true on an app is to tell helm to create an argo app cr for this item
 applications:
   - name: nexus
@@ -10,18 +11,18 @@ applications:
     - apps/nexus/values.yaml  
   - name: jenkins
     enabled: true 
-    source: https://github.com/ckavili/ubiquitous-journey
-    source_path: charts/ubiquitous-journey
-    source_ref: master
+    source: https://github.com/rht-labs/charts
+    source_path: charts/jenkins
+    source_ref: "jenkins-0.0.6"
     sync_policy_automated: true
     values:
-      jenkins:
+      jenkins: 
         enabled: true
         persistence: false
         source_secret:
           name: biscuit
           username: gituser
-          password: thisisnotdefinitelymypassword 
+          password: thisisnotdefinitelymypassword
     ignore_differences:
       ignoreDifferences:
         - group: apps.openshift.io
