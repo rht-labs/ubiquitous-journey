@@ -9,7 +9,7 @@ applications:
     source_path: ubiquitous-journey/
     source_ref: master
     sync_policy_automated: false
-    valueFiles: 
+    helm_values: 
       - values-tooling.yaml
   - name: custom-example
     enabled: false
@@ -17,5 +17,5 @@ applications:
     source_path: customer123/
     source_ref: "v.1.0.1-biscuits"
     sync_policy_automated: false
-    valueFiles: 
+    helm_values: 
       - values-applications.yaml
