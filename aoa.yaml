@@ -1,9 +1,0 @@
-applications:
-  - name: aoa
-    enabled: true
-    source: https://github.com/ckavili/ubiquitous-journey
-    source_path: charts/ubiquitous-journey
-    source_ref: master
-    sync_policy_automated: false
-    valueFiles: 
-      - values-tooling.yaml
