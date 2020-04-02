@@ -19,7 +19,7 @@ applications:
         enabled: true
         persistence: false
         source_secret:
-          name: bananas
+          name: biscuit
           username: gituser
           password: thisisnotdefinitelymypassword 
     ignore_differences:
