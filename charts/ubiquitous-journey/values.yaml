@@ -21,3 +21,6 @@ sonatype-nexus:
 
 jenkins:
   enabled: false
+
+sonarqube:
+  enabled: false
