@@ -1,4 +1,6 @@
 # Over rides for default values in Helm Charts
+prefix: "labs"
+destination: &ci_cd_ns labs-ci-cd
 
 ##############
 # 🛎 Jenkins Custom Values
@@ -108,6 +110,7 @@ applications:
     source_path: charts/sonatype-nexus
     source_ref: "sonatype-nexus-1.26.2"
     sync_policy_automated: true
+    destination: *ci_cd_ns 
     values:
       sonatype-nexus: *nexus_values
   - name: jenkins
@@ -116,6 +119,7 @@ applications:
     source_path: charts/jenkins
     source_ref: "jenkins-0.0.6"
     sync_policy_automated: true
+    destination: *ci_cd_ns 
     values:
       jenkins: *jenkins_values
     ignore_differences: *ignore_differences
@@ -125,3 +129,5 @@ applications:
     source_path: charts/sonarqube
     source_ref: "sonarqube-0.0.4"
     sync_policy_automated: true
+    destination: *ci_cd_ns
+    

@@ -17,7 +17,13 @@ helm template labs -f values-bootstrap.yaml --namespace labs-ci-cd charts/ubiqui
 
 ##### deploy using argo app ...
 ```
-argocd .....
+argocd login <route>
+argocd app create stuff \
+    --dest-namespace labs-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/ckavili/ubiquitous-journey.git \
+    --path "charts/ubiquitous-journey" --values "values-tooling.yaml"
+argocd app sync stuff 
 ```
 
 ##### deploy using helm ...
