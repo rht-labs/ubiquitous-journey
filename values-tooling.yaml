@@ -7,15 +7,19 @@ applications:
     source_ref: master
     sync_policy_automated: true
     valueFiles:
-    - apps/nexus/values.yaml
+    - apps/nexus/values.yaml  
   - name: jenkins
     enabled: true 
     source: https://github.com/rht-labs/ubiquitous-journey
     source_path: charts/ubiquitous-journey
     source_ref: master
     sync_policy_automated: true
-    valueFiles:
-    - apps/jenkins/values.yaml
+    values:
+      persistence: false
+      source_secret:
+        name: bitbucket
+        username: gituser
+        password: thisisnotdefinitelymypassword 
     ignore_differences:
       ignoreDifferences:
         - group: apps.openshift.io
