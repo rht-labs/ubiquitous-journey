@@ -1,6 +1,6 @@
 dependencies:
 - name: bootstrap-project
-  version: "0.0.1"
+  version: "0.0.2"
   repository: https://rht-labs.github.io/charts
   condition: bootstrap-project.enabled
 - name: argo-cd
@@ -12,7 +12,7 @@ dependencies:
   repository: "https://oteemo.github.io/charts"
   condition: sonatype-nexus.enabled
 - name: jenkins
-  version: "0.0.4"
+  version: "0.0.6"
   repository: https://rht-labs.github.io/charts
   condition: jenkins.enabled
 - name: sonarqube
