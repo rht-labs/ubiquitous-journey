@@ -129,4 +129,3 @@ applications:
     source_ref: "sonarqube-0.0.4"
     sync_policy_automated: true
     destination: *ci_cd_ns
-    
