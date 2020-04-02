@@ -62,9 +62,14 @@ helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
 
 #### Create my own namespaced version of all the tools
 Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all teh tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there
-1. Edit `ubiquitous-journey/values-tooling.yaml` and update the `destination: &ci_cd_ns my-ci-cd`
-2. Commit this change to your fork of the repo.
-3. Run argo create app replacing `MY_FORK` as appropriate
+1. Edit `bootstrap/values-tooling.yaml` and update the `prefix: my`
+2. Run
+```
+helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+```
+3. Edit `ubiquitous-journey/values-tooling.yaml` and update the `destination: &ci_cd_ns my-ci-cd`
+4. Commit this change to your fork of the repo.
+5. Run argo create app replacing `MY_FORK` as appropriate
 ```
 argocd app create stuff \
     --dest-namespace my-ci-cd \
