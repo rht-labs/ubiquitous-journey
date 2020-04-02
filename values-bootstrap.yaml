@@ -5,7 +5,6 @@ bootstrap-project:
 ### Argo CD is part of bootrap as all the App CRs will require it to be in existance
 
 argo-cd:
-  namespace: 
   enabled: true
   installCRDs: false
 
