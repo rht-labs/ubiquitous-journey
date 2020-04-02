@@ -2,3 +2,7 @@
 jenkins:
   enabled: true
   persistence: false
+  source_secret:
+    name: gitlab
+    username: gituser
+    password: thisisnotdefinitelymypassword
