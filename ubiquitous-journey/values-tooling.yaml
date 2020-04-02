@@ -1,5 +1,4 @@
 # Over rides for default values in Helm Charts
-prefix: "labs"
 destination: &ci_cd_ns labs-ci-cd
 
 ##############

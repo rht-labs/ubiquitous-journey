@@ -5,7 +5,7 @@
 applications:
   - name: Labs-DevEx
     enabled: true
-    source: https://github.com/ckavili/ubiquitous-journey.git
+    source: https://github.com/rht-labs/ubiquitous-journey.git
     source_path: charts/ubiquitous-journey/
     source_ref: master
     sync_policy_automated: false
@@ -13,7 +13,7 @@ applications:
       - values-tooling.yaml
   - name: custom-example
     enabled: false
-    source: https://github.com/ckavili/someapp.git
+    source: https://github.com/rht-labs/someapp.git
     source_path: charts/customer123/
     source_ref: "v.1.0.1-biscuits"
     sync_policy_automated: false
