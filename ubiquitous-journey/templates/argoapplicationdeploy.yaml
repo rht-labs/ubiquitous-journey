@@ -10,7 +10,7 @@ metadata:
   name: {{ $app.name }}
 spec:
   destination:
-    namespace: {{ $app.destination }}
+    namespace: {{ $app.destination | default "labs-ci-cd" }}
     server: {{ $app.cluster_api | default "https://kubernetes.default.svc" }}
   project: {{ $app.project | default "default" }}
   source:

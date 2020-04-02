@@ -42,7 +42,7 @@ helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 
 ### Tooling
 
-##### deploy using argo app ...
+##### Deploy using argo app of apps ...
 See: [ArgoCD App of Apps approach](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps)
 
 ```
@@ -55,9 +55,22 @@ argocd app create stuff \
 argocd app sync stuff
 ```
 
-##### deploy using helm ...
+##### Deploy using helm ...
 ```
-helm template labs -f argo-app-of-apps.yaml --set ci_cd_namespace=labs-ci-cd ubiquitous-journey/ | oc apply -f -
+helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+```
+
+#### Create my own namespaced version of all the tools
+Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all teh tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there
+1. Edit `ubiquitous-journey/values-tooling.yaml` and update the `destination: &ci_cd_ns my-ci-cd`
+2. Commit this change to your fork of the repo.
+3. Run argo create app replacing `MY_FORK` as appropriate
+```
+argocd app create stuff \
+    --dest-namespace my-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/MY_FORK/ubiquitous-journey.git \
+    --path "ubiquitous-journey" --values "values-tooling.yaml"
 ```
 
 ## How can I bring my own tooling?
