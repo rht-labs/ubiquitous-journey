@@ -99,6 +99,26 @@ nexus_values: &nexus_values
     ports: []
 
 ##############
+# 🛎 Zalenium Custom Values
+#############
+## TODO: Update source URL as upstream when ArgoCD version is greater 1.5.0 or above
+zalenium_values: &zalenium_values
+  hub:
+    serviceType: ClusterIP
+    openshift:
+      deploymentConfig:
+        enabled: true
+      route: 
+        enabled: true
+    persistence:
+      enabled: false
+    serviceAccount:
+      create: false
+    desiredContainers: 0
+    podAnnotations:
+      app: zalenium
+
+##############
 # 🐙 Argo Ignore Differences 
 #############
 ignore_differences: &ignore_differences
@@ -168,3 +188,13 @@ applications:
     source_ref: master
     sync_policy_automated: true
     no_helm: true
+  - name: zalenium
+    enabled: true 
+    source: https://github.com/ckavili/zalenium.git
+    source_path: charts/zalenium
+    source_ref: "master"
+    sync_policy_automated: true
+    destination: *ci_cd_ns
+    values:
+      *zalenium_values
+    ignore_differences: *ignore_differences
