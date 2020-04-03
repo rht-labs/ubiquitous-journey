@@ -4,17 +4,16 @@
 
 🎨 This is the new home for the evolution of what was [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git). This project represents a majour milestone in moving away from the 3.x OpenShift clusters to a new GitOps approach to tooling, app management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
 
-## What's in the box? 👨🏻‍🍳
+## What's in the box? 👨
 
-Bootstrap - TODO. Ref the chart in rht-labs
-ArgoCD - TODO. Ref the chart in tylerland?
-Jenkins - TODO. Ref the chart in rht-labs
-Nexus - TODO. Ref the chart in rht-labs
-SonarQube - TODO. Ref the chart in rht-labsbs
-Hoverfly - TODO. Ref the chart in rht-labs
-PactBroker - TODO. Ref the chart in rht-labs
-CodeReadyWorkspaces - TODO. Ref the chart in rht-labs
-
+- Bootstrap - TODO. Ref the chart in rht-labs
+- ArgoCD - TODO. Ref the chart in tylerland?
+- Jenkins - TODO. Ref the chart in rht-labs
+- Nexus - TODO. Ref the chart in rht-labs
+- SonarQube - TODO. Ref the chart in rht-labsbs
+- Hoverfly - TODO. Ref the chart in rht-labs
+- PactBroker - TODO. Ref the chart in rht-labs
+- CodeReadyWorkspaces - TODO. Ref the kustomize operator in rht-labs
 
 ## What it's not...🤷🏻‍♀️
 
@@ -24,9 +23,9 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 ## How do I run it?
 
 ### Prereq 
-0. OpenShift 4.3 or greater. 
-1. Install helm v3 or greater
-2. Install Argo CD (cli) or greater
+0. OpenShift 4.3 or greater - https://try.openshift.com
+1. Install helm v3 or greater - https://helm.sh/docs/intro/quickstart
+2. Install Argo CD (cli) 1.4.2+ or greater - https://argoproj.github.io/argo-cd/getting_started/#2-download-argo-cd-cli
 
 ### Bootstrap 🍻
 Create your Labs's CI/CD, Dev and Test namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`
@@ -58,6 +57,10 @@ argocd app sync stuff
 ##### Deploy using helm ...
 ```
 helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+```
+If you wish to use a different project to `labs-ci-cd` for example `mymproject` try:
+```
+helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -f -
 ```
 
 #### Create my own namespaced version of all the tools

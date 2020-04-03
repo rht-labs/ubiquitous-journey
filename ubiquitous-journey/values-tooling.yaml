@@ -78,8 +78,9 @@ nexus_values: &nexus_values
     portName: nexus-service
     port: 8081
     targetPort: 8081
-    ports: [] 
+    ports: []
 
+  securityContext: {}
 
 ##############
 # 🐙 Argo Ignore Differences 
