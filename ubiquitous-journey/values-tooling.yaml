@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &ci_cd_ns sd-ci-cd
+destination: &ci_cd_ns labs-ci-cd
 
 ##############
 # 🛎 Jenkins Custom Values
@@ -138,7 +138,7 @@ applications:
     enabled: true 
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-0.0.7"
+    source_ref: "jenkins-0.0.8"
     sync_policy_automated: true
     destination: *ci_cd_ns 
     values:
