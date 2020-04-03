@@ -93,7 +93,7 @@ ignore_differences: &ignore_differences
     kind: BuildConfig
     jsonPointers:        
     - /spec/triggers
-  - group: route.openshift.io/v1
+  - group: route.openshift.io
     kind: Route
     jsonPointers:
     - /status/ingress
