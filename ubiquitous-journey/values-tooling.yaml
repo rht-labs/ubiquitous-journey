@@ -26,18 +26,13 @@ nexus_values: &nexus_values
     service:
       type: ClusterIP
     podAnnotations: {}
-    securityContext: null
+    securityContext: {}
 
   route:
     enabled: true
     name: nexus
     portName: nexus-service
     path: null
-    status:
-      ingress:
-      - conditions:
-        - status: 'True'
-          type: Admitted
 
   nexusProxy:
     enabled: false
@@ -98,6 +93,10 @@ ignore_differences: &ignore_differences
     kind: BuildConfig
     jsonPointers:        
     - /spec/triggers
+  - group: route.openshift.io/v1
+    kind: Route
+    jsonPointers:
+    - /status/ingress
 
 
 ##############
