@@ -21,13 +21,13 @@ jenkins_values: &jenkins_values
 # 🛎 Sonatype Nexus Custom Values
 #############
 nexus_values: &nexus_values
-  enabled: true
   nexus:
     imageTag: 3.19.1
     securityContext: []
     service:
       type: ClusterIP
     podAnnotations: {}
+    securityContext: {}
 
   route:
     enabled: true
@@ -80,8 +80,6 @@ nexus_values: &nexus_values
     targetPort: 8081
     ports: []
 
-  securityContext: {}
-
 ##############
 # 🐙 Argo Ignore Differences 
 #############
@@ -112,7 +110,7 @@ applications:
     sync_policy_automated: true
     destination: *ci_cd_ns 
     values:
-      nexus: *nexus_values
+      *nexus_values
   - name: jenkins
     enabled: true 
     source: https://github.com/rht-labs/charts.git
