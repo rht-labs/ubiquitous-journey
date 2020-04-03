@@ -80,7 +80,6 @@ argocd app create stuff \
 ```
 
 Or if you're using just helm3 cli
-
 ```
 helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -n myproject -f-
 ```
