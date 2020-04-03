@@ -2,12 +2,14 @@ image:
   repository: docker.io/spectolabs/hoverfly
   tag: v1.1.1
   pullPolicy: IfNotPresent
+
 service:
   type: ClusterIP
   externalAdminPort: 8888
   adminPort: 8888
   externalProxyPort: 8500
   proxyPort: 8500
+
 healthcheckEndpoint: /api/health
 hoverflyFlags:
 # resources:
