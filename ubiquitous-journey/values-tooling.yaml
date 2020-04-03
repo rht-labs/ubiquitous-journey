@@ -21,13 +21,12 @@ jenkins_values: &jenkins_values
 # 🛎 Sonatype Nexus Custom Values
 #############
 nexus_values: &nexus_values
-  enabled: true
   nexus:
     imageTag: 3.19.1
-    securityContext: []
     service:
       type: ClusterIP
     podAnnotations: {}
+    securityContextEnabled: false
 
   route:
     enabled: true
@@ -39,7 +38,7 @@ nexus_values: &nexus_values
     enabled: false
 
   persistence:
-    storageSize: 5Gi
+    storageSize: 5Gi  
 
   serviceAccount:
     name: nexus
@@ -78,8 +77,7 @@ nexus_values: &nexus_values
     portName: nexus-service
     port: 8081
     targetPort: 8081
-    ports: [] 
-
+    ports: []
 
 ##############
 # 🐙 Argo Ignore Differences 
@@ -95,6 +93,10 @@ ignore_differences: &ignore_differences
     kind: BuildConfig
     jsonPointers:        
     - /spec/triggers
+  - group: route.openshift.io
+    kind: Route
+    jsonPointers:
+    - /status/ingress
 
 
 ##############
@@ -111,16 +113,17 @@ applications:
     sync_policy_automated: true
     destination: *ci_cd_ns 
     values:
-      sonatype-nexus: *nexus_values
+      *nexus_values
+    ignore_differences: *ignore_differences
   - name: jenkins
     enabled: true 
     source: https://github.com/rht-labs/charts.git
     source_path: charts/jenkins
     source_ref: "jenkins-0.0.6"
     sync_policy_automated: true
-    destination: *ci_cd_ns 
+    destiation: *ci_cd_ns 
     values:
-      jenkins: *jenkins_values
+      *jenkins_values
     ignore_differences: *ignore_differences
   - name: sonarqube
     enabled: true 
