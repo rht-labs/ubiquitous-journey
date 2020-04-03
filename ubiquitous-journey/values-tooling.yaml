@@ -115,6 +115,8 @@ zalenium_values: &zalenium_values
     serviceAccount:
       create: false
     desiredContainers: 0
+    podAnnotations:
+      app: zalenium
 
 ##############
 # 🐙 Argo Ignore Differences 
