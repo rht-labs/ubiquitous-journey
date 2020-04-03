@@ -82,7 +82,7 @@ nexus_values: &nexus_values
 ##############
 # 🐙 Argo Ignore Differences 
 #############
-ignore_differences: &jenkins_ignore_differences
+ignore_differences: &ignore_differences
   ignoreDifferences:
   - group: apps.openshift.io
     kind: DeploymentConfig
@@ -93,9 +93,6 @@ ignore_differences: &jenkins_ignore_differences
     kind: BuildConfig
     jsonPointers:        
     - /spec/triggers
-
-ignore_differences: &nexus_ignore_differences
-  ignoreDifferences:
   - group: route.openshift.io/v1
     kind: Route
     jsonPointers:
@@ -117,7 +114,7 @@ applications:
     destination: *ci_cd_ns 
     values:
       *nexus_values
-    ignore_differences: *nexus_ignore_differences
+    ignore_differences: *ignore_differences
   - name: jenkins
     enabled: true 
     source: https://github.com/rht-labs/charts.git
