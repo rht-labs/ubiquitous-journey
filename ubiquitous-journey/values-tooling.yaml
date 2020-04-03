@@ -112,7 +112,7 @@ applications:
     sync_policy_automated: true
     destination: *ci_cd_ns 
     values:
-      sonatype-nexus: *nexus_values
+      nexus: *nexus_values
   - name: jenkins
     enabled: true 
     source: https://github.com/rht-labs/charts.git
