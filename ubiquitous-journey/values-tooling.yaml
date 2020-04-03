@@ -23,7 +23,6 @@ jenkins_values: &jenkins_values
 nexus_values: &nexus_values
   nexus:
     imageTag: 3.19.1
-    securityContext: []
     service:
       type: ClusterIP
     podAnnotations: {}
@@ -40,6 +39,8 @@ nexus_values: &nexus_values
 
   persistence:
     storageSize: 5Gi
+
+  securityContext: {}
 
   serviceAccount:
     name: nexus

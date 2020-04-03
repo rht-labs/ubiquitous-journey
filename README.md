@@ -56,11 +56,11 @@ argocd app sync stuff
 
 ##### Deploy using helm ...
 ```
-helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 If you wish to use a different project to `labs-ci-cd` for example `mymproject` try:
 ```
-helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -f -
+helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -n myproject -f-
 ```
 
 #### Create my own namespaced version of all the tools
