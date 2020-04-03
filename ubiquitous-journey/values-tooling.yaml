@@ -38,9 +38,7 @@ nexus_values: &nexus_values
     enabled: false
 
   persistence:
-    storageSize: 5Gi
-
-  securityContext: {}
+    storageSize: 5Gi  
 
   serviceAccount:
     name: nexus
