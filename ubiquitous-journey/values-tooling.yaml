@@ -119,7 +119,7 @@ applications:
     sync_policy_automated: true
     destiation: *ci_cd_ns 
     values:
-      jenkins: *jenkins_values
+      *jenkins_values
     ignore_differences: *ignore_differences
   - name: sonarqube
     enabled: true 
