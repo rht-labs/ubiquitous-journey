@@ -82,7 +82,7 @@ nexus_values: &nexus_values
 ##############
 # 🐙 Argo Ignore Differences 
 #############
-jenkins_ignore_differences: &jenkins_ignore_differences
+ignore_differences: &jenkins_ignore_differences
   ignoreDifferences:
   - group: apps.openshift.io
     kind: DeploymentConfig
@@ -94,7 +94,7 @@ jenkins_ignore_differences: &jenkins_ignore_differences
     jsonPointers:        
     - /spec/triggers
 
-nexus_ignore_differences: &nexus_ignore_differences
+ignore_differences: &nexus_ignore_differences
   ignoreDifferences:
   - group: route.openshift.io/v1
     kind: Route
