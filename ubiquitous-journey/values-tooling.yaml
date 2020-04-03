@@ -33,6 +33,11 @@ nexus_values: &nexus_values
     name: nexus
     portName: nexus-service
     path: null
+    status:
+      ingress:
+      - conditions:
+        - status: 'True'
+          type: Admitted
 
   nexusProxy:
     enabled: false
