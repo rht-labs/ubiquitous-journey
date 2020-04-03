@@ -1,0 +1,31 @@
+bootstrap-project:
+  enabled: true
+  prefix: "labs"
+    
+### Argo CD is part of bootrap as all the App CRs will require it to be in existance
+
+argo-cd:
+  enabled: true
+  installCRDs: false
+
+  global:
+# Do we want this?
+    clusterAdminAccess:
+      enabled: true
+
+  dex:
+    image:
+      tag: v2.22.0
+
+  server:
+    extraArgs: {insecure: true }
+    route:
+      enabled: true
+      termination_type: passthrough
+      termination_policy: Redirect
+
+  configs:
+    argocdServerAdminPassword: $2a$10$/R5V2T4y23yQL9y0aqt3x.d.QQ5XSCsUr2IebD6XFt9ii5I17AOx.
+
+  openshift:
+    enabled: true

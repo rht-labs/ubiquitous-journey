@@ -119,21 +119,6 @@ zalenium_values: &zalenium_values
       app: zalenium
 
 ##############
-# 🛎 Hoverfly Custom Values
-# Values reference https://github.com/helm/charts/tree/master/incubator/hoverfly
-#############
-hoverfly_values: &hoverfly_values
-  openshift:
-    route:
-      admin:
-        enabled: true
-        hostname: ""
-      proxy:
-        enabled: true 
-        hostname: ""
-
-
-##############
 # 🐙 Argo Ignore Differences 
 #############
 ignore_differences: &ignore_differences
@@ -212,14 +197,4 @@ applications:
     destination: *ci_cd_ns
     values:
       *zalenium_values
-    ignore_differences: *ignore_differences
-  - name: hoverfly
-    enabled: true
-    source: https://github.com/helm/charts.git
-    source_path: incubator/hoverfly
-    sync_policy_automated: true
-    destination: *ci_cd_ns
-    source_ref: master
-    values:
-      *hoverfly_values
     ignore_differences: *ignore_differences
