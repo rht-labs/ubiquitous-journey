@@ -27,7 +27,7 @@ nexus_values: &nexus_values
       type: ClusterIP
     podAnnotations: {}
     securityContext:
-      privileged: false
+      allowPrivilegeEscalation: false
 
   route:
     enabled: true
