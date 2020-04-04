@@ -40,6 +40,7 @@ helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
 
 ### Tooling
+Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace. There are two ways you can deploy this project - as an Argo App of Apps or a helm3 template. 
 
 ##### Deploy using argo app of apps ...
 See: [ArgoCD App of Apps approach](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps)
@@ -58,15 +59,12 @@ argocd app sync stuff
 ```
 helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
-If you wish to use a different project to `labs-ci-cd` for example `mymproject` try:
-```
-helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -n myproject -f-
-```
 
-#### Create my own namespaced version of all the tools
-Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all teh tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there
+#### Deploy to a custom namespace
+Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
+
 1. Edit `bootstrap/values-tooling.yaml` and update the `prefix: my`
-2. Run
+2. Run the helm command
 ```
 helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
@@ -79,6 +77,11 @@ argocd app create stuff \
     --dest-server https://kubernetes.default.svc \
     --repo https://github.com/MY_FORK/ubiquitous-journey.git \
     --path "ubiquitous-journey" --values "values-tooling.yaml"
+```
+
+Or if you're using just helm3 cli
+```
+helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -n myproject -f-
 ```
 
 ## How can I bring my own tooling?

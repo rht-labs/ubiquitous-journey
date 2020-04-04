@@ -7,15 +7,34 @@ destination: &ci_cd_ns labs-ci-cd
 jenkins_values: &jenkins_values
   persistence: false
   source_secret:
-    name: biscuit
-    username: gituser
-    password: thisisnotdefinitelymypassword  
-
+    name: gitlab-auth
+    username: idm-sa
+    password: thisisdefinitelynotmypassword  
 
 ##############
 # 🛎 Sonarqube Custom Values
 #############
 
+##############
+# 🛎 Pact Broker Custom Values
+#############
+pact_broker_values: &pact_broker_values
+  secrets:
+    name: pact-broker-secrets
+    keys:
+      pactBrokerDatabaseUsername: pact_broker_database_username
+      pactBrokerDatabasePassword: pact_broker_database_password
+      pactBrokerAdmin: pact_broker_admin
+      pactBrokerAdminPassword: pact_broker_admin_password
+      pactBrokerBasicAuthUsername: pact_broker_user
+      pactBrokerBasicAuthPassword: pact_broker_user_password
+    values:
+      pactBrokerDatabaseUsername: pact_broker_user
+      pactBrokerDatabasePassword: thisisdefinitelynotmypassword
+      pactBrokerAdmin: admin
+      pactBrokerAdminPassword: thisisdefinitelynotmypassword
+      pactBrokerBasicAuthUsername: dev
+      pactBrokerBasicAuthPassword: thisisdefinitelynotmypassword
 
 ##############
 # 🛎 Sonatype Nexus Custom Values
@@ -80,6 +99,41 @@ nexus_values: &nexus_values
     ports: []
 
 ##############
+# 🛎 Zalenium Custom Values
+#############
+## TODO: Update source URL as upstream when ArgoCD version is greater 1.5.0 or above
+zalenium_values: &zalenium_values
+  hub:
+    serviceType: ClusterIP
+    openshift:
+      deploymentConfig:
+        enabled: true
+      route: 
+        enabled: true
+    persistence:
+      enabled: false
+    serviceAccount:
+      create: false
+    desiredContainers: 0
+    podAnnotations:
+      app: zalenium
+
+##############
+# 🛎 Hoverfly Custom Values
+# Values reference https://github.com/helm/charts/tree/master/incubator/hoverfly
+#############
+hoverfly_values: &hoverfly_values
+  openshift:
+    route:
+      admin:
+        enabled: true
+        hostname: ""
+      proxy:
+        enabled: true 
+        hostname: ""
+
+
+##############
 # 🐙 Argo Ignore Differences 
 #############
 ignore_differences: &ignore_differences
@@ -117,17 +171,26 @@ applications:
     ignore_differences: *ignore_differences
   - name: jenkins
     enabled: true 
-    source: https://github.com/rht-labs/charts.git
+    source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-0.0.6"
+    source_ref: "jenkins-0.0.8"
     sync_policy_automated: true
     destiation: *ci_cd_ns 
     values:
       *jenkins_values
     ignore_differences: *ignore_differences
+  - name: pact-broker
+    enabled: true 
+    source: https://github.com/rht-labs/helm-charts.git
+    source_path: charts/pact-broker
+    source_ref: "pact-broker-0.0.1"
+    sync_policy_automated: true
+    destination: *ci_cd_ns
+    values:
+      *pact_broker_values
   - name: sonarqube
     enabled: true 
-    source: https://github.com/rht-labs/charts.git
+    source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/sonarqube
     source_ref: "sonarqube-0.0.4"
     sync_policy_automated: true
@@ -140,3 +203,24 @@ applications:
     source_ref: master
     sync_policy_automated: true
     no_helm: true
+  - name: zalenium
+    enabled: true 
+    source: https://github.com/ckavili/zalenium.git
+    source_path: charts/zalenium
+    source_ref: "master"
+    sync_policy_automated: true
+    destination: *ci_cd_ns
+    values:
+      *zalenium_values
+    ignore_differences: *ignore_differences
+  - name: hoverfly
+    enabled: true
+    source: https://github.com/helm/charts.git
+    source_path: incubator/hoverfly
+    sync_policy_automated: true
+    destination: *ci_cd_ns
+    source_ref: master
+    values:
+      *hoverfly_values
+    ignore_differences: *ignore_differences
+
