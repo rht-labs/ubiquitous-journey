@@ -198,7 +198,7 @@ applications:
   - name: crw
     enabled: true
     destination: crw
-    source: https://github.com/eformat/argocd
+    source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
     source_ref: master
     sync_policy_automated: true
@@ -223,4 +223,3 @@ applications:
     values:
       *hoverfly_values
     ignore_differences: *ignore_differences
-
