@@ -175,7 +175,7 @@ applications:
     source_path: charts/jenkins
     source_ref: "jenkins-0.0.8"
     sync_policy_automated: true
-    destiation: *ci_cd_ns 
+    destination: *ci_cd_ns 
     values:
       *jenkins_values
     ignore_differences: *ignore_differences
