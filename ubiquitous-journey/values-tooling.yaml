@@ -12,10 +12,6 @@ jenkins_values: &jenkins_values
     password: thisisdefinitelynotmypassword  
 
 ##############
-# 🛎 Sonarqube Custom Values
-#############
-
-##############
 # 🛎 Pact Broker Custom Values
 #############
 pact_broker_values: &pact_broker_values
@@ -127,11 +123,10 @@ hoverfly_values: &hoverfly_values
     route:
       admin:
         enabled: true
-        hostname: null
+        hostname: ''
       proxy:
         enabled: true 
-        hostname: null
-
+        hostname: ''
 
 ##############
 # 🐙 Argo Ignore Differences 
@@ -161,7 +156,11 @@ hoverflyignore_differences: &hoverfly_ignore_differences
     kind: Route
     jsonPointers:
     - /status/ingress
-
+    - /spec/host
+  - group: apps/v1
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
 
 ##############
 # 🛎 Argo App of Apps declaration
