@@ -71,7 +71,7 @@ helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 #### Deploy to a custom namespace
 Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
 
-1. Edit `bootstrap/values-tooling.yaml` and update the `prefix: my`
+1. Edit `bootstrap/values-bootstrap.yaml` and update the `prefix: my`
 2. Run the helm command
 ```
 helm template --dependency-update --set argocd.namespace=my-ci-cd -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
