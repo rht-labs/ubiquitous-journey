@@ -92,6 +92,18 @@ Or if you're using just helm3 cli
 helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -n myproject -f-
 ```
 
+### Example Application Deploy 🌮
+Deploy the example app `pet-battle` using GitOps!
+Update the `app_tag` in `example-deployment/values-applications.yaml` and commit the changes to see GitOps in action!
+```
+argocd app create catz \
+    --dest-namespace labs-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/rht-labs/ubiquitous-journey.git \
+    --path "example-deployment" --values "values-applications.yaml"
+argocd app sync catz
+```
+
 ## How can I bring my own tooling?
 
 TODO - add some instructions for adding:
