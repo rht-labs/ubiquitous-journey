@@ -1,3 +1,4 @@
+{{- if .Values.argocd.enabled }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -5,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/component: application-controller
     app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: labs-ci-cd
+    app.kubernetes.io/part-of: {{ .Values.argocd.namespace }}
   name: argocd-application-controller
 rules:
 - apiGroups:
@@ -25,7 +26,7 @@ metadata:
   labels:
     app.kubernetes.io/component: application-controller
     app.kubernetes.io/name: argocd-application-controller
-    app.kubernetes.io/part-of: labs-ci-cd
+    app.kubernetes.io/part-of: {{ .Values.argocd.namespace }}
   name: argocd-application-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -34,16 +35,16 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: argocd-application-controller
-  namespace: labs-ci-cd
+  namespace: {{ .Values.argocd.namespace }}
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: labs-ci-cd
-  generateName: labs-ci-cd-
+  name: {{ .Values.argocd.namespace }}
+  generateName: {{ .Values.argocd.namespace }}-
 spec:
   targetNamespaces:
-  - labs-ci-cd
+  - {{ .Values.argocd.namespace }}
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -94,3 +95,4 @@ spec:
   statusBadgeEnabled: true
   usersAnonymousEnabled: false
   version: v1.5.0
+{{- end }}

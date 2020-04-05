@@ -74,7 +74,7 @@ Because this is GitOps to make changes to the namespaces etc they should really 
 1. Edit `bootstrap/values-tooling.yaml` and update the `prefix: my`
 2. Run the helm command
 ```
-helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template --dependency-update --set argocd.namespace=my-ci-cd -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
 3. Edit `ubiquitous-journey/values-tooling.yaml` and update the `destination: &ci_cd_ns my-ci-cd`
 4. Commit this change to your fork of the repo.

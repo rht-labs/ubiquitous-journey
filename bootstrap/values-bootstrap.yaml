@@ -1,3 +1,7 @@
 bootstrap-project:
   enabled: true
   prefix: "labs"
+
+argocd:
+  enabled: true
+  namespace: "labs-ci-cd"
