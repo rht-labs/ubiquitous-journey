@@ -31,7 +31,7 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 
 Tooling deployed to `labs-ci-cd` project
 ```
-helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template --dependency-update labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
