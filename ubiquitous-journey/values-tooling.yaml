@@ -12,6 +12,10 @@ jenkins_values: &jenkins_values
     password: thisisdefinitelynotmypassword  
 
 ##############
+# 🛎 Sonarqube Custom Values
+#############
+
+##############
 # 🛎 Pact Broker Custom Values
 #############
 pact_broker_values: &pact_broker_values
@@ -128,10 +132,11 @@ hoverfly_values: &hoverfly_values
         enabled: true 
         hostname: ""
 
+
 ##############
 # 🐙 Argo Ignore Differences 
 #############
-jenkins_ignore_differences: &jenkins_ignore_differences
+ignore_differences: &ignore_differences
   ignoreDifferences:
   - group: apps.openshift.io
     kind: DeploymentConfig
@@ -142,25 +147,11 @@ jenkins_ignore_differences: &jenkins_ignore_differences
     kind: BuildConfig
     jsonPointers:        
     - /spec/triggers
-
-nexus_ignore_differences: &nexus_ignore_differences
-  ignoreDifferences:
   - group: route.openshift.io
     kind: Route
     jsonPointers:
     - /status/ingress
 
-hoverflyignore_differences: &hoverfly_ignore_differences
-  ignoreDifferences:
-  - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
-    - /spec/host
-  - group: apps/v1
-    kind: Deployment
-    jsonPointers:
-    - /spec/replicas
 
 ##############
 # 🛎 Argo App of Apps declaration
@@ -177,7 +168,7 @@ applications:
     destination: *ci_cd_ns 
     values:
       *nexus_values
-    ignore_differences: *nexus_ignore_differences
+    ignore_differences: *ignore_differences
   - name: jenkins
     enabled: true 
     source: https://github.com/rht-labs/helm-charts.git
@@ -187,7 +178,7 @@ applications:
     destination: *ci_cd_ns 
     values:
       *jenkins_values
-    ignore_differences: *jenkins_ignore_differences
+    ignore_differences: *ignore_differences
   - name: pact-broker
     enabled: true 
     source: https://github.com/rht-labs/helm-charts.git
@@ -221,6 +212,7 @@ applications:
     destination: *ci_cd_ns
     values:
       *zalenium_values
+    ignore_differences: *ignore_differences
   - name: hoverfly
     enabled: true
     source: https://github.com/helm/charts.git
@@ -230,4 +222,4 @@ applications:
     source_ref: master
     values:
       *hoverfly_values
-    ignore_differences: *hoverfly_ignore_differences
+    ignore_differences: *ignore_differences
