@@ -123,10 +123,10 @@ hoverfly_values: &hoverfly_values
     route:
       admin:
         enabled: true
-        hostname: ''
+        hostname: ""
       proxy:
         enabled: true 
-        hostname: ''
+        hostname: ""
 
 ##############
 # 🐙 Argo Ignore Differences 
