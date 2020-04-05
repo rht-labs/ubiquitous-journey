@@ -162,6 +162,30 @@ hoverflyignore_differences: &hoverfly_ignore_differences
     jsonPointers:
     - /spec/replicas
 
+crw_ignore_differences: &crw_ignore_differences
+  ignoreDifferences:
+  - group: org.eclipse.che
+    kind: CheCluster
+    jsonPointers:
+    - /spec
+
+##############
+# 🐙 Argo Sync Policy
+#############
+sync_policy_true: &sync_policy_true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      validate: true
+
+sync_policy_no_selfheal: &sync_policy_no_selfheal
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+      validate: true
+
 ##############
 # 🛎 Argo App of Apps declaration
 #############
@@ -173,7 +197,8 @@ applications:
     source: https://github.com/Oteemo/charts.git
     source_path: charts/sonatype-nexus
     source_ref: "sonatype-nexus-1.26.2"
-    sync_policy_automated: true
+    sync_policy:
+      *sync_policy_true
     destination: *ci_cd_ns 
     values:
       *nexus_values
@@ -183,7 +208,8 @@ applications:
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/jenkins
     source_ref: "jenkins-0.0.8"
-    sync_policy_automated: true
+    sync_policy:
+      *sync_policy_true
     destination: *ci_cd_ns 
     values:
       *jenkins_values
@@ -193,7 +219,8 @@ applications:
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/pact-broker
     source_ref: "pact-broker-0.0.1"
-    sync_policy_automated: true
+    sync_policy:
+      *sync_policy_true
     destination: *ci_cd_ns
     values:
       *pact_broker_values
@@ -202,7 +229,8 @@ applications:
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/sonarqube
     source_ref: "sonarqube-0.0.4"
-    sync_policy_automated: true
+    sync_policy:
+      *sync_policy_true
     destination: *ci_cd_ns
   - name: crw
     enabled: true
@@ -210,22 +238,27 @@ applications:
     source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
     source_ref: master
-    sync_policy_automated: true
+    sync_policy:
+      *sync_policy_no_self_heal
     no_helm: true
+    ignore_differences: *crw_ignore_differences
   - name: zalenium
     enabled: true 
     source: https://github.com/ckavili/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
-    sync_policy_automated: true
+    sync_policy:
+      *sync_policy_true
     destination: *ci_cd_ns
     values:
       *zalenium_values
   - name: hoverfly
     enabled: true
     source: https://github.com/helm/charts.git
-    source_path: incubator/hoverfly
-    sync_policy_automated: true
+    source_path: incubator/hoverfly    sync_policy:
+      *sync_policy_true
+    sync_policy:
+      *sync_policy_true
     destination: *ci_cd_ns
     source_ref: master
     values:
