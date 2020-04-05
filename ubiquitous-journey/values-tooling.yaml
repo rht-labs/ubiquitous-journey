@@ -239,7 +239,7 @@ applications:
     source_path: crw/base
     source_ref: master
     sync_policy:
-      *sync_policy_no_self_heal
+      *sync_policy_no_selfheal
     no_helm: true
     ignore_differences: *crw_ignore_differences
   - name: zalenium
