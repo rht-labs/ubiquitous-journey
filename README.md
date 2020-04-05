@@ -23,9 +23,17 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 ## How do I run it?
 
 ### Prereq 
-0. OpenShift 4.3 or greater - https://try.openshift.com
+0. OpenShift 4.3 or greater (cluster admin user required) - https://try.openshift.com
 1. Install helm v3 or greater - https://helm.sh/docs/intro/quickstart
 2. Install Argo CD (cli) 1.4.2+ or greater - https://argoproj.github.io/argo-cd/getting_started/#2-download-argo-cd-cli
+
+### For the impatient 🤠
+
+Tooling deployed to `labs-ci-cd` project
+```
+helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
+```
 
 ### Bootstrap 🍻
 Create your Labs's CI/CD, Dev and Test namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`
