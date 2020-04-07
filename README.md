@@ -50,11 +50,19 @@ helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ### Tooling
 Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace. There are two ways you can deploy this project - as an Argo App of Apps or a helm3 template. 
 
+To login with argocd from CLI using sso
+```
+argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd):443 --sso --insecure
+```
+else if no sso:
+```
+argocd login --grpc-web $(oc get routes labs-argocd-server -o jsonpath='{.spec.host}') --insecure
+```
+
 ##### Deploy using argo app of apps ...
 See: [ArgoCD App of Apps approach](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps)
 
 ```
-argocd login --grpc-web $(oc get routes labs-argocd-server -o jsonpath='{.spec.host}')
 argocd app create stuff \
     --dest-namespace labs-ci-cd \
     --dest-server https://kubernetes.default.svc \
@@ -95,6 +103,12 @@ helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=my
 ### Example Application Deploy 🌮
 Deploy the example app `pet-battle` using GitOps!
 Update the `app_tag` in `example-deployment/values-applications.yaml` and commit the changes to see GitOps in action!
+
+Create using helm:
+```
+helm template catz -f example-deployment/values-applications.yaml example-deployment/ | oc apply -n labs-ci-cd -f-
+```
+or using argocd:
 ```
 argocd app create catz \
     --dest-namespace labs-ci-cd \

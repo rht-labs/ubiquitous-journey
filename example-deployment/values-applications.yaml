@@ -23,15 +23,7 @@ ignore_differences: &ignore_differences
     jsonPointers:
     - /spec/template/spec/containers/0/image
     - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-  - group: build.openshift.io
-    kind: BuildConfig
-    jsonPointers:        
-    - /spec/triggers
-  - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
-
+    - /spec/triggers/1/imageChangeParams/lastTriggeredImage
 
 ##############
 # 🛎 Argo App of Apps declaration
