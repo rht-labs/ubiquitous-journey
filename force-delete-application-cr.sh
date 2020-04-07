@@ -1,7 +1,7 @@
 
 #!/bin/bash
 if [ -z ${1} ]; then 
-  echo "\n🤥 No namespace found, please pass this script it otherwise ALL ARGO APP CRs will be deleted 🤥 eg: \n\n./force-delete-application-cr.sh my-ci-cd  \n"
+  echo "\n🤥 No namespace found, please pass this script it otherwise ALL ARGO APP CRs will be deleted 🤥 eg: \n\n./force-delete-application-cr.sh labs-ci-cd  \n"
   exit -1; 
 fi
 
