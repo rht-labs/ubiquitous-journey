@@ -2,7 +2,6 @@
 # ie ${prefix}-cd-cd, ${prefix}-dev, ${prefix}-test
 # Helm does not support overriding anchor tags so setting
 # ci_cd_namespace directly will not work 🤥
-
 bootstrap-project:
   enabled: true
   prefix: "labs"
@@ -11,3 +10,4 @@ bootstrap-project:
 argocd:
   enabled: true
   namespace: "labs-ci-cd"
+  version: v1.5.1
