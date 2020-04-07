@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &dev_ns labs-ci-cd
+destination: &dev_ns labs-dev
 
 ##############
 # 🛎 Application Custom Values
