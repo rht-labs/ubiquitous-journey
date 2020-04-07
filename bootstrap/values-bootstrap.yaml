@@ -1,3 +1,6 @@
+argocd:
+  version: v1.5.1
+
 bootstrap-project:
   enabled: true
   prefix: "labs"
