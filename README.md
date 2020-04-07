@@ -32,8 +32,8 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 
 Tooling deployed to `labs-ci-cd` project
 ```
-helm template --dependency-update labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
-helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
+helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ### Bootstrap 🍻
@@ -59,19 +59,19 @@ argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n labs-
 ```
 else if no sso:
 ```
-argocd login --grpc-web $(oc get routes labs-argocd-server -o jsonpath='{.spec.host}') --insecure
+argocd login --grpc-web $(oc get routes argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd)) --insecure
 ```
 
 ##### Deploy using argo app of apps ...
 See: [ArgoCD App of Apps approach](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps)
 
 ```
-argocd app create stuff \
+argocd app create ubiquitous-journey \
     --dest-namespace labs-ci-cd \
     --dest-server https://kubernetes.default.svc \
     --repo https://github.com/rht-labs/ubiquitous-journey.git \
     --path "ubiquitous-journey" --values "values-tooling.yaml"
-argocd app sync stuff
+argocd app sync ubiquitous-journey
 ```
 
 ##### Deploy using helm ...
@@ -94,13 +94,15 @@ helm template --dependency-update --set bootstrap-project.prefix=my,argocd.names
 
 2. Edit `ubiquitous-journey/values-tooling.yaml` and update the `destination: &ci_cd_ns my-ci-cd`
 3. Commit this change to your fork of the repo.
-4. Run argo create app replacing `MY_FORK` as appropriate
+4. Login to ArgoCD as desribed in [Tooling](#Tooling) section
+5. Run argo create app replacing `MY_FORK` as appropriate
 ```
-argocd app create stuff \
+argocd app create ubiquitous-journey \
     --dest-namespace my-ci-cd \
     --dest-server https://kubernetes.default.svc \
     --repo https://github.com/MY_FORK/ubiquitous-journey.git \
     --path "ubiquitous-journey" --values "values-tooling.yaml"
+argocd app sync ubiquitous-journey
 ```
 
 Or if you're using just helm3 cli
