@@ -119,6 +119,7 @@ zalenium_values: &zalenium_values
 # Values reference https://github.com/helm/charts/tree/master/incubator/hoverfly
 #############
 hoverfly_values: &hoverfly_values
+  replicaCount: "1"
   openshift:
     route:
       admin:
