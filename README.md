@@ -82,20 +82,22 @@ helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 #### Deploy to a custom namespace
 Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
 
-1. Edit `bootstrap/values-bootstrap.yaml` and update the `prefix: my` and argocd namespace `namespace: "my-ci-cd"`. Run the helm command
+1. Run `setPrefix.sh $PREFIX` where `prefix` is the string to insert before the project names eg `my`. This will update the folling entries: 
+* `bootstrap/values-bootstrap.yaml`: the `prefix: my` and argocd namespace `namespace: "my-ci-cd"`.
+* `ubiquitous-journey/values-tooling.yaml`: the `destination: &ci_cd_ns my-ci-cd`
+* `example-deployment/values-applications.yaml`: the `destination: &ci_cd_ns my-dev`
+
+2. Git commit this change to your fork and run the following Helm Command:
 ```
 helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
 
-  Or if you feel lazy, you can override the values on the commandline 
+_FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙!:_
 ```
 helm template --dependency-update --set bootstrap-project.prefix=my,argocd.namespace=my-ci-cd -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
-
-2. Edit `ubiquitous-journey/values-tooling.yaml` and update the `destination: &ci_cd_ns my-ci-cd`
-3. Commit this change to your fork of the repo.
-4. Login to ArgoCD as desribed in [Tooling](#Tooling) section
-5. Run argo create app replacing `MY_FORK` as appropriate
+3. Login to ArgoCD as desribed in [Tooling](#Tooling) section.
+4. Run argo create app replacing `MY_FORK` as appropriate
 ```
 argocd app create ubiquitous-journey \
     --dest-namespace my-ci-cd \
