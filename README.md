@@ -128,6 +128,15 @@ argocd app create catz \
 argocd app sync catz
 ```
 
+## Cleaning up ArgoCD Apps
+Sometime ArgoCD `Application` CRs can get stuck after they've been deleted and cause funky issues.
+This is particularly annoying while testing with multiple ArgoCD instances.
+To *force delete* the application CRs run the `force-delete-application-cr.sh` script pointing to the namespace your `Application` CRs are stored. This will remove the `Finalizers`.
+```
+oc login ...
+./force-delete-application-cr.sh labs-ci-cd
+```
+
 ## How can I bring my own tooling?
 
 TODO - add some instructions for adding:

@@ -6,6 +6,9 @@ bin/*
 /.bin
 /_test/secrets/*.json
 
+# produced by the kill all 
+*-delete.json
+
 # OSX leaves these everywhere on SMB shares
 ._*
 

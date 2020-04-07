@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &ci_cd_ns my-ci-cd
+destination: &ci_cd_ns labs-ci-cd
 
 ##############
 # 🛎 Jenkins Custom Values
