@@ -64,7 +64,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: ArgoCD
 metadata:
   name: argocd
-  namespace: labs-ci-cd
   labels:
     app: argocd
   namespace: {{ .Values.argocd.namespace }}
