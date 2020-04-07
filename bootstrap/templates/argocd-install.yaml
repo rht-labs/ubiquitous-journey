@@ -40,6 +40,7 @@ apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: labs-ci-cd
+  namespace: labs-ci-cd
   generateName: labs-ci-cd-
 spec:
   targetNamespaces:
@@ -49,6 +50,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: argocd-operator
+  namespace: labs-ci-cd
 spec:
   channel: alpha
   installPlanApproval: Automatic
@@ -60,7 +62,8 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ArgoCD
 metadata:
-  name: argocd  
+  name: argocd
+  namespace: labs-ci-cd
   labels:
     app: argocd
 spec:
