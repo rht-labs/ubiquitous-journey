@@ -6,14 +6,15 @@
 
 ## What's in the box? 👨
 
-- Bootstrap - TODO. Ref the chart in rht-labs
-- ArgoCD - TODO. Ref the chart in tylerland?
-- Jenkins - TODO. Ref the chart in rht-labs
-- Nexus - TODO. Ref the chart in rht-labs
-- SonarQube - TODO. Ref the chart in rht-labsbs
-- Hoverfly - TODO. Ref the chart in rht-labs
-- PactBroker - TODO. Ref the chart in rht-labs
-- CodeReadyWorkspaces - TODO. Ref the kustomize operator in rht-labs
+- Bootstrap - Create new projects such as `labs-ci-cd`, `labs-dev`, `labs-test` and the rolebinding for groups. See the [bootstrap-project chart](https://github.com/rht-labs/helm-charts/tree/master/charts/bootstrap-project) for more info.
+- ArgoCD - Deploys Andy Block's OpenShift auth enabled Dex Server along with the Operator version of ArgoCD.
+- Jenkins - Create new custom Jenkins instance along with all the CoP build agents. See the [Jenkins chart](https://github.com/rht-labs/helm-charts/tree/master/charts/jenkins) for more info.
+- Nexus - Deploy Nexus along with the OpenShift Plugin. See the [Sonatype Nexus Chart](https://github.com/Oteemo/charts/tree/master/charts/sonatype-nexus) for more info.
+- SonarQube - Deploy SonarQube for static code analysis. See the [Sonarqube Chart](https://github.com/rht-labs/helm-charts/tree/master/charts/sonarqube) for more info.
+- Hoverfly - Deploy Hoverfly for Service Virtualisation. See the [Hoverfly Chart](https://github.com/helm/charts/tree/master/incubator/hoverfly) for more info.
+- PactBroker - Deploy PactBroker for Contract Testing. See the [Pact Broker Chart](https://github.com/rht-labs/helm-charts/tree/master/charts/pact-broker) for more info.
+- CodeReadyWorkspaces - Deploy Red Hat CodeReadyWorkspaces for an IDE hosted on OpenShift. See the [CRW Kustomize](https://github.com/rht-labs/refactored-adventure) for more info.
+- Zalenium - Deploy Zalenium for Selenium Grid Testing on Kubernetes. See the [Zalenium Chart](https://github.com/ckavili/zalenium) for more info.
 
 ## What it's not...🤷🏻‍♀️
 
@@ -46,6 +47,8 @@ helm dep up bootstrap
 ```
 helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
+
+If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace)
 
 ### Tooling
 Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace. There are two ways you can deploy this project - as an Argo App of Apps or a helm3 template. 
