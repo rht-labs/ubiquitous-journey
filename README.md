@@ -39,13 +39,9 @@ helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ### Bootstrap 🍻
 Create your Labs's CI/CD, Dev and Test namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`
 
-1. Bring down the chart dependencies:
-```
-helm dep up bootstrap
-```
-2. Install your chart and argo. NOTE - this currently will deploy ARGO into whatever namespace you're currently in. TODO - fix this. Work around, run `oc new-project labs-ci-cd` then execute this:
-```
-helm template labs -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+1. Bring down the chart dependencies and install `bootstrap` in a sweet oneliner 🍾:
+```bash
+helm template --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
 
 If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace)
@@ -82,8 +78,8 @@ helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 #### Deploy to a custom namespace
 Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
 
-1. Run `setPrefix.sh $PREFIX` where `prefix` is the string to insert before the project names eg `my`. This will update the folling entries: 
-* `bootstrap/values-bootstrap.yaml`: the `prefix: my` and argocd namespace `namespace: "my-ci-cd"`.
+1. Run `set-namespace.sh $ci_cd $dev $test` where `$ci_cd $dev $test` are the namespaces you would like to bootstrap eg `./set-namespace.sh my-ci-cd my-dev my-test`. This will update the following files: 
+* `bootstrap/values-bootstrap.yaml`: the `ci_cd_namesapce` and argocd namespace `namespace: "my-ci-cd"`.
 * `ubiquitous-journey/values-tooling.yaml`: the `destination: &ci_cd_ns my-ci-cd`
 * `example-deployment/values-applications.yaml`: the `destination: &ci_cd_ns my-dev`
 
@@ -91,13 +87,9 @@ Because this is GitOps to make changes to the namespaces etc they should really 
 ```
 helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
-
-_FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙!:_
-```
-helm template --dependency-update --set bootstrap-project.prefix=my,argocd.namespace=my-ci-cd -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
-```
-3. Login to ArgoCD as desribed in [Tooling](#Tooling) section.
-4. Run argo create app replacing `MY_FORK` as appropriate
+_FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙! So don't do that please 😇_
+1. Login to ArgoCD as desribed in [Tooling](#Tooling) section.
+2. Run argo create app replacing `MY_FORK` as appropriate
 ```
 argocd app create ubiquitous-journey \
     --dest-namespace my-ci-cd \
@@ -106,10 +98,9 @@ argocd app create ubiquitous-journey \
     --path "ubiquitous-journey" --values "values-tooling.yaml"
 argocd app sync ubiquitous-journey
 ```
-
-Or if you're using just helm3 cli
+Or if you're using just helm3 cli to instead of `argocd` cli
 ```
-helm template labs -f argo-app-of-apps.yaml --set applications[0].destination=myproject ubiquitous-journey/ | oc apply -n myproject -f-
+helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ### Example Application Deploy 🌮

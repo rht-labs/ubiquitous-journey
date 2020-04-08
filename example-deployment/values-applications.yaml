@@ -7,7 +7,7 @@ destination: &dev_ns labs-dev
 # toggle between versions of the app by setting the tag to grey / purple or latest
 pet_battle: &front_end_values
   app_tag: grey 
-  config_map: "'http://pet-battle-api-labs-ci-cd.apps.s43.core.rht-labs.com'"
+  config_map: "'http://pet-battle-api-labs-dev.apps.s43.core.rht-labs.com'"
 pet_battle_api: &api_values
   appName: pet-battle-api
 

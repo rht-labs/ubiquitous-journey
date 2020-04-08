@@ -1,12 +1,13 @@
-# prefix is prepended to the standard names of our bootstrap project.
-# ie ${prefix}-cd-cd, ${prefix}-dev, ${prefix}-test
-# Helm does not support overriding anchor tags so setting
-# ci_cd_namespace directly will not work 🤥
+# override the `blah` or `` or `` to configure your 
+# desired namespace. eg `my-dev` etc 
+# removing the anchor tag will also break things 🏌️‍♂️
+# overriding `ci_cd_namespace` directly using helm will not work 🤥
+
 bootstrap-project:
   enabled: true
-  ci_cd_namespace: &ci_cd "my-ci-cd"
-  dev_namespace: &dev "my-dev"
-  test_namespace: &test "my-test"
+  ci_cd_namespace: &ci_cd "labs-ci-cd"
+  dev_namespace: &dev "labs-dev"
+  test_namespace: &test "labs-test"
   namespaces:
   - name: *ci_cd
     bindings:
@@ -51,7 +52,6 @@ bootstrap-project:
     - name: dummy-sa
       namespace: *ci_cd
 
-# Namespace here should match your ${prefix}-cd-cd if you want it deployed there
 argocd:
   enabled: true
   namespace: *ci_cd
