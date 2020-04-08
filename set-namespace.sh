@@ -11,7 +11,7 @@ fi
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     sedargs=-i;;
-    Darwin*)    sedargs=-i '' -e;;
+    Darwin*)    sedargs='''-i '' -e''';;
     *)          echo "not on Linux or Mac ?" && exit -1
 esac
 
