@@ -14,6 +14,6 @@ sed -i '' -e "s#\"labs-test\"#\"${3}\"#g" bootstrap/values-bootstrap.yaml
 
 sed -i '' -e "s#labs-dev#${2}#g" example-deployment/values-applications.yaml
 
-sed -i '' -e "s#labs-ci-cd#${1}-#g" ubiquitous-journey/values-tooling.yaml
+sed -i '' -e "s#labs-ci-cd#${1}#g" ubiquitous-journey/values-tooling.yaml
 
 echo "🐙 All done - happy helming 🐙"
