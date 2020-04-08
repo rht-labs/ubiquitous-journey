@@ -23,34 +23,34 @@ bootstrap-project:
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
-    - name: *dev
-      bindings:
-      - name: labs-devs
-        kind: Group
-        role: edit
-      - name: labs-admins
-        kind: Group
-        role: admin
-      - name: dummy-sa
-        kind: ServiceAccount
-        role: admin
+  - name: *dev
+    bindings:
+    - name: labs-devs
+      kind: Group
+      role: edit
+    - name: labs-admins
+      kind: Group
+      role: admin
+    - name: dummy-sa
+      kind: ServiceAccount
+      role: admin
       namespace: *ci_cd
-    - name: *test
-      bindings:
-      - name: labs-devs
-        kind: Group
-        role: edit
-      - name: labs-admins
-        kind: Group
-        role: admin
-      - name: dummy-sa
-        kind: ServiceAccount
-        role: admin
+  - name: *test
+    bindings:
+    - name: labs-devs
+      kind: Group
+      role: edit
+    - name: labs-admins
+      kind: Group
+      role: admin
+    - name: dummy-sa
+      kind: ServiceAccount
+      role: admin
       namespace: *ci_cd
 
-    serviceaccounts:
-    - name: dummy-sa
-      namespace: *ci_cd
+  serviceaccounts:
+  - name: dummy-sa
+    namespace: *ci_cd
 
 argocd:
   enabled: true
