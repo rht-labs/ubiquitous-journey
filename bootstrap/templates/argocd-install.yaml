@@ -68,6 +68,7 @@ metadata:
     app: argocd
   namespace: {{ .Values.argocd.namespace }}
 spec:
+  applicationInstanceLabelKey: {{ .Values.argocd.instancelabel }}
   dex:
     config: ""
     image: quay.io/ablock/dex

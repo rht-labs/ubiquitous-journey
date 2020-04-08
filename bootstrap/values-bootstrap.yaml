@@ -56,3 +56,4 @@ argocd:
   enabled: true
   namespace: *ci_cd
   version: v1.5.1
+  instancelabel: redhat.com/ubiquitous-journey
