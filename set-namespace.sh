@@ -8,9 +8,9 @@ if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ]; then
   exit -1
 fi
 
-sed -i '' -e "s#\"labs-ci-cd\"#\"${1}\"#s" bootstrap/values-bootstrap.yaml
-sed -i '' -e "s#\"labs-dev\"#\"${2}\"#s" bootstrap/values-bootstrap.yaml
-sed -i '' -e "s#\"labs-test\"#$\"{3}\"#s" bootstrap/values-bootstrap.yaml
+sed -i '' -e "s#\"labs-ci-cd\"#\"${1}\"#g" bootstrap/values-bootstrap.yaml
+sed -i '' -e "s#\"labs-dev\"#\"${2}\"#g" bootstrap/values-bootstrap.yaml
+sed -i '' -e "s#\"labs-test\"#\"${3}\"#g" bootstrap/values-bootstrap.yaml
 
 sed -i '' -e "s#labs-dev#${2}#g" example-deployment/values-applications.yaml
 
