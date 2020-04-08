@@ -2,12 +2,59 @@
 # ie ${prefix}-cd-cd, ${prefix}-dev, ${prefix}-test
 # Helm does not support overriding anchor tags so setting
 # ci_cd_namespace directly will not work 🤥
+global:
+    ci_cd_namespace: &ci_cd "my-ci-cd"
+    dev_namespace: &dev "my-dev"
+    test_namespace: &test "my-test"
+    namespaces:
+    - name: *ci_cd
+      bindings:
+      # this labs-devs is the GROUP NAME in IDM
+      - name: labs-devs
+        kind: Group
+        role: edit
+      # this labs-admins is the GROUP NAME in IDM
+      - name: labs-admins
+        kind: Group
+        role: admin
+      - name: dummy-sa
+        kind: ServiceAccount
+        role: admin
+        namespace: *ci_cd
+    - name: *dev
+      bindings:
+      - name: labs-devs
+        kind: Group
+        role: edit
+      - name: labs-admins
+        kind: Group
+        role: admin
+      - name: dummy-sa
+        kind: ServiceAccount
+        role: admin
+        namespace: *ci_cd
+    - name: *test
+      bindings:
+      - name: labs-devs
+        kind: Group
+        role: edit
+      - name: labs-admins
+        kind: Group
+        role: admin
+      - name: dummy-sa
+        kind: ServiceAccount
+        role: admin
+        namespace: *ci_cd
+
+    serviceaccounts:
+    - name: dummy-sa
+      namespace: *ci_cd
+
 bootstrap-project:
   enabled: true
-  prefix: "labs"
 
 # Namespace here should match your ${prefix}-cd-cd if you want it deployed there
 argocd:
   enabled: true
-  namespace: "labs-ci-cd"
+  namespace: *ci_cd
   version: v1.5.1
