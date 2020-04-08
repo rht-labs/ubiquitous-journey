@@ -130,6 +130,25 @@ hoverfly_values: &hoverfly_values
         hostname: ""
 
 ##############
+# 🛎 Wekan Custom Values
+# Values reference https://github.com/wekan/wekan/tree/master/helm/wekan
+#############
+wekan_values: &wekan_values
+  service:
+    type: ClusterIP
+  autoscaling:
+    enabled: false
+  mongodb-replicaset:
+    replicas: 1
+    securityContext:
+      runAsUser: ""
+      fsGroup: ""
+  ingress:
+    enabled: false
+  route:
+    enabled: true
+
+##############
 # 🐙 Argo Ignore Differences 
 #############
 jenkins_ignore_differences: &jenkins_ignore_differences
@@ -264,3 +283,13 @@ applications:
     values:
       *hoverfly_values
     ignore_differences: *hoverfly_ignore_differences
+  - name: wekan
+    enabled: true
+    source: https://github.com/ckavili/wekan.git
+    source_path: helm/wekan
+    sync_policy:
+      *sync_policy_true
+    destination: *ci_cd_ns
+    source_ref: "master"
+    values:
+      *wekan_values
