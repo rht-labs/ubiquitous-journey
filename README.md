@@ -83,6 +83,9 @@ Because this is GitOps to make changes to the namespaces etc they should really 
 * `ubiquitous-journey/values-tooling.yaml`: the `destination: &ci_cd_ns my-ci-cd`
 * `example-deployment/values-applications.yaml`: the `destination: &ci_cd_ns my-dev`
 
+🌈If there is more than one ArgoCD instance in your cluster, update `instancelabel` parameter to a unique value in `bootstrap/values-bootstrap.yaml` file.
+e.g: `instancelabel: mycompany.com/myapps`
+
 2. Git commit this change to your fork and run the following Helm Command:
 ```
 helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
