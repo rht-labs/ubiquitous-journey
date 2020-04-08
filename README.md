@@ -55,7 +55,7 @@ argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n labs-
 ```
 else if no sso:
 ```
-argocd login --grpc-web $(oc get routes argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd)) --insecure
+argocd login --grpc-web $(oc get routes argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd) --insecure
 ```
 
 ##### Deploy using argo app of apps ...
