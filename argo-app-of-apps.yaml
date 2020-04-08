@@ -9,7 +9,7 @@ applications:
     source_path: ubiquitous-journey/
     source_ref: master
     sync_policy_automated: false
-    helm_values: 
+    helm_values:
       - values-tooling.yaml
   - name: example-deployment
     enabled: false
@@ -17,5 +17,5 @@ applications:
     source_path: example-deployment
     source_ref: "master"
     sync_policy_automated: tru
-    helm_values: 
+    helm_values:
       - values-applications.yaml

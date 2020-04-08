@@ -1,6 +1,6 @@
 #!/bin/bash
 # ./set-namespace.sh $ci_cd_namespace $dev_namespace $test_namespace
-if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ]; then 
+if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ]; then
   echo "🤥 No namespaces specified - please set them 🤥 "
   echo "./set-namespace.sh \$ci_cd_namespace \$dev_namespace \$test_namespace"
   echo "For example:"

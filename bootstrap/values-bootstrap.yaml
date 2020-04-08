@@ -1,5 +1,5 @@
-# override the `blah` or `` or `` to configure your 
-# desired namespace. eg `my-dev` etc 
+# override the `blah` or `` or `` to configure your
+# desired namespace. eg `my-dev` etc
 # removing the anchor tag will also break things 🏌️‍♂️
 # overriding `ci_cd_namespace` directly using helm will not work 🤥
 

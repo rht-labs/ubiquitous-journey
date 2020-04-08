@@ -1,17 +1,16 @@
-
 #!/bin/bash
-if [ -z ${1} ]; then 
+if [ -z ${1} ]; then
   echo "\n🤥 No namespace found, please pass this script it otherwise ALL ARGO APP CRs will be deleted 🤥 eg: \n\n./force-delete-application-cr.sh labs-ci-cd  \n"
-  exit -1; 
+  exit -1
 fi
 
 OC_TOKEN="${TOKEN:-$(oc whoami -t)}"
 OC_REST_API_URL="${REST_API_URL:-$(oc whoami --show-server)}"
 OC_NAMESPACE=$1
 
-if [ -z ${OC_TOKEN} ]; then 
+if [ -z ${OC_TOKEN} ]; then
   echo "\n👻 Please Login to OpenShift ... 👻\n"
-  exit -1;  
+  exit -1
 fi
 
 echo "👾 Using: ${OC_REST_API_URL} and ${OC_NAMESPACE} namespace 👾"
@@ -47,5 +46,3 @@ do
   echo "☠💀 deleted: ${deleted} 💀☠️"
   rm ${app}-delete.json
 done
-
-
