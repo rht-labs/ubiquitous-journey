@@ -10,7 +10,8 @@ jobs:
   build-and-deploy:
     name: build and deploy
     runs-on: ubuntu-latest
-
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: WIP check
         uses: wip/action@v1.0.0
