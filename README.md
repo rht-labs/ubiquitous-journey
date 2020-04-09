@@ -94,7 +94,9 @@ e.g: `instancelabel: mycompany.com/myapps`
 helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
 _FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙! So don't do that please 😇_
+
 5. Login to ArgoCD as desribed in [Tooling](#Tooling) section.
+
 6. Run argo create app replacing `MY_FORK` as appropriate
 ```
 argocd app create ubiquitous-journey \
