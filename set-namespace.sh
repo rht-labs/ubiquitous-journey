@@ -23,4 +23,6 @@ sed $sedargs "s#labs-dev#${2}#g" example-deployment/values-applications.yaml
 
 sed $sedargs "s#labs-ci-cd#${1}#g" ubiquitous-journey/values-tooling.yaml
 
+sed $sedargs "s#labs-ci-cd#${1}#g" argo-app-of-apps.yaml
+
 echo "🐙 All done - happy helming 🐙"
