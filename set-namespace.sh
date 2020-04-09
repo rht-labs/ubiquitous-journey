@@ -8,12 +8,21 @@ if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ]; then
   exit -1
 fi
 
-sed -i '' -e "s#\"labs-ci-cd\"#\"${1}\"#g" bootstrap/values-bootstrap.yaml
-sed -i '' -e "s#\"labs-dev\"#\"${2}\"#g" bootstrap/values-bootstrap.yaml
-sed -i '' -e "s#\"labs-test\"#\"${3}\"#g" bootstrap/values-bootstrap.yaml
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     sedargs=-i;;
+    Darwin*)    sedargs='''-i '' -e''';;
+    *)          echo "not on Linux or Mac ?" && exit -1
+esac
 
-sed -i '' -e "s#labs-dev#${2}#g" example-deployment/values-applications.yaml
+sed $sedargs "s#\"labs-ci-cd\"#\"${1}\"#g" bootstrap/values-bootstrap.yaml
+sed $sedargs "s#\"labs-dev\"#\"${2}\"#g" bootstrap/values-bootstrap.yaml
+sed $sedargs "s#\"labs-test\"#\"${3}\"#g" bootstrap/values-bootstrap.yaml
 
-sed -i '' -e "s#labs-ci-cd#${1}#g" ubiquitous-journey/values-tooling.yaml
+sed $sedargs "s#labs-dev#${2}#g" example-deployment/values-applications.yaml
+
+sed $sedargs "s#labs-ci-cd#${1}#g" ubiquitous-journey/values-tooling.yaml
+
+sed $sedargs "s#labs-ci-cd#${1}#g" argo-app-of-apps.yaml
 
 echo "🐙 All done - happy helming 🐙"

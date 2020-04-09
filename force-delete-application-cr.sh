@@ -32,6 +32,12 @@ echo "\n💤💤 Sleeping for 3 seconds in case this was a mistake.... 💤💤"
 sleep 3
 echo "... Guess not ... 🙀😿\n"
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     sedargs=-i;;
+    Darwin*)    sedargs='''-i '' -e''';;
+    *)          echo "not on Linux or Mac ?" && exit -1
+esac
 
 for app in "${APPS_ARRAY[@]}"
 do
@@ -39,7 +45,7 @@ do
   curl --insecure --silent -H "Content-Type: application/json" -H "Authorization: Bearer ${OC_TOKEN}" \
     ${OC_REST_API_URL}/apis/argoproj.io/v1alpha1/namespaces/${OC_NAMESPACE}/applications/${app} | jq '.' > ${app}-delete.json
   # Mac vs non mac users might need to remove the `-i ''` from memory 🤷‍♂️
-  sed -i '' -e 's#"resources-finalizer.argocd.argoproj.io"##g' ${app}-delete.json
+  sed $sedargs 's#"resources-finalizer.argocd.argoproj.io"##g' ${app}-delete.json
   deleted=$(curl --insecure --silent -H "Content-Type: application/json" -H "Authorization: Bearer ${OC_TOKEN}" \
      -X PUT --data-binary @${app}-delete.json \
     ${OC_REST_API_URL}/apis/argoproj.io/v1alpha1/namespaces/${OC_NAMESPACE}/applications/${app} | jq -r '.metadata.name')

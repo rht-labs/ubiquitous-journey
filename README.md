@@ -82,17 +82,20 @@ Because this is GitOps to make changes to the namespaces etc they should really 
 * `bootstrap/values-bootstrap.yaml`: the `ci_cd_namesapce` and argocd namespace `namespace: "my-ci-cd"`.
 * `ubiquitous-journey/values-tooling.yaml`: the `destination: &ci_cd_ns my-ci-cd`
 * `example-deployment/values-applications.yaml`: the `destination: &ci_cd_ns my-dev`
+* `argo-app-of-apps.yaml`: the `destination: my-ci-cd`
 
-🌈If there is more than one ArgoCD instance in your cluster, update `instancelabel` parameter to a unique value in `bootstrap/values-bootstrap.yaml` file.
+2. Manually update `argo-app-of-apps.yaml` to point `source:` to `MY FORK` instead of `rht-labs`. Update the branch from `master` to your `branchname` if you are not on master in your fork.
+
+3. 🌈If there is more than one ArgoCD instance in your cluster, update `instancelabel` parameter to a unique value in `bootstrap/values-bootstrap.yaml` file.
 e.g: `instancelabel: mycompany.com/myapps`
 
-2. Git commit this change to your fork and run the following Helm Command:
+4. Git commit this change to your fork and run the following Helm Command:
 ```
 helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
 _FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙! So don't do that please 😇_
-1. Login to ArgoCD as desribed in [Tooling](#Tooling) section.
-2. Run argo create app replacing `MY_FORK` as appropriate
+5. Login to ArgoCD as desribed in [Tooling](#Tooling) section.
+6. Run argo create app replacing `MY_FORK` as appropriate
 ```
 argocd app create ubiquitous-journey \
     --dest-namespace my-ci-cd \
