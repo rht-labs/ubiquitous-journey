@@ -1,5 +1,6 @@
 #!/bin/bash
 # ./set-namespace.sh $ci_cd_namespace $dev_namespace $test_namespace
+
 if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ]; then
   echo "🤥 No namespaces specified - please set them 🤥 "
   echo "./set-namespace.sh \$ci_cd_namespace \$dev_namespace \$test_namespace"
@@ -11,18 +12,21 @@ fi
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     sedargs=-i;;
-    Darwin*)    sedargs='''-i '' -e''';;
+    Darwin*)    sedargs='-i "" -e';;
     *)          echo "not on Linux or Mac ?" && exit -1
 esac
 
-sed $sedargs "s#\"labs-ci-cd\"#\"${1}\"#g" bootstrap/values-bootstrap.yaml
-sed $sedargs "s#\"labs-dev\"#\"${2}\"#g" bootstrap/values-bootstrap.yaml
-sed $sedargs "s#\"labs-test\"#\"${3}\"#g" bootstrap/values-bootstrap.yaml
+# 🤷‍♀️ bash does stupid things with $sedargs and add escape chars no matter how you set the -i ''  🤷‍♀️
+# hence the echo commmand pipe sh to strip it out
 
-sed $sedargs "s#labs-dev#${2}#g" example-deployment/values-applications.yaml
+echo sed $sedargs "s#\\\"labs-ci-cd\\\"#\\\"${1}\\\"#g" bootstrap/values-bootstrap.yaml | sh
+echo sed $sedargs "s#\\\"labs-dev\\\"#\\\"${2}\\\"#g" bootstrap/values-bootstrap.yaml | sh
+echo sed $sedargs "s#\\\"labs-test\\\"#\\\"${3}\\\"#g" bootstrap/values-bootstrap.yaml | sh
 
-sed $sedargs "s#labs-ci-cd#${1}#g" ubiquitous-journey/values-tooling.yaml
+echo sed $sedargs "s#labs-dev#${2}#g" example-deployment/values-applications.yaml | sh
 
-sed $sedargs "s#labs-ci-cd#${1}#g" argo-app-of-apps.yaml
+echo sed $sedargs "s#labs-ci-cd#${1}#g" ubiquitous-journey/values-tooling.yaml | sh
+
+echo sed $sedargs "s#labs-ci-cd#${1}#g" argo-app-of-apps.yaml | sh
 
 echo "🐙 All done - happy helming 🐙"
