@@ -264,7 +264,7 @@ applications:
     ignore_differences: *crw_ignore_differences
   - name: zalenium
     enabled: true
-    source: https://github.com/ckavili/zalenium.git
+    source: https://github.com/zalando/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
     sync_policy:
