@@ -1,4 +1,4 @@
-# 🦄 ubiquitous-journey 🔥 
+# 🦄 ubiquitous-journey 🔥
 
 🧰 This repo is an Argo App definition which references [other charts](https://github.com/rht-labs/charts.git). It should not exclusively run Helm Templates but be a more generic Argo App which could reference Kustomize or Operators etc.
 
@@ -95,7 +95,7 @@ helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap  
 ```
 _FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙! So don't do that please 😇_
 
-5. Login to ArgoCD as desribed in [Tooling](#Tooling) section.
+5. Login to ArgoCD as described in [Tooling](#Tooling) section.
 
 6. Run argo create app replacing `MY_FORK` as appropriate
 ```
