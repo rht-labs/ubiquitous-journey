@@ -7,7 +7,7 @@ destination: &ci_cd_ns labs-ci-cd
 jenkins_values: &jenkins_values
   persistence: false
   source_secret:
-    name: gitlab-auth
+    name: git-auth
     username: idm-sa
     password: thisisdefinitelynotmypassword
 
