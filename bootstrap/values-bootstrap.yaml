@@ -56,5 +56,5 @@ argocd:
   enabled: true
   name: argocd
   namespace: *ci_cd
-  version: v1.5.2 # versioned by the operator anyways I think
+  version: v1.5.2
   instancelabel: redhat.com/ubiquitous-journey
