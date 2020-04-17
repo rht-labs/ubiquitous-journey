@@ -54,6 +54,7 @@ bootstrap-project:
 
 argocd:
   enabled: true
+  name: argocd
   namespace: *ci_cd
-  version: v1.5.2
+  version: v1.5.2 # versioned by the operator anyways I think
   instancelabel: redhat.com/ubiquitous-journey

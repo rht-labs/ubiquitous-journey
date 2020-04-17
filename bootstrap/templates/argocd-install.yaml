@@ -58,14 +58,14 @@ spec:
   name: argocd-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: argocd-operator.v0.0.5
+  startingCSV: argocd-operator.v0.0.6
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ArgoCD
 metadata:
-  name: argocd
+  name: {{ .Values.argocd.name }}
   labels:
-    app: argocd
+    app: {{ .Values.argocd.name }}
   namespace: {{ .Values.argocd.namespace }}
 spec:
   applicationInstanceLabelKey: {{ .Values.argocd.instancelabel }}
@@ -94,8 +94,10 @@ spec:
   insecure: false
   server:
     route: true
-  service:
-    type: ClusterIP
+    autoscale:
+      enabled: false
+    service:
+      type: ClusterIP
   statusBadgeEnabled: true
   usersAnonymousEnabled: false
   version: {{ .Values.argocd.version | quote }}
