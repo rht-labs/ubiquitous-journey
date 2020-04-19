@@ -113,7 +113,7 @@ spec:
   name: prometheus
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: {{- .Values.argocd.metrics.prometheus.version | quote }}
+  startingCSV: {{ .Values.argocd.metrics.prometheus.version | quote }}
 {{- end }}
 ---
 {{- end }}
