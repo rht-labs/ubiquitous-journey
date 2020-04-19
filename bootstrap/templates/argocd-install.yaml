@@ -77,11 +77,19 @@ spec:
   ha:
     enabled: false
   grafana:
+{{- if .Values.argocd.metrics.enabled }}  
+    enabled: true
+{{- else }}
     enabled: false
+{{- end }}
     route: true
     size: 1
   prometheus:
+{{- if .Values.argocd.metrics.enabled }}  
+    enabled: true
+{{- else }}
     enabled: false
+{{- end }}
     route: true
     size: 1
   rbac:
