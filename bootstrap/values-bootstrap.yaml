@@ -54,7 +54,7 @@ bootstrap-project:
 
 argocd:
   enabled: true
-  name: argocd
+  name: labs-argocd
   namespace: *ci_cd
   version: v1.5.2
   instancelabel: redhat.com/ubiquitous-journey
