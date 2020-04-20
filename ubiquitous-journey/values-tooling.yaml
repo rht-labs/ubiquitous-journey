@@ -293,3 +293,12 @@ applications:
     source_ref: "v3.91"
     values:
       *wekan_values
+  - name: tekton
+    enabled: true
+    destination: crw
+    source: https://github.com/eformat/refactored-adventure
+    source_path: tekton/base
+    source_ref: feature/tekton
+    sync_policy:
+      *sync_policy_true
+    no_helm: true
