@@ -255,9 +255,9 @@ applications:
   - name: crw
     enabled: true
     destination: crw
-    source: https://github.com/rht-labs/refactored-adventure
+    source: https://github.com/eformat/refactored-adventure
     source_path: crw/base
-    source_ref: master
+    source_ref: fix/crw-version
     sync_policy:
       *sync_policy_no_selfheal
     no_helm: true
