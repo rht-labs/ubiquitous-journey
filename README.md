@@ -144,4 +144,11 @@ TODO - add some instructions for adding:
 1) new helm charts
 2) new Operators etc
 
+## Metrics
+
+By setting `argocd.metrics.enabled: true` in `values-bootstrap.yaml`, promethus and grafana are deployed by the operator to capture argocd metrics.
+
+An example of the latest grafana dashboard for argocd is available here
+- https://raw.githubusercontent.com/argoproj/argo-cd/master/examples/dashboard.json
+
 ## Contributing
