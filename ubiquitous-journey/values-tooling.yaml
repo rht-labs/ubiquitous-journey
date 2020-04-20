@@ -296,9 +296,9 @@ applications:
   - name: tekton
     enabled: true
     destination: crw
-    source: https://github.com/eformat/refactored-adventure
+    source: https://github.com/rht-labs/refactored-adventure
     source_path: tekton/base
-    source_ref: feature/tekton
+    source_ref: master
     sync_policy:
       *sync_policy_true
     no_helm: true
