@@ -56,11 +56,16 @@ argocd:
   enabled: true
   name: labs-argocd
   namespace: *ci_cd
+  instancelabel: rht-labs.com/uj
+  
+  # operator manages upgrades etc
   version: v1.5.2
-  instancelabel: redhat.com/ubiquitous-journey
+  operator:
+    version: argocd-operator.v0.0.8
+    channel: alpha
+    name: argocd-operator
+
   metrics:
     enabled: true
     prometheus:
       version: prometheusoperator.0.32.0
-  operator:
-    version: argocd-operator.v0.0.6
