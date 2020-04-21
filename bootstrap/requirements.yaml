@@ -1,4 +1,0 @@
-dependencies:
-- name: bootstrap-project
-  version: "0.0.4"
-  repository: https://rht-labs.github.io/helm-charts
