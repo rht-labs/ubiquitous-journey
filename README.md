@@ -41,7 +41,7 @@ helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap |
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
-### Bootstrap projects and ArgoCD
+### Bootstrap projects and ArgoCD 🍻
 ![bootstrap-uj](bootstrap-uj.png)
 
 Create your Labs's CI/CD, Dev and Test namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`. Deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`).
@@ -62,7 +62,7 @@ argocd app create bootstrap-journey \
     --path "bootstrap" --values "values-bootstrap.yaml"
 ```
 
-### Tooling for Application Development
+### Tooling for Application Development 🦅
 ![ubiquitous-journey](ubiquitous-journey.png)
 
 Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace. There are two ways you can deploy this project - as an Argo App of Apps or a helm3 template. 
@@ -93,7 +93,7 @@ argocd app sync ubiquitous-journey
 helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
-## Deploy to a custom namespace
+## Deploy to a custom namespace 🦴
 Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
 
 1. Run `set-namespace.sh $ci_cd $dev $test` where `$ci_cd $dev $test` are the namespaces you would like to bootstrap eg `./set-namespace.sh my-ci-cd my-dev my-test`. This will update the following files: 
@@ -148,7 +148,7 @@ argocd app create catz \
 argocd app sync catz
 ```
 
-## ArgoCD Master and Child
+## ArgoCD Master and Child 👩‍👦
 ![child-master](child-master.png)
 
 You can if you already have a master ArgoCD instance in your cluster that's acting as a master instance you can easily add the `bootstrap` to it to create another "child" ArgoCD instance for any given project team. This could be a good approach if you want each project team to own and operate their own software development tools (jenkins, sonar, argocd, etc) but restrict the elevated permissions to needed to create argocd CRs and permissions for things like creating projects.
