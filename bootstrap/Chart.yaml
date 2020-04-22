@@ -12,4 +12,4 @@ dependencies:
     repository: https://rht-labs.github.io/helm-charts
   - name: argocd-operator
     version: "0.0.3"
-    repository: https://eformat.github.io/helm-charts
+    repository: https://rht-labs.github.io/helm-charts
