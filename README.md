@@ -37,25 +37,34 @@ helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ### Bootstrap 🍻
-Create your Labs's CI/CD, Dev and Test namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`
+Create your Labs's CI/CD, Dev and Test namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`. Deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`).
+
+If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace)
 
 1. Bring down the chart dependencies and install `bootstrap` in a sweet oneliner 🍾:
 ```bash
 helm template --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
 
-If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace)
+2. Because this is GitOps we should manage the config of these roles, projects and ArgoCD itself by adding it to our newly created ArgoCD instance. This means all future changes to these can be tracked and managed in Git! Login to Argo and run the following command.
+```
+argocd app create bootstrap-journey \
+    --dest-namespace labs-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/rht-labs/ubiquitous-journey.git \
+    --path "bootstrap" --values "values-bootstrap.yaml"
+```
 
 ### Tooling
 Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace. There are two ways you can deploy this project - as an Argo App of Apps or a helm3 template. 
 
 To login with argocd from CLI using sso
 ```
-argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd):443 --sso --insecure
+argocd login $(oc get route labs-argocd-server --template='{{ .spec.host }}' -n labs-ci-cd):443 --sso --insecure
 ```
 else if no sso:
 ```
-argocd login --grpc-web $(oc get routes argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd) --insecure
+argocd login --grpc-web $(oc get routes labs-argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd) --insecure
 ```
 
 ##### Deploy using argo app of apps ...
