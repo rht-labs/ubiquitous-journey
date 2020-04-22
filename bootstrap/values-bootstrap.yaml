@@ -52,7 +52,7 @@ bootstrap-project:
   - name: dummy-sa
     namespace: *ci_cd
 
-argocd:
+argocd-operator:
   enabled: true
   name: labs-argocd
   namespace: *ci_cd
