@@ -149,6 +149,19 @@ wekan_values: &wekan_values
     enabled: true
 
 ##############
+# 🛎 Mattermost Custom Values
+# Values reference https://github.com/mattermost/mattermost-helm
+#############
+mattermost_values: &mattermost_values
+  route:
+    enabled: true
+  mysql:
+    mysqlRootPassword: "mysqlpass"
+    mysqlUser: "mattermost"
+    mysqlPassword: "matterpass"
+
+
+##############
 # 🐙 Argo Ignore Differences
 #############
 jenkins_ignore_differences: &jenkins_ignore_differences
@@ -302,3 +315,11 @@ applications:
     sync_policy:
       *sync_policy_true
     no_helm: true
+  - name: mattermost
+    enabled: true
+    source: https://github.com/ckavili/mattermost-helm.git
+    source_path: charts/mattermost-team-edition
+    destination: *ci_cd_ns
+    source_ref: "master"
+    values:
+      *mattermost_values
