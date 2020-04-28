@@ -65,7 +65,7 @@ pact_broker_values: &pact_broker_values
 #############
 nexus_values: &nexus_values
   nexus:
-    imageTag: 3.21.2
+    imageTag: 3.19.1
     service:
       type: ClusterIP
     podAnnotations: {}
@@ -112,7 +112,7 @@ nexus_values: &nexus_values
         image: curlimages/curl:latest
         imagePullPolicy: Always
         command: ['sh','-c']
-        args: ['curl -o /k8s-plugin/nexus-openshift-plugin.jar https://github.com/sonatype-nexus-community/nexus-kubernetes-openshift-releases/download/v0.2.8/nexus-openshift-plugin-0.2.8.jar']
+        args: ['curl -o /k8s-plugin/nexus-openshift-plugin.jar https://github.com/sonatype-nexus-community/nexus-kubernetes-openshift/releases/download/v0.2.8/nexus-openshift-plugin-0.2.8.jar']
         volumeMounts:
           - name: k8s-plugin
             mountPath: /k8s-plugin
