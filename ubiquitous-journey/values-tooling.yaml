@@ -16,14 +16,6 @@ jenkins_values: &jenkins_values
     - name: argocd-token
       username: token
       password: aaa.bbb.ccc
-  buildconfigs:
-    - name: "jenkins-slave-npm"
-      strategy_type: "Docker"
-      source_context_dir: "jenkins-slaves/jenkins-slave-npm"
-      source_repo: "https://github.com/redhat-cop/containers-quickstarts"
-      source_repo_ref: "v1.22"
-      builder_image_name: "openshift/jenkins-slave-base-centos7"
-      builder_image_tag: "v3.11"
 
 ##############
 # 🛎 Pact Broker Custom Values
