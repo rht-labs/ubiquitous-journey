@@ -6,10 +6,16 @@ destination: &ci_cd_ns ds-ci-cd
 #############
 jenkins_values: &jenkins_values
   persistence: false
-  source_secret:
-    name: git-auth
-    username: idm-sa
-    password: thisisdefinitelynotmypassword
+  source_secrets:
+    - name: git-auth
+      username: idm-sa
+      password: thisisdefinitelymypassword
+    - name: nexus-password
+      username: admin
+      password: admin123
+    - name: argocd-token
+      username: token
+      password: aaa.bbb.ccc    
 
 ##############
 # 🛎 Pact Broker Custom Values
@@ -240,7 +246,7 @@ applications:
     enabled: true
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-0.0.9"
+    source_ref: "jenkins-0.0.10"
     sync_policy:
       *sync_policy_true
     destination: *ci_cd_ns
@@ -251,7 +257,7 @@ applications:
     enabled: true
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/pact-broker
-    source_ref: "pact-broker-0.0.1"
+    source_ref: "pact-broker-0.0.2"
     sync_policy:
       *sync_policy_true
     destination: *ci_cd_ns
