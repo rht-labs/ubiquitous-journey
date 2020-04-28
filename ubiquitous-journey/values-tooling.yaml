@@ -87,6 +87,24 @@ nexus_values: &nexus_values
     name: nexus
     annotations: {}
 
+  additionalConfigMaps:
+    - name: maven-central
+      labels:
+        nexus-type: repository
+      data:
+        recipe: 'MavenProxy'
+        remoteUrl: 'https://repo.maven.apache.org/maven2/'
+        blobStoreName: 'default'
+        strictContentTypeValidation: 'true'
+        versionPolicy: 'RELEASE'
+        layoutPolicy: 'STRICT'
+    - name: labs-static
+      labels:
+        nexus-type: repository
+      data:
+        recipe: 'RawHosted'
+        blobStoreName: 'labs-static'
+
   deployment:
     annotations: {}
     initContainers:
