@@ -65,7 +65,7 @@ pact_broker_values: &pact_broker_values
 #############
 nexus_values: &nexus_values
   nexus:
-    imageTag: 3.19.1
+    imageTag: 3.21.2
     service:
       type: ClusterIP
     podAnnotations: {}
