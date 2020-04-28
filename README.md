@@ -70,11 +70,11 @@ Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace
 
 To login with argocd from CLI using sso
 ```
-argocd login $(oc get route labs-argocd-server --template='{{ .spec.host }}' -n labs-ci-cd):443 --sso --insecure
+argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd):443 --sso --insecure
 ```
 else if no sso:
 ```
-argocd login --grpc-web $(oc get routes labs-argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd) --insecure
+argocd login --grpc-web $(oc get routes argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd) --insecure
 ```
 
 ##### (A) Deploy using argo app of apps ...

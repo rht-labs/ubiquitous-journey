@@ -54,7 +54,7 @@ bootstrap-project:
 
 argocd-operator:
   enabled: true
-  name: labs-argocd
+  name: argocd
   namespace: *ci_cd
   instancelabel: rht-labs.com/uj
   
