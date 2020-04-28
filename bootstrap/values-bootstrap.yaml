@@ -5,9 +5,9 @@
 
 bootstrap-project:
   enabled: true
-  ci_cd_namespace: &ci_cd "labs-ci-cd"
-  dev_namespace: &dev "labs-dev"
-  test_namespace: &test "labs-test"
+  ci_cd_namespace: &ci_cd "ds-ci-cd"
+  dev_namespace: &dev "ds-dev"
+  test_namespace: &test "ds-test"
   namespaces:
   - name: *ci_cd
     bindings:

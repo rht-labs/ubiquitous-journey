@@ -1,20 +1,16 @@
 # Over rides for default values in Helm Charts
-destination: &dev_ns labs-dev
-
+destination: &dev_ns ds-dev
 ##############
-# 🛎 Application Custom Values
+# Application Custom Values
 #############
 # toggle between versions of the app by setting the tag to grey / purple or latest
 pet_battle: &front_end_values
   app_tag: grey
-  config_map: "'http://pet-battle-api-labs-dev.apps.s43.core.rht-labs.com'"
+  config_map: "'http://pet-battle-api-ds-dev.apps.s43.core.rht-labs.com'"
 pet_battle_api: &api_values
   appName: pet-battle-api
-
-
-
 ##############
-# 🐙 Argo Ignore Differences
+# Argo Ignore Differences
 #############
 ignore_differences: &ignore_differences
   ignoreDifferences:
@@ -24,28 +20,25 @@ ignore_differences: &ignore_differences
     - /spec/template/spec/containers/0/image
     - /spec/triggers/0/imageChangeParams/lastTriggeredImage
     - /spec/triggers/1/imageChangeParams/lastTriggeredImage
-
 ##############
-# 🛎 Argo App of Apps declaration
+# Argo App of Apps declaration
 #############
 applications:
-  - name: pb-front-end
-    enabled: true
-    source: https://github.com/springdo/pet-battle.git
-    source_path: helm
-    sync_policy_automated: true
-    destination: *dev_ns
-    source_ref: master
-    values:
-      *front_end_values
-    ignore_differences: *ignore_differences
-  - name: pb-api
-    enabled: true
-    source: https://github.com/eformat/pet-battle-api.git
-    source_path: chart
-    sync_policy_automated: true
-    destination: *dev_ns
-    source_ref: master
-    values:
-      *api_values
-    ignore_differences: *ignore_differences
+- name: pb-front-end
+  enabled: true
+  source: https://github.com/springdo/pet-battle.git
+  source_path: helm
+  sync_policy_automated: true
+  destination: *dev_ns
+  source_ref: master
+  values: *front_end_values
+  ignore_differences: *ignore_differences
+- name: pb-api
+  enabled: true
+  source: https://github.com/eformat/pet-battle-api.git
+  source_path: chart
+  sync_policy_automated: true
+  destination: *dev_ns
+  source_ref: master
+  values: *api_values
+  ignore_differences: *ignore_differences

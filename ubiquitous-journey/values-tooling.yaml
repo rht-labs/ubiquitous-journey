@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &ci_cd_ns labs-ci-cd
+destination: &ci_cd_ns ds-ci-cd
 
 ##############
 # 🛎 Jenkins Custom Values
@@ -254,7 +254,7 @@ applications:
       *jenkins_values
     ignore_differences: *jenkins_ignore_differences
   - name: pact-broker
-    enabled: true
+    enabled: false
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/pact-broker
     source_ref: "pact-broker-0.0.2"
@@ -264,7 +264,7 @@ applications:
     values:
       *pact_broker_values
   - name: sonarqube
-    enabled: true
+    enabled: false
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/sonarqube
     source_ref: "sonarqube-0.0.4"
@@ -272,7 +272,7 @@ applications:
       *sync_policy_true
     destination: *ci_cd_ns
   - name: crw
-    enabled: true
+    enabled: false
     destination: crw
     source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
@@ -282,7 +282,7 @@ applications:
     no_helm: true
     ignore_differences: *crw_ignore_differences
   - name: zalenium
-    enabled: true
+    enabled: false
     source: https://github.com/zalando/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
@@ -292,7 +292,7 @@ applications:
     values:
       *zalenium_values
   - name: hoverfly
-    enabled: true
+    enabled: false
     source: https://github.com/helm/charts.git
     source_path: incubator/hoverfly
     sync_policy:
@@ -303,7 +303,7 @@ applications:
       *hoverfly_values
     ignore_differences: *hoverfly_ignore_differences
   - name: wekan
-    enabled: true
+    enabled: false
     source: https://github.com/wekan/wekan.git
     source_path: helm/wekan
     sync_policy:
@@ -313,7 +313,7 @@ applications:
     values:
       *wekan_values
   - name: tekton
-    enabled: true
+    enabled: false
     destination: crw
     source: https://github.com/rht-labs/refactored-adventure
     source_path: tekton/base
@@ -322,7 +322,7 @@ applications:
       *sync_policy_true
     no_helm: true
   - name: mattermost
-    enabled: true
+    enabled: false
     source: https://github.com/ckavili/mattermost-helm.git
     source_path: charts/mattermost-team-edition
     destination: *ci_cd_ns
@@ -330,7 +330,7 @@ applications:
     values:
       *mattermost_values
   - name: etherpad
-    enabled: true
+    enabled: false
     source: https://github.com/rht-labs/charts.git
     source_path: charts/etherpad
     destination: *ci_cd_ns
