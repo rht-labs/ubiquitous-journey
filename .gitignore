@@ -6,7 +6,7 @@ bin/*
 /.bin
 /_test/secrets/*.json
 
-# produced by the kill all 
+# produced by the kill all
 *-delete.json
 
 # OSX leaves these everywhere on SMB shares
@@ -37,5 +37,6 @@ Session.vim
 # Chart dependencies
 **/charts/*.tgz
 **/requirements.lock
+**/Chart.lock
 
 .history

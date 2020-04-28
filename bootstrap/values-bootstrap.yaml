@@ -1,12 +1,13 @@
-# prefix is prepended to the standard names of our bootstrap project.
-# ie ${prefix}-cd-cd, ${prefix}-dev, ${prefix}-test
-# Helm does not support overriding anchor tags so setting
-# ci_cd_namespace directly will not work 🤥
+# override the `blah` or `` or `` to configure your
+# desired namespace. eg `my-dev` etc
+# removing the anchor tag will also break things 🏌️‍♂️
+# overriding `ci_cd_namespace` directly using helm will not work 🤥
+
 bootstrap-project:
   enabled: true
-  ci_cd_namespace: &ci_cd "my-ci-cd"
-  dev_namespace: &dev "my-dev"
-  test_namespace: &test "my-test"
+  ci_cd_namespace: &ci_cd "labs-ci-cd"
+  dev_namespace: &dev "labs-dev"
+  test_namespace: &test "labs-test"
   namespaces:
   - name: *ci_cd
     bindings:
@@ -22,37 +23,49 @@ bootstrap-project:
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
-    - name: *dev
-      bindings:
-      - name: labs-devs
-        kind: Group
-        role: edit
-      - name: labs-admins
-        kind: Group
-        role: admin
-      - name: dummy-sa
-        kind: ServiceAccount
-        role: admin
-      namespace: *ci_cd
-    - name: *test
-      bindings:
-      - name: labs-devs
-        kind: Group
-        role: edit
-      - name: labs-admins
-        kind: Group
-        role: admin
-      - name: dummy-sa
-        kind: ServiceAccount
-        role: admin
-      namespace: *ci_cd
-
-    serviceaccounts:
+  - name: *dev
+    bindings:
+    - name: labs-devs
+      kind: Group
+      role: edit
+    - name: labs-admins
+      kind: Group
+      role: admin
     - name: dummy-sa
+      kind: ServiceAccount
+      role: admin
+      namespace: *ci_cd
+  - name: *test
+    bindings:
+    - name: labs-devs
+      kind: Group
+      role: edit
+    - name: labs-admins
+      kind: Group
+      role: admin
+    - name: dummy-sa
+      kind: ServiceAccount
+      role: admin
       namespace: *ci_cd
 
-# Namespace here should match your ${prefix}-cd-cd if you want it deployed there
-argocd:
+  serviceaccounts:
+  - name: dummy-sa
+    namespace: *ci_cd
+
+argocd-operator:
   enabled: true
+  name: argocd
   namespace: *ci_cd
-  version: v1.5.1
+  instancelabel: rht-labs.com/uj
+  
+  # operator manages upgrades etc
+  version: v1.5.2
+  operator:
+    version: argocd-operator.v0.0.8
+    channel: alpha
+    name: argocd-operator
+
+  metrics:
+    enabled: true
+    prometheus:
+      version: prometheusoperator.0.32.0

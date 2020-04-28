@@ -6,10 +6,16 @@ destination: &ci_cd_ns labs-ci-cd
 #############
 jenkins_values: &jenkins_values
   persistence: false
-  source_secret:
-    name: gitlab-auth
-    username: idm-sa
-    password: thisisdefinitelynotmypassword  
+  source_secrets:
+    - name: git-auth
+      username: idm-sa
+      password: thisisdefinitelymypassword
+    - name: nexus-password
+      username: admin
+      password: admin123
+    - name: argocd-token
+      username: token
+      password: aaa.bbb.ccc
 
 ##############
 # 🛎 Pact Broker Custom Values
@@ -53,7 +59,7 @@ nexus_values: &nexus_values
     enabled: false
 
   persistence:
-    storageSize: 5Gi  
+    storageSize: 5Gi
 
   serviceAccount:
     name: nexus
@@ -83,9 +89,9 @@ nexus_values: &nexus_values
     mountPath:
     readOnly:
     data:
-  
+
   service:
-    enabled: true 
+    enabled: true
     name: nexus-service
     labels: {}
     annotations: {}
@@ -104,7 +110,7 @@ zalenium_values: &zalenium_values
     openshift:
       deploymentConfig:
         enabled: true
-      route: 
+      route:
         enabled: true
     persistence:
       enabled: false
@@ -126,7 +132,7 @@ hoverfly_values: &hoverfly_values
         enabled: true
         hostname: ""
       proxy:
-        enabled: true 
+        enabled: true
         hostname: ""
 
 ##############
@@ -149,7 +155,20 @@ wekan_values: &wekan_values
     enabled: true
 
 ##############
-# 🐙 Argo Ignore Differences 
+# 🛎 Mattermost Custom Values
+# Values reference https://github.com/mattermost/mattermost-helm
+#############
+mattermost_values: &mattermost_values
+  route:
+    enabled: true
+  mysql:
+    mysqlRootPassword: "mysqlpass"
+    mysqlUser: "mattermost"
+    mysqlPassword: "matterpass"
+
+
+##############
+# 🐙 Argo Ignore Differences
 #############
 jenkins_ignore_differences: &jenkins_ignore_differences
   ignoreDifferences:
@@ -160,7 +179,7 @@ jenkins_ignore_differences: &jenkins_ignore_differences
     - /spec/triggers/0/imageChangeParams/lastTriggeredImage
   - group: build.openshift.io
     kind: BuildConfig
-    jsonPointers:        
+    jsonPointers:
     - /spec/triggers
 
 nexus_ignore_differences: &nexus_ignore_differences
@@ -219,33 +238,33 @@ applications:
     source_ref: "sonatype-nexus-1.26.2"
     sync_policy:
       *sync_policy_true
-    destination: *ci_cd_ns 
+    destination: *ci_cd_ns
     values:
       *nexus_values
     ignore_differences: *nexus_ignore_differences
   - name: jenkins
-    enabled: true 
+    enabled: true
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-0.0.8"
+    source_ref: "jenkins-0.0.11"
     sync_policy:
       *sync_policy_true
-    destination: *ci_cd_ns 
+    destination: *ci_cd_ns
     values:
       *jenkins_values
     ignore_differences: *jenkins_ignore_differences
   - name: pact-broker
-    enabled: true 
+    enabled: true
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/pact-broker
-    source_ref: "pact-broker-0.0.1"
+    source_ref: "pact-broker-0.0.2"
     sync_policy:
       *sync_policy_true
     destination: *ci_cd_ns
     values:
       *pact_broker_values
   - name: sonarqube
-    enabled: true 
+    enabled: true
     source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/sonarqube
     source_ref: "sonarqube-0.0.4"
@@ -263,8 +282,8 @@ applications:
     no_helm: true
     ignore_differences: *crw_ignore_differences
   - name: zalenium
-    enabled: true 
-    source: https://github.com/ckavili/zalenium.git
+    enabled: true
+    source: https://github.com/zalando/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
     sync_policy:
@@ -285,11 +304,36 @@ applications:
     ignore_differences: *hoverfly_ignore_differences
   - name: wekan
     enabled: true
-    source: https://github.com/ckavili/wekan.git
+    source: https://github.com/wekan/wekan.git
     source_path: helm/wekan
     sync_policy:
       *sync_policy_true
     destination: *ci_cd_ns
-    source_ref: "master"
+    source_ref: "v3.91"
     values:
       *wekan_values
+  - name: tekton
+    enabled: true
+    destination: crw
+    source: https://github.com/rht-labs/refactored-adventure
+    source_path: tekton/base
+    source_ref: master
+    sync_policy:
+      *sync_policy_true
+    no_helm: true
+  - name: mattermost
+    enabled: true
+    source: https://github.com/ckavili/mattermost-helm.git
+    source_path: charts/mattermost-team-edition
+    destination: *ci_cd_ns
+    source_ref: "master"
+    values:
+      *mattermost_values
+  - name: etherpad
+    enabled: true
+    source: https://github.com/rht-labs/charts.git
+    source_path: charts/etherpad
+    destination: *ci_cd_ns
+    source_ref: "etherpad-0.0.1"
+    sync_policy:
+      *sync_policy_true
