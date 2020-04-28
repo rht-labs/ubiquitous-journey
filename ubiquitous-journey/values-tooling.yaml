@@ -16,7 +16,7 @@ jenkins_values: &jenkins_values
     - name: argocd-token
       username: token
       password: aaa.bbb.ccc
-  build_config:
+  buildconfigs:
     - name: "jenkins-slave-npm"
       strategy_type: "Docker"
       source_context_dir: "jenkins-slaves/jenkins-slave-npm"
