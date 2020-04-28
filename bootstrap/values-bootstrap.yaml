@@ -5,9 +5,9 @@
 
 bootstrap-project:
   enabled: true
-  ci_cd_namespace: &ci_cd "ds-ci-cd"
-  dev_namespace: &dev "ds-dev"
-  test_namespace: &test "ds-test"
+  ci_cd_namespace: &ci_cd "labs-ci-cd"
+  dev_namespace: &dev "labs-dev"
+  test_namespace: &test "labs-test"
   namespaces:
   - name: *ci_cd
     bindings:
@@ -56,7 +56,7 @@ argocd-operator:
   enabled: true
   name: argocd
   namespace: *ci_cd
-  instancelabel: rht-labs.com/ds-uj
+  instancelabel: rht-labs.com/uj
   
   # operator manages upgrades etc
   version: v1.5.2
