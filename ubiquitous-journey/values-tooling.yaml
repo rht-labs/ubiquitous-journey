@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &ci_cd_ns ds-ci-cd
+destination: &ci_cd_ns labs-ci-cd
 
 ##############
 # 🛎 Jenkins Custom Values
@@ -16,28 +16,6 @@ jenkins_values: &jenkins_values
     - name: argocd-token
       username: token
       password: aaa.bbb.ccc
-  buildconfigs:
-    - name: jenkins
-      strategy_type: "Source"
-      source_repo: https://github.com/rht-labs/s2i-config-jenkins.git
-      source_repo_ref: v1.6
-      source_context_dir: '/'
-      builder_image_name: jenkins
-      builder_image_tag: '2'
-    - name: "jenkins-slave-npm"
-      strategy_type: "Docker"
-      source_context_dir: "jenkins-slaves/jenkins-slave-npm"
-      source_repo: "https://github.com/redhat-cop/containers-quickstarts"
-      source_repo_ref: "v1.22"
-      builder_image_name: "openshift/jenkins-slave-base-centos7"
-      builder_image_tag: "v3.11"
-    - name: "jenkins-slave-argocd"
-      strategy_type: "Docker"
-      source_context_dir: "jenkins-slaves/jenkins-slave-argocd"
-      source_repo: "https://github.com/redhat-cop/containers-quickstarts"
-      source_repo_ref: "v1.22"
-      builder_image_name: "registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7"
-      builder_image_tag: "latest"
 
 ##############
 # 🛎 Pact Broker Custom Values
