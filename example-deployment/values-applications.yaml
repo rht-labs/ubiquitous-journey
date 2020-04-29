@@ -1,15 +1,16 @@
 # Over rides for default values in Helm Charts
-destination: &dev_ns ds-dev
+destination: &dev_ns labs-dev
 ##############
 # Application Custom Values
 #############
 # toggle between versions of the app by setting the tag to grey / purple or latest
 pet_battle: &front_end_values
   app_tag: biscuits
-  image_repository: image-registry.openshift-image-registry.svc:5000
-  image_name: pet-battle
-  image_namespace: ds-ci-cd
-  config_map: "'http://pet-battle-api-ds-dev.apps.s43.core.rht-labs.com'"
+  # Could be over written in a jenkins file or your fork when doing CI/CD 
+  # image_repository: image-registry.openshift-image-registry.svc:5000
+  # image_name: pet-battle
+  # image_namespace: labs-ci-cd
+  config_map: "'http://pet-battle-api-labs-dev.apps.s43.core.rht-labs.com'"
 pet_battle_api: &api_values
   appName: pet-battle-api
 ##############
@@ -27,7 +28,7 @@ ignore_differences: &ignore_differences
 # Argo App of Apps declaration
 #############
 applications:
-- name: pb-front-end
+- name: pet-battle
   enabled: true
   source: https://github.com/springdo/pet-battle.git
   source_path: helm
@@ -36,7 +37,7 @@ applications:
   source_ref: master
   values: *front_end_values
   ignore_differences: *ignore_differences
-- name: pb-api
+- name: pet-battle-api
   enabled: true
   source: https://github.com/eformat/pet-battle-api.git
   source_path: chart
