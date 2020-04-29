@@ -269,7 +269,7 @@ applications:
     enabled: true
     source: https://github.com/Oteemo/charts.git
     source_path: charts/sonatype-nexus
-    source_ref: "sonatype-nexus-1.26.2"
+    source_ref: "sonatype-nexus-1.27.1"
     sync_policy:
       *sync_policy_true
     destination: *ci_cd_ns
