@@ -173,12 +173,12 @@ argocd proj create bootstrap-journey \
     -s https://github.com/rht-labs/helm-charts.git
 ```
 
-2. If you require elevated permissions such as project create etc:
+3. If you require elevated permissions such as project create etc:
 ```bash
 argocd proj allow-cluster-resource bootstrap-journey "*" "*"
 ```
 
-3. Create your ArgoCD App for `bootrstrap` in your `master-argocd` namespace and sync it!
+4. Create your ArgoCD App for `bootrstrap` in your `master-argocd` namespace and sync it!
 ```bash
 argocd app create bootstrap-journey \
     --project bootstrap-journey \
