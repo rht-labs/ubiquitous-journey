@@ -124,12 +124,6 @@ nexus_values: &nexus_values
         name: k8s-plugin
         subPath: nexus-openshift-plugin.jar
 
-  secret:
-    enabled: false
-    mountPath:
-    readOnly:
-    data:
-
   service:
     enabled: true
     name: nexus-service
