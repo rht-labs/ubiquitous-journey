@@ -43,6 +43,7 @@ pact_broker_values: &pact_broker_values
 #############
 nexus_values: &nexus_values
   nexus:
+    imageName: sonatype/nexus3
     imageTag: 3.19.1
     service:
       type: ClusterIP
@@ -65,6 +66,24 @@ nexus_values: &nexus_values
     name: nexus
     annotations: {}
 
+  additionalConfigMaps:
+    - name: maven-central
+      labels:
+        nexus-type: repository
+      data:
+        recipe: 'MavenProxy'
+        remoteUrl: 'https://repo.maven.apache.org/maven2/'
+        blobStoreName: 'default'
+        strictContentTypeValidation: 'true'
+        versionPolicy: 'RELEASE'
+        layoutPolicy: 'STRICT'
+    - name: labs-static
+      labels:
+        nexus-type: repository
+      data:
+        recipe: 'RawHosted'
+        blobStoreName: 'default'
+
   deployment:
     annotations: {}
     initContainers:
@@ -72,7 +91,7 @@ nexus_values: &nexus_values
         image: curlimages/curl:latest
         imagePullPolicy: Always
         command: ['sh','-c']
-        args: ['curl -o /k8s-plugin/nexus-openshift-plugin.jar https://github.com/sonatype-nexus-community/nexus-kubernetes-openshift-releases/download/v0.2.8/nexus-openshift-plugin-0.2.8.jar']
+        args: ['curl -L -o /k8s-plugin/nexus-openshift-plugin.jar https://github.com/sonatype-nexus-community/nexus-kubernetes-openshift/releases/download/v0.2.8/nexus-openshift-plugin-0.2.8.jar']
         volumeMounts:
           - name: k8s-plugin
             mountPath: /k8s-plugin
@@ -83,12 +102,6 @@ nexus_values: &nexus_values
       - mountPath: /opt/sonatype/nexus/deploy/nexus-openshift-plugin.jar
         name: k8s-plugin
         subPath: nexus-openshift-plugin.jar
-
-  secret:
-    enabled: false
-    mountPath:
-    readOnly:
-    data:
 
   service:
     enabled: true
@@ -235,7 +248,7 @@ applications:
     enabled: true
     source: https://github.com/Oteemo/charts.git
     source_path: charts/sonatype-nexus
-    source_ref: "sonatype-nexus-1.26.2"
+    source_ref: "sonatype-nexus-2.1.0"
     sync_policy:
       *sync_policy_true
     destination: *ci_cd_ns

@@ -19,7 +19,7 @@ bootstrap-project:
     - name: labs-admins
       kind: Group
       role: admin
-    - name: dummy-sa
+    - name: jenkins
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
@@ -31,7 +31,7 @@ bootstrap-project:
     - name: labs-admins
       kind: Group
       role: admin
-    - name: dummy-sa
+    - name: jenkins
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
@@ -43,13 +43,13 @@ bootstrap-project:
     - name: labs-admins
       kind: Group
       role: admin
-    - name: dummy-sa
+    - name: jenkins
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
 
   serviceaccounts:
-  - name: dummy-sa
+  - name: jenkins
     namespace: *ci_cd
 
 argocd-operator:
