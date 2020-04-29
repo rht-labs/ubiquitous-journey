@@ -65,6 +65,7 @@ pact_broker_values: &pact_broker_values
 #############
 nexus_values: &nexus_values
   nexus:
+    imageName: sonatype/nexus3
     imageTag: 3.19.1
     service:
       type: ClusterIP
