@@ -104,7 +104,7 @@ nexus_values: &nexus_values
         nexus-type: repository
       data:
         recipe: 'RawHosted'
-        blobStoreName: 'labs-static'
+        blobStoreName: 'default'
 
   deployment:
     annotations: {}
