@@ -6,6 +6,9 @@ destination: &dev_ns ds-dev
 # toggle between versions of the app by setting the tag to grey / purple or latest
 pet_battle: &front_end_values
   app_tag: biscuits
+  image_repository: image-registry.openshift-image-registry.svc:5000
+  image_name: pet-battle
+  image_namespace: ds-ci-cd
   config_map: "'http://pet-battle-api-ds-dev.apps.s43.core.rht-labs.com'"
 pet_battle_api: &api_values
   appName: pet-battle-api
