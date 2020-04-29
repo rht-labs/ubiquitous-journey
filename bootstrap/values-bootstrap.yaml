@@ -5,9 +5,9 @@
 
 bootstrap-project:
   enabled: true
-  ci_cd_namespace: &ci_cd "ds-ci-cd"
-  dev_namespace: &dev "ds-dev"
-  test_namespace: &test "ds-test"
+  ci_cd_namespace: &ci_cd "labs-ci-cd"
+  dev_namespace: &dev "labs-dev"
+  test_namespace: &test "labs-test"
   namespaces:
   - name: *ci_cd
     bindings:
@@ -19,7 +19,7 @@ bootstrap-project:
     - name: labs-admins
       kind: Group
       role: admin
-    - name: dummy-sa
+    - name: jenkins
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
@@ -31,7 +31,7 @@ bootstrap-project:
     - name: labs-admins
       kind: Group
       role: admin
-    - name: dummy-sa
+    - name: jenkins
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
@@ -43,13 +43,13 @@ bootstrap-project:
     - name: labs-admins
       kind: Group
       role: admin
-    - name: dummy-sa
+    - name: jenkins
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
 
   serviceaccounts:
-  - name: dummy-sa
+  - name: jenkins
     namespace: *ci_cd
 
 argocd-operator:
