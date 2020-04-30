@@ -228,6 +228,10 @@ dev-ex-dashboard_ignore_differences: &dev-ex-dashboard_ignore_differences
     jsonPointers:
     - /spec/template/spec/containers/0/image
     - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+  - group:
+    kind: ConfigMap
+    jsonPointers:
+    - /data
 
 ##############
 # 🐙 Argo Sync Policy

@@ -10,7 +10,8 @@ pet_battle: &front_end_values
   # image_repository: image-registry.openshift-image-registry.svc:5000
   # image_name: pet-battle
   # image_namespace: labs-ci-cd
-  config_map: "'http://pet-battle-api-labs-dev.apps.s43.core.rht-labs.com'"
+  config_map: "'http://pet-battle-api-labs-dev.apps.hivec.sandbox1604.opentlc.com'"
+
 pet_battle_api: &api_values
   appName: pet-battle-api
 ##############
