@@ -205,4 +205,11 @@ By setting `argocd.metrics.enabled: true` in `values-bootstrap.yaml`, promethus 
 An example of the latest grafana dashboard for argocd is available here
 - https://raw.githubusercontent.com/argoproj/argo-cd/master/examples/dashboard.json
 
+## Dashboard 📃
+
+The [Developer Experience Dashboard](https://github.com/rht-labs/dev-ex-dashboard) is deployed but requires a `ConfigMap` to be generated once all of the applications have been deployed. For now run this script to generate the config map in the `labs-ci-cd` project:
+```bash
+bash <(curl -s https://raw.githubusercontent.com/rht-labs/dev-ex-dashboard/master/regenerate-config-map.sh)
+```
+
 ## Contributing

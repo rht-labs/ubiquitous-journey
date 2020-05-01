@@ -11,6 +11,7 @@ pet_battle: &front_end_values
   # image_name: pet-battle
   # image_namespace: labs-ci-cd
   config_map: "'http://pet-battle-api-labs-dev.apps.s43.core.rht-labs.com'"
+
 pet_battle_api: &api_values
   appName: pet-battle-api
 ##############
