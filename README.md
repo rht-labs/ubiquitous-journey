@@ -152,11 +152,19 @@ argocd app sync catz
 ## ArgoCD Master and Child 👩‍👦
 ![child-master](child-master.png)
 
-You can if you already have a master ArgoCD instance in your cluster that's acting as a master instance you can easily add the `bootstrap` to it to create another "child" ArgoCD instance for any given project team. This could be a good approach if you want each project team to own and operate their own software development tools (jenkins, sonar, argocd, etc) but restrict the elevated permissions to needed to create argocd CRs and permissions for things like creating projects.
+We can create a master ArgoCD instance in the cluster that can bootstrap other "child" ArgoCD instance(s) for any given project team. This is a good approach if you want each project team to own and operate their own software development tools (jenkins, sonar, argocd, etc) but restrict any elevated permissions they may need e.g.creating argocd Custom Resources Definitions (`CRD's`) or limiting project creation.
 
-1. Login to your ArgoCD master and run to create a new project to manage deployments in the Lab's namespace along with the repositories to be allowed pull from:
+1. Deploy a master instance of argocd if you do not already have one. This is deployed into the `master-argocd` project.
+```
+helm template --dependency-update -f bootstrap-master/values-bootstrap.yaml bootstrap-master | oc apply -f-
+```
+
+2. Login to your ArgoCD master and run to create a new project to manage deployments in the Lab's namespace along with the repositories to be allowed pull from:
 ```bash
+argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n master-argocd):443 --sso --insecure
+
 argocd proj create bootstrap-journey \
+    -d https://kubernetes.default.svc,master-argocd \
     -d https://kubernetes.default.svc,labs-ci-cd \
     -d https://kubernetes.default.svc,labs-dev \
     -d https://kubernetes.default.svc,labs-test \
@@ -165,12 +173,12 @@ argocd proj create bootstrap-journey \
     -s https://github.com/rht-labs/helm-charts.git
 ```
 
-2. If you require elevated permissions such as project create etc:
+3. If you require elevated permissions such as project create etc:
 ```bash
 argocd proj allow-cluster-resource bootstrap-journey "*" "*"
 ```
 
-3. Create your ArgoCD App for `bootrstrap` in your `master-argocd` namespace and sync it!
+4. Create your ArgoCD App for `bootrstrap` in your `master-argocd` namespace and sync it!
 ```bash
 argocd app create bootstrap-journey \
     --project bootstrap-journey \
