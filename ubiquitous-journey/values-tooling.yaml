@@ -364,7 +364,7 @@ applications:
       *sync_policy_true
   - name: dev-ex-dashboard
     enabled: true
-    source: https://github.com/rht-labs/charts.git
+    source: https://github.com/rht-labs/helm-charts.git
     source_path: charts/dev-ex-dashboard
     destination: *ci_cd_ns
     source_ref: "dev-ex-dashboard-0.0.1"
