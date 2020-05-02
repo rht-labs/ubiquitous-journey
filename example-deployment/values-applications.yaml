@@ -5,7 +5,7 @@ destination: &dev_ns labs-dev
 #############
 # toggle between versions of the app by setting the tag to grey / purple or latest
 pet_battle: &front_end_values
-  app_tag: biscuits
+  app_tag: latest
   # Could be over written in a jenkins file or your fork when doing CI/CD 
   # image_repository: image-registry.openshift-image-registry.svc:5000
   # image_name: pet-battle
