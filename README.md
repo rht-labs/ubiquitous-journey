@@ -4,7 +4,7 @@
 
 🎨 This is the new home for the evolution of what was [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git). This project represents a major milestone in moving away from the 3.x OpenShift clusters to a new GitOps approach to tooling, app management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
 
-There are three main components (one in each folder) to this repository. Each part can be used independantly of each other but sequentially they create the full stack. If you already have an ArgoCD instance you want to add the tooling to just [move to part 2](#tooling-for-application-development):
+There are three main components (one in each folder) to this repository. Each part can be used independently of each other but sequentially they create the full stack. If you already have an ArgoCD instance you want to add the tooling to just [move to part 2](#tooling-for-application-development):
 1. Bootstrap - Contains references two helm charts used to create and manage projects and deploy ArgoCD
 2. Ubiquitous Journey - Contains all the tools and collaboration software to be deployed on Red Hat OpenShift. This includes chat applications, task management apps and tools to support CI/CD workflows and testing.
 3. An example (pet-battle) to show how the same structure can be used to implement GitOps for a simple three tiered app stack.
