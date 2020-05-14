@@ -3,7 +3,7 @@
 #############
 
 applications:
-  - name: labs-devex
+  - name: ubiquitous-journey
     destination: labs-ci-cd
     enabled: true
     source: https://github.com/rht-labs/ubiquitous-journey.git
