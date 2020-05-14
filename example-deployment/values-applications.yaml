@@ -32,7 +32,7 @@ applications:
 - name: pet-battle
   enabled: true
   source: https://github.com/springdo/pet-battle.git
-  source_path: helm
+  source_path: chart
   sync_policy_automated: true
   destination: *test_ns
   source_ref: master
