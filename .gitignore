@@ -40,3 +40,4 @@ Session.vim
 **/Chart.lock
 
 .history
+secrets.yaml

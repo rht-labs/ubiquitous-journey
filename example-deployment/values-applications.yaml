@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &dev_ns labs-dev
+destination: &test_ns labs-test
 ##############
 # Application Custom Values
 #############
@@ -10,7 +10,7 @@ pet_battle: &front_end_values
   # image_repository: image-registry.openshift-image-registry.svc:5000
   # image_name: pet-battle
   # image_namespace: labs-ci-cd
-  config_map: "'http://pet-battle-api-labs-dev.apps.s43.core.rht-labs.com'"
+  config_map: "'http://pet-battle-api-labs-test.apps.s43.core.rht-labs.com'"
 
 pet_battle_api: &api_values
   appName: pet-battle-api
@@ -34,7 +34,7 @@ applications:
   source: https://github.com/springdo/pet-battle.git
   source_path: helm
   sync_policy_automated: true
-  destination: *dev_ns
+  destination: *test_ns
   source_ref: master
   values: *front_end_values
   ignore_differences: *ignore_differences
@@ -43,7 +43,7 @@ applications:
   source: https://github.com/eformat/pet-battle-api.git
   source_path: chart
   sync_policy_automated: true
-  destination: *dev_ns
+  destination: *test_ns
   source_ref: master
   values: *api_values
   ignore_differences: *ignore_differences
