@@ -22,8 +22,9 @@ esac
 echo sed $sedargs "s#\\\"labs-ci-cd\\\"#\\\"${1}\\\"#g" bootstrap/values-bootstrap.yaml | sh
 echo sed $sedargs "s#\\\"labs-dev\\\"#\\\"${2}\\\"#g" bootstrap/values-bootstrap.yaml | sh
 echo sed $sedargs "s#\\\"labs-test\\\"#\\\"${3}\\\"#g" bootstrap/values-bootstrap.yaml | sh
+echo sed $sedargs "s#\\\"labs-staging\\\"#\\\"${4}\\\"#g" bootstrap/values-bootstrap.yaml | sh
 
-echo sed $sedargs "s#labs-dev#${2}#g" example-deployment/values-applications.yaml | sh
+echo sed $sedargs "s#labs-test#${2}#g" example-deployment/values-applications.yaml | sh
 
 echo sed $sedargs "s#labs-ci-cd#${1}#g" ubiquitous-journey/values-tooling.yaml | sh
 

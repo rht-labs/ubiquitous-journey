@@ -1,9 +1,9 @@
 # bootstrap a master argocd instance
 bootstrap-project:
   enabled: true
-  ci_cd_namespace: &ci_cd "master-argocd"
+  argo_master_namespace: &argo_master "master-argocd"
   namespaces:
-  - name: *ci_cd
+  - name: *argo_master
     bindings:
     # this labs-devs is the GROUP NAME in IDM
     - name: labs-devs
@@ -13,19 +13,13 @@ bootstrap-project:
     - name: labs-admins
       kind: Group
       role: admin
-    - name: dummy-sa
-      kind: ServiceAccount
-      role: admin
-      namespace: *ci_cd
 
-  serviceaccounts:
-  - name: dummy-sa
-    namespace: *ci_cd
+  serviceaccounts: {}
 
 argocd-operator:
   enabled: true
   name: argocd
-  namespace: *ci_cd
+  namespace: *argo_master
   instancelabel: rht-labs.com/master-argocd
   
   # operator manages upgrades etc

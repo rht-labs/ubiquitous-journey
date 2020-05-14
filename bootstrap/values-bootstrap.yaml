@@ -8,10 +8,9 @@ bootstrap-project:
   ci_cd_namespace: &ci_cd "labs-ci-cd"
   dev_namespace: &dev "labs-dev"
   test_namespace: &test "labs-test"
-  namespaces:
-  - name: *ci_cd
-    bindings:
-    # this labs-devs is the GROUP NAME in IDM
+  staging_namespace: &stage "labs-staging"
+  bindings: &binds
+      # this labs-devs is the GROUP NAME in IDM
     - name: labs-devs
       kind: Group
       role: edit
@@ -23,30 +22,20 @@ bootstrap-project:
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
+
+  namespaces:
+  - name: *ci_cd
+    bindings:
+      *binds
   - name: *dev
     bindings:
-    - name: labs-devs
-      kind: Group
-      role: edit
-    - name: labs-admins
-      kind: Group
-      role: admin
-    - name: jenkins
-      kind: ServiceAccount
-      role: admin
-      namespace: *ci_cd
+      *binds
   - name: *test
     bindings:
-    - name: labs-devs
-      kind: Group
-      role: edit
-    - name: labs-admins
-      kind: Group
-      role: admin
-    - name: jenkins
-      kind: ServiceAccount
-      role: admin
-      namespace: *ci_cd
+      *binds
+  - name: *stage
+    bindings:
+      *binds
 
   serviceaccounts:
   - name: jenkins

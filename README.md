@@ -98,7 +98,7 @@ helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ## Deploy to a custom namespace 🦴
 Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
 
-1. Run `set-namespace.sh $ci_cd $dev $test` where `$ci_cd $dev $test` are the namespaces you would like to bootstrap eg `./set-namespace.sh my-ci-cd my-dev my-test`. This will update the following files: 
+1. Run `set-namespace.sh $ci_cd $dev $test $staging` where `$ci_cd $dev $test $staging` are the namespaces you would like to bootstrap eg `./set-namespace.sh my-ci-cd my-dev my-test my-staging`. This will update the following files: 
 * `bootstrap/values-bootstrap.yaml`: the `ci_cd_namesapce` and argocd namespace `namespace: "my-ci-cd"`.
 * `ubiquitous-journey/values-tooling.yaml`: the `destination: &ci_cd_ns my-ci-cd`
 * `example-deployment/values-applications.yaml`: the `destination: &ci_cd_ns my-dev`
@@ -190,7 +190,7 @@ argocd app create bootstrap-journey \
 argocd app sync bootstrap-journey
 ```
 
-4. Your new ArgoCD instance should spin up. You can now connect your `ubiquitous-journey` or `example-deployment` to it be following the instructions above
+4. Your new ArgoCD instance should spin up. You can now connect your `ubiquitous-journey` or `example-deployment` to it by following the instructions above
 
 ## Cleaning up ArgoCD Apps 🧹
 Sometime ArgoCD `Application` CRs can get stuck after they've been deleted and cause funky issues.
