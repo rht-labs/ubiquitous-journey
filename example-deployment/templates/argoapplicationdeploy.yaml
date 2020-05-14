@@ -1,6 +1,7 @@
 {{- if .Values.applications }}
 {{- range $app := .Values.applications }}
 {{- if $app.enabled }}
+
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -26,9 +27,14 @@ spec:
 {{- toYaml $app.values | nindent 8 }}
 {{- end }}
 {{- end }}
+    {{- if $app.source_path }}
     path: {{ $app.source_path }}
+    {{- end }}
     repoURL: {{ $app.source }}
     targetRevision: {{ $app.source_ref | default "master" }}
+    {{- if $app.chart_name }}
+    chart: {{ $app.chart_name }}
+    {{- end}}
 {{- if $app.sync_policy_automated }}
   syncPolicy:
     automated:
