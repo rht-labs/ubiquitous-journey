@@ -179,6 +179,13 @@ mattermost_values: &mattermost_values
     mysqlUser: "mattermost"
     mysqlPassword: "matterpass"
 
+##############
+# 🛎 Owncloud Custom Values
+#############
+owncloud_values: &owncloud_values
+  route:
+    enabled: true
+  hostname: owncloud.apps.hivec.sandbox1559.opentlc.com
 
 ##############
 # 🐙 Argo Ignore Differences
@@ -232,6 +239,14 @@ dev-ex-dashboard_ignore_differences: &dev-ex-dashboard_ignore_differences
     kind: ConfigMap
     jsonPointers:
     - /data
+
+owncloud_ignore_differences: &owncloud_ignore_differences
+  ignoreDifferences:
+  - group: apps.openshift.io
+    kind: DeploymentConfig
+    jsonPointers:
+    - /spec/template/spec/containers/0/image
+    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
 
 ##############
 # 🐙 Argo Sync Policy
@@ -371,3 +386,14 @@ applications:
     sync_policy:
       *sync_policy_no_selfheal
     ignore_differences: *dev-ex-dashboard_ignore_differences
+  - name: owncloud
+    enabled: true
+    source: https://github.com/rht-labs/helm-charts.git
+    source_path: charts/owncloud
+    destination: *ci_cd_ns
+    source_ref: "owncloud-0.0.1"
+    sync_policy:
+      *sync_policy_true
+    ignore_differences: *owncloud_ignore_differences
+    values:
+      *owncloud_values
