@@ -8,8 +8,8 @@ version: 0.0.1
 appVersion: 0.0.1
 dependencies:
   - name: bootstrap-project
-    version: "0.0.4"
+    version: "0.0.6"
     repository: https://rht-labs.github.io/helm-charts
   - name: argocd-operator
-    version: "0.0.7"
+    version: "0.0.10"
     repository: https://rht-labs.github.io/helm-charts
