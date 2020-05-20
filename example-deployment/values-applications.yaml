@@ -16,7 +16,7 @@ pet_battle_api: &api_values
   appName: pet-battle-api
   image_repository: quay.io
   image_name: pet-battle-api
-  image_namespace: *test_ns
+  image_namespace: eformat
   image_version: latest
 
 ##############
