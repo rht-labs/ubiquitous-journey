@@ -23,9 +23,9 @@ argocd-operator:
   instancelabel: rht-labs.com/master-argocd
   
   # operator manages upgrades etc
-  version: v1.5.4
+  version: v1.5.6
   operator:
-    version: argocd-operator.v0.0.8
+    version: argocd-operator.v0.0.9
     channel: alpha
     name: argocd-operator
 
