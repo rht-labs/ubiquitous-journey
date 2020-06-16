@@ -11,7 +11,7 @@ There are three main components (one in each folder) to this repository. Each pa
 
 ## What's in the box? 👨
 
-- Bootstrap - Create new projects such as `labs-ci-cd`, `labs-dev`, `labs-test` and the rolebinding for groups. See the [bootstrap-project chart](https://github.com/rht-labs/helm-charts/tree/master/charts/bootstrap-project) for more info.
+- Bootstrap - Create new projects such as `labs-ci-cd`, `labs-dev`, `labs-test`, `labs-staging` and the rolebinding for groups. See the [bootstrap-project chart](https://github.com/rht-labs/helm-charts/tree/master/charts/bootstrap-project) for more info.
 - ArgoCD - Deploys Andy Block's OpenShift auth enabled Dex Server along with the Operator version of ArgoCD.
 - Jenkins - Create new custom Jenkins instance along with all the CoP build agents. See the [Jenkins chart](https://github.com/rht-labs/helm-charts/tree/master/charts/jenkins) for more info.
 - Nexus - Deploy Nexus along with the OpenShift Plugin. See the [Sonatype Nexus Chart](https://github.com/Oteemo/charts/tree/master/charts/sonatype-nexus) for more info.
@@ -46,7 +46,7 @@ helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ### Bootstrap projects and ArgoCD 🍻
 ![bootstrap-uj](bootstrap-uj.png)
 
-Create your Labs's CI/CD, Dev and Test namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`. Deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`).
+Create your Labs's CI/CD, Dev, Test and Staging namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`. Deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`).
 
 If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace)
 
@@ -99,7 +99,7 @@ helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
 
 1. Run `set-namespace.sh $ci_cd $dev $test $staging` where `$ci_cd $dev $test $staging` are the namespaces you would like to bootstrap eg `./set-namespace.sh my-ci-cd my-dev my-test my-staging`. This will update the following files: 
-* `bootstrap/values-bootstrap.yaml`: the `ci_cd_namesapce` and argocd namespace `namespace: "my-ci-cd"`.
+* `bootstrap/values-bootstrap.yaml`: the `ci_cd_namespace` and argocd namespace `namespace: "my-ci-cd"`.
 * `ubiquitous-journey/values-tooling.yaml`: the `destination: &ci_cd_ns my-ci-cd`
 * `example-deployment/values-applications.yaml`: the `destination: &ci_cd_ns my-dev`
 * `argo-app-of-apps.yaml`: the `destination: my-ci-cd`
