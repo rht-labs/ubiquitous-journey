@@ -58,3 +58,15 @@ argocd-operator:
     enabled: true
     prometheus:
       version: prometheusoperator.0.32.0
+
+sealed-secrets:
+  # Disabled by default
+  enabled: false
+  nameOverride: sealed-secrets
+  fullnameOverride: sealed-secrets
+  # namespace must exist, so we use labs-ci-cd by default.
+  namespace: "labs-ci-cd"
+  # Dont touch the security context values, deployment will fail in OpenShift otherwise.
+  securityContext:
+    runAsUser: ""
+    fsGroup: ""
