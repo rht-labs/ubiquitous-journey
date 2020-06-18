@@ -11,5 +11,5 @@ dependencies:
     version: "0.0.7"
     repository: https://rht-labs.github.io/helm-charts
   - name: argocd-operator
-    version: "0.0.9"
+    version: "0.0.11"
     repository: https://rht-labs.github.io/helm-charts
