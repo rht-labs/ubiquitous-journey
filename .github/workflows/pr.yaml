@@ -1,0 +1,58 @@
+name: PR Build and Deploy 
+
+on:
+  pull_request:
+    branches:
+      - master
+      - add-github-actions
+
+jobs:
+  build-and-deploy:
+    name: build and deploy
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: WIP check
+        uses: wip/action@v1.0.0
+
+      - name: Checkout
+        uses: actions/checkout@v2
+  
+      #- name: Create kubeconfig file
+      #  id: write_file
+      #  uses: timheuer/base64-to-file@v1.0.3
+      #  with:
+      #    fileName: 'kubeconfig.yaml'
+      #    encodedString: ${{ secrets.KUBE_CONFIG_DATA }} 
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.0.0-alpha.3
+        # Only build a kind cluster if there are chart changes to test.
+        #if: steps.lint.outputs.changed == 'true'
+
+      - name: Deploy Namespace and Argo app deployment yaml to cluster
+        env:
+          KUBECONFIG_FILE: ${{ steps.write_file.outputs.filePath }}
+          APP_NAME: ubiquitous-journey 
+          NAMESPACE: ubiquitous-journey-pr
+          ARGO_NAMESPACE: argo-cd #TODO
+          TARGET_REVISION: ${{ github.event.pull_request.head.sha }}
+          IMAGE_TAG: ${{ github.event.pull_request.head.sha }}
+        run: |
+          PULL_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          echo "Pull Request # $PULL_NUMBER"
+
+          echo "Target Revision SHA: $TARGET_REVISION"
+          
+          echo "Cluster Info:" $(kubectl cluster-info)
+          echo "current-context:" $(kubectl config current-context)
+          echo "environment-kubeconfig:" ${KUBECONFIG}
+
+          #TODO
+          helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | kubectl apply -f-
+          helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | kubectl apply -f-
+
+          #COPIED OVER FROM MY OTHER STUFF
+          helm template ./ubiquitous-journey --set argodeploys[0].app_name=$APP_NAME --set argodeploys[0].namespace=$NAMESPACE-$PULL_NUMBER --set argodeploys[0].autoSync=true --set argodeploys[0].targetRevision=$TARGET_REVISION --set argodeploys[0].imageTag=$IMAGE_TAG --set argodeploys[0].valueFile=values.yaml --set argodeploys[0].path=ubiquitous-journey | kubectl apply -n $ARGO_NAMESPACE --kubeconfig $KUBECONFIG_FILE -f - 
+
