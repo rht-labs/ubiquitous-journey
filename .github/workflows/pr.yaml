@@ -1,10 +1,10 @@
+name: PR Build and Deploy 
+
 on:
   pull_request:
     branches:
-      - master 
-    types: [opened, synchronize, reopened, edited]
-
-name: PR Build and Deploy 
+      - master
+      - add-github-actions
 
 jobs:
   build-and-deploy:
@@ -19,12 +19,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
   
-      - name: Create kubeconfig file
-        id: write_file
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: 'kubeconfig.yaml'
-          encodedString: ${{ secrets.KUBE_CONFIG_DATA }} 
+      #- name: Create kubeconfig file
+      #  id: write_file
+      #  uses: timheuer/base64-to-file@v1.0.3
+      #  with:
+      #    fileName: 'kubeconfig.yaml'
+      #    encodedString: ${{ secrets.KUBE_CONFIG_DATA }} 
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.0.0-alpha.3
+        # Only build a kind cluster if there are chart changes to test.
+        #if: steps.lint.outputs.changed == 'true'
 
       - name: Deploy Namespace and Argo app deployment yaml to cluster
         env:
@@ -40,6 +45,10 @@ jobs:
 
           echo "Target Revision SHA: $TARGET_REVISION"
           
+          echo "Cluster Info:" $(kubectl cluster-info)
+          echo "current-context:" $(kubectl config current-context)
+          echo "environment-kubeconfig:" ${KUBECONFIG}
+
           #TODO
           helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | kubectl apply -f-
           helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | kubectl apply -f-
