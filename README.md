@@ -225,3 +225,7 @@ bash <(curl -s https://raw.githubusercontent.com/rht-labs/dev-ex-dashboard/maste
 ```
 
 ## Contributing
+
+## Help
+
+You can find low hanging fruit to help [here](docs/help.md).
