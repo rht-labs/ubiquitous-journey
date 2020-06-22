@@ -1,11 +1,11 @@
 #!/bin/bash
-# ./set-namespace.sh $ci_cd_namespace $dev_namespace $test_namespace
+# ./set-namespace.sh $ci_cd_namespace $dev_namespace $test_namespace $staging_namespace
 
-if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ]; then
+if [ -z ${1} ] || [ -z ${2} ] || [ -z ${3} ] || [ -z ${4} ]; then
   echo "🤥 No namespaces specified - please set them 🤥 "
-  echo "./set-namespace.sh \$ci_cd_namespace \$dev_namespace \$test_namespace"
+  echo "./set-namespace.sh \$ci_cd_namespace \$dev_namespace \$test_namespace \$staging_namespace"
   echo "For example:"
-  echo "./set-namespace.sh my-ci-cd my-dev my-test"
+  echo "./set-namespace.sh my-ci-cd my-dev my-test my-staging"
   exit -1
 fi
 
