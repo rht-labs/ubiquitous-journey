@@ -3,7 +3,7 @@
 ## 🕵️‍♀️ Generate Sealed Secrets:
 To generate your sealed secret from your secret:
 
-1. Install `kubeseal` using the (instructions)[https://github.com/bitnami-labs/sealed-secrets/releases]
+1. Install `kubeseal` using the [instructions](https://github.com/bitnami-labs/sealed-secrets/releases)
 2. Log into the cluster where Sealed Secrets is deployed and take note of the namespace (deaults to `labs-ci-cd`)
 3. Process your existing secret eg this nexus secret using the kubeseal command line. Important to set the correct namespace otherwise the secret will not unseal
 ```bash
@@ -43,4 +43,4 @@ jenkins_values: &jenkins_values
 ```
 
 ## 📝 Bring your own certs 
-TODO - @jtudelag
+See [the docs written](https://github.com/bitnami-labs/sealed-secrets/blob/master/docs/bring-your-own-certificates.md) by @jtudelag on Sealed Secrets site!
