@@ -1,6 +1,6 @@
 # 🦄 ubiquitous-journey 🔥
 
-🧰 This repo is an Argo App definition which references [other charts](https://github.com/rht-labs/charts.git). It should not exclusively run Helm Templates but be a more generic Argo App which could reference Kustomize or Operators etc.
+🧰 This repo is an Argo App definition which references [other helm charts](https://github.com/rht-labs/charts.git). It should not exclusively run Helm Templates but be a more generic Argo App which could reference Kustomize or Operators etc.
 
 🎨 This is the new home for the evolution of what was [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git). This project represents a major milestone in moving away from the 3.x OpenShift clusters to a new GitOps approach to tooling, app management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
 
@@ -14,7 +14,7 @@ There are three main components (one in each folder) to this repository. Each pa
 - Bootstrap - Create new projects such as `labs-ci-cd`, `labs-dev`, `labs-test`, `labs-staging` and the rolebinding for groups. See the [bootstrap-project chart](https://github.com/rht-labs/helm-charts/tree/master/charts/bootstrap-project) for more info.
 - ArgoCD - Deploys Andy Block's OpenShift auth enabled Dex Server along with the Operator version of ArgoCD.
 - Jenkins - Create new custom Jenkins instance along with all the CoP build agents. See the [Jenkins chart](https://github.com/rht-labs/helm-charts/tree/master/charts/jenkins) for more info.
-- Nexus - Deploy Nexus along with the OpenShift Plugin. See the [Sonatype Nexus Chart](https://github.com/Oteemo/charts/tree/master/charts/sonatype-nexus) for more info.
+- Nexus - Deploy Nexus along with the OpenShift Plugin. See the [Sonatype Nexus Chart](https://github.com/rht-labs/helm-charts/tree/master/charts/sonatype-nexus) for more info.
 - SonarQube - Deploy SonarQube for static code analysis. See the [Sonarqube Chart](https://github.com/rht-labs/helm-charts/tree/master/charts/sonarqube) for more info.
 - Hoverfly - Deploy Hoverfly for Service Virtualisation. See the [Hoverfly Chart](https://github.com/helm/charts/tree/master/incubator/hoverfly) for more info.
 - PactBroker - Deploy PactBroker for Contract Testing. See the [Pact Broker Chart](https://github.com/rht-labs/helm-charts/tree/master/charts/pact-broker) for more info.
@@ -32,31 +32,43 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 
 ### Prereq 
 0. OpenShift 4.3 or greater (cluster admin user required) - https://try.openshift.com
-1. Install helm v3 or greater - https://helm.sh/docs/intro/quickstart
+1. Install helm v3 (cli) or greater - https://helm.sh/docs/intro/quickstart
 2. Install Argo CD (cli) 1.4.2+ or greater - https://argoproj.github.io/argo-cd/getting_started/#2-download-argo-cd-cli
 
 ### For the impatient 🤠
 
 Tooling deployed to `labs-ci-cd` project
-```
+```bash
 helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ### Bootstrap projects and ArgoCD 🍻
-![bootstrap-uj](bootstrap-uj.png)
+![bootstrap-uj](docs/images/bootstrap-uj.png)
 
-Create your Labs's CI/CD, Dev, Test and Staging namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). Over ride them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`. Deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`).
+The `bootstrap` helm chart will create your **Labs's CI/CD**, **Dev**, **Test** and **Staging** namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). You can override them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`.
+I will also deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`).
 
-If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace)
+If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace).
 
-1. Bring down the chart dependencies and install `bootstrap` in a sweet oneliner 🍾:
+1. Bring down the chart dependencies and install `bootstrap` helm chart in a sweet oneliner 🍾:
 ```bash
 helm template --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
 
 2. Because this is GitOps we should manage the config of these roles, projects and ArgoCD itself by adding it to our newly created ArgoCD instance. This means all future changes to these can be tracked and managed in Git! Login to Argo and run the following command.
+
+To login with argocd from CLI using sso:
+```bash
+argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd):443 --sso --insecure
 ```
+else if no sso:
+```bash
+argocd login --grpc-web $(oc get routes argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd) --insecure
+```
+
+Finally create the Argo app `bootstrap-journey`:
+```bash
 argocd app create bootstrap-journey \
     --dest-namespace labs-ci-cd \
     --dest-server https://kubernetes.default.svc \
@@ -65,23 +77,14 @@ argocd app create bootstrap-journey \
 ```
 
 ### Tooling for Application Development 🦅
-![ubiquitous-journey](ubiquitous-journey.png)
+![ubiquitous-journey](docs/images/ubiquitous-journey.png)
 
-Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace. There are two ways you can deploy this project - as an Argo App of Apps or a helm3 template. 
-
-To login with argocd from CLI using sso
-```
-argocd login $(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd):443 --sso --insecure
-```
-else if no sso:
-```
-argocd login --grpc-web $(oc get routes argocd-server -o jsonpath='{.spec.host}' -n labs-ci-cd) --insecure
-```
+Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace. There are two ways you can deploy this project - as an Argo App of Apps or a helm3 template.
 
 ##### (A) Deploy using argo app of apps ...
 See: [ArgoCD App of Apps approach](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps)
 
-```
+```bash
 argocd app create ubiquitous-journey \
     --dest-namespace labs-ci-cd \
     --dest-server https://kubernetes.default.svc \
@@ -91,12 +94,12 @@ argocd app sync ubiquitous-journey
 ```
 
 ##### (B) Deploy using helm ...
-```
+```bash
 helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ## Deploy to a custom namespace 🦴
-Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
+Because this is GitOps to make changes to the namespaces etc they should really be committed to git.... For example, if you wanted to create a `my-ci-cd` namespace for all the tooling to be deployed to, the steps are simple. Fork this repo and make the following changes there:
 
 1. Run `set-namespace.sh $ci_cd $dev $test $staging` where `$ci_cd $dev $test $staging` are the namespaces you would like to bootstrap eg `./set-namespace.sh my-ci-cd my-dev my-test my-staging`. This will update the following files: 
 * `bootstrap/values-bootstrap.yaml`: the `ci_cd_namespace` and argocd namespace `namespace: "my-ci-cd"`.
@@ -110,7 +113,7 @@ Because this is GitOps to make changes to the namespaces etc they should really 
 e.g: `instancelabel: mycompany.com/myapps`
 
 4. Git commit this change to your fork and run the following Helm Command:
-```
+```bash
 helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
 _FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙! So don't do that please 😇_
@@ -118,7 +121,7 @@ _FYI if you're feeling lazy, you can override the values on the commandline dire
 5. Login to ArgoCD as described in [Tooling](#Tooling) section.
 
 6. Run argo create app replacing `MY_FORK` as appropriate
-```
+```bash
 argocd app create ubiquitous-journey \
     --dest-namespace my-ci-cd \
     --dest-server https://kubernetes.default.svc \
@@ -132,16 +135,16 @@ helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ## Example Application Deploy 🌮
-![example-app](example-app.png)
+![example-app](docs/images/example-app.png)
 
 Deploy the example app `pet-battle` using GitOps! This example project serves as a reference of how you could deploy an application as an App of Apps. The app is pre-built and hosted on quay. After you deploy the application for the first time update the `app_tag` to `purple` in `example-deployment/values-applications.yaml` and commit the changes to see GitOps in action!
 
 Create using helm:
-```
+```bash
 helm template catz -f example-deployment/values-applications.yaml example-deployment/ | oc apply -n labs-ci-cd -f-
 ```
 or using argocd:
-```
+```bash
 argocd app create catz \
     --dest-namespace labs-ci-cd \
     --dest-server https://kubernetes.default.svc \
@@ -151,7 +154,7 @@ argocd app sync catz
 ```
 
 ## ArgoCD Master and Child 👩‍👦
-![child-master](child-master.png)
+![child-master](docs/images/child-master.png)
 
 We can create a master ArgoCD instance in the cluster that can bootstrap other "child" ArgoCD instance(s) for any given project team. This is a good approach if you want each project team to own and operate their own software development tools (jenkins, sonar, argocd, etc) but restrict any elevated permissions they may need e.g.creating argocd Custom Resources Definitions (`CRD's`) or limiting project creation.
 
@@ -196,7 +199,7 @@ argocd app sync bootstrap-journey
 Sometime ArgoCD `Application` CRs can get stuck after they've been deleted and cause funky issues.
 This is particularly annoying while testing with multiple ArgoCD instances.
 To *force delete* the application CRs run the `force-delete-application-cr.sh` script pointing to the namespace your `Application` CRs are stored. This will remove the `Finalizers`.
-```
+```bash
 oc login ...
 ./force-delete-application-cr.sh labs-ci-cd
 ```
@@ -222,3 +225,7 @@ bash <(curl -s https://raw.githubusercontent.com/rht-labs/dev-ex-dashboard/maste
 ```
 
 ## Contributing
+
+## Help
+
+You can find low hanging fruit to help [here](docs/help.md).
