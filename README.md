@@ -12,7 +12,8 @@ There are three main components (one in each folder) to this repository. Each pa
 ## What's in the box? 👨
 
 - Bootstrap - Create new projects such as `labs-ci-cd`, `labs-dev`, `labs-test`, `labs-staging` and the rolebinding for groups. See the [bootstrap-project chart](https://github.com/rht-labs/helm-charts/tree/master/charts/bootstrap-project) for more info.
-- ArgoCD - Deploys Andy Block's OpenShift auth enabled Dex Server along with the Operator version of ArgoCD.
+- ArgoCD - Deploys an OpenShift auth enabled Dex Server along with the Operator version of ArgoCD.
+- SealedSecrets - Encrypt your Secret into a [SealedSecret](https://github.com/bitnami-labs/sealed-secrets), which is safe to store - even to a public repository. 
 - Jenkins - Create new custom Jenkins instance along with all the CoP build agents. See the [Jenkins chart](https://github.com/rht-labs/helm-charts/tree/master/charts/jenkins) for more info.
 - Nexus - Deploy Nexus along with the OpenShift Plugin. See the [Sonatype Nexus Chart](https://github.com/rht-labs/helm-charts/tree/master/charts/sonatype-nexus) for more info.
 - SonarQube - Deploy SonarQube for static code analysis. See the [Sonarqube Chart](https://github.com/rht-labs/helm-charts/tree/master/charts/sonarqube) for more info.
@@ -39,7 +40,7 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 
 Tooling deployed to `labs-ci-cd` project
 ```bash
-helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
@@ -47,13 +48,13 @@ helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ![bootstrap-uj](docs/images/bootstrap-uj.png)
 
 The `bootstrap` helm chart will create your **Labs's CI/CD**, **Dev**, **Test** and **Staging** namespaces. Fill them with service accounts and normal role bindings as defined in the [bootstrap project helm chart](https://github.com/rht-labs/charts/blob/master/charts/bootstrap-project/values.yaml). You can override them by updating any of the values in `bootstrap/values-bootstrap.yaml` before running `helm template`.
-I will also deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`).
+It will also deploy an ArgoCD Instance into one of these namespaces (default to `labs-ci-cd`) along with an instance of Sealed Secrets by Bitnami if enabled (default disabled).
 
 If you want to override namespaces see [Deploy to a custom namespace](#deploy-to-a-custom-namespace).
 
 1. Bring down the chart dependencies and install `bootstrap` helm chart in a sweet oneliner 🍾:
 ```bash
-helm template --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template bootstrap --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
 
 2. Because this is GitOps we should manage the config of these roles, projects and ArgoCD itself by adding it to our newly created ArgoCD instance. This means all future changes to these can be tracked and managed in Git! Login to Argo and run the following command.
@@ -114,7 +115,7 @@ e.g: `instancelabel: mycompany.com/myapps`
 
 4. Git commit this change to your fork and run the following Helm Command:
 ```bash
-helm template --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
+helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
 _FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙! So don't do that please 😇_
 
