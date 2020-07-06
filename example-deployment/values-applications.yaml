@@ -19,6 +19,9 @@ pet_battle_api: &api_values
   image_namespace: eformat
   image_version: latest
 
+neverending-blog: &values
+  app_tag: latest
+
 ##############
 # Argo Ignore Differences
 #############
@@ -51,4 +54,13 @@ applications:
   destination: *test_ns
   source_ref: master
   values: *api_values
+  ignore_differences: *ignore_differences
+- name: neverending-blog
+  enabled: true
+  source: https://github.com/mabulgu/the-neverending-blog.git
+  source_path: chart
+  sync_policy_automated: true
+  destination: *test_ns
+  source_ref: master
+  values: *values
   ignore_differences: *ignore_differences
