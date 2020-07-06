@@ -40,8 +40,8 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 
 Tooling deployed to `labs-ci-cd` project
 ```bash
-helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f -
-helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ### Bootstrap projects and ArgoCD 🍻
@@ -54,7 +54,7 @@ If you want to override namespaces see [Deploy to a custom namespace](#deploy-to
 
 1. Bring down the chart dependencies and install `bootstrap` helm chart in a sweet oneliner 🍾:
 ```bash
-helm template bootstrap --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f -
+helm template bootstrap --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
 ```
 
 2. Because this is GitOps we should manage the config of these roles, projects and ArgoCD itself by adding it to our newly created ArgoCD instance. This means all future changes to these can be tracked and managed in Git! Login to Argo and run the following command.
@@ -96,7 +96,7 @@ argocd app sync ubiquitous-journey
 
 ##### (B) Deploy using helm ...
 ```bash
-helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ## Deploy to a custom namespace 🦴
@@ -115,7 +115,7 @@ e.g: `instancelabel: mycompany.com/myapps`
 
 4. Git commit this change to your fork and run the following Helm Command:
 ```bash
-helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f -
+helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap   | oc apply -f-
 ```
 _FYI if you're feeling lazy, you can override the values on the commandline directly but rememeber - this is GitOps 🐙! So don't do that please 😇_
 
@@ -132,7 +132,7 @@ argocd app sync ubiquitous-journey
 ```
 Or if you're using just helm3 cli to instead of `argocd` cli
 ```
-helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f-
 ```
 
 ## Example Application Deploy 🌮
@@ -142,7 +142,7 @@ Deploy the example app `pet-battle` using GitOps! This example project serves as
 
 Create using helm:
 ```bash
-helm template catz -f example-deployment/values-applications.yaml example-deployment/ | oc apply -n labs-ci-cd -f -
+helm template catz -f example-deployment/values-applications.yaml example-deployment/ | oc apply -n labs-ci-cd -f-
 ```
 or using argocd:
 ```bash
@@ -161,7 +161,7 @@ We can create a master ArgoCD instance in the cluster that can bootstrap other "
 
 1. Deploy a master instance of argocd if you do not already have one. This is deployed into the `master-argocd` project.
 ```
-helm template --dependency-update -f bootstrap-master/values-bootstrap.yaml bootstrap-master | oc apply -f -
+helm template --dependency-update -f bootstrap-master/values-bootstrap.yaml bootstrap-master | oc apply -f-
 ```
 
 2. Login to your ArgoCD master and run to create a new project to manage deployments in the Lab's namespace along with the repositories to be allowed pull from:
