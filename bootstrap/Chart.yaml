@@ -12,7 +12,7 @@ dependencies:
     repository: https://rht-labs.github.io/helm-charts
   - name: argocd-operator
     version: "0.0.14"
-    repository: https://eformat.github.io/helm-charts
+    repository: https://rht-labs.github.io/helm-charts
   - name: sealed-secrets
     version: "1.10.2"
     repository: https://kubernetes-charts.storage.googleapis.com/
