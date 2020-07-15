@@ -382,7 +382,7 @@ applications:
       *vault_values
   - name: pelorus
     enabled: true
-    source: https://github.com/eformat/pelorus.git
+    source: https://github.com/rht-labs/pelorus.git
     source_path: charts/deploy
     source_ref: master
     destination: pelorus
