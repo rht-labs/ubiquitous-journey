@@ -40,8 +40,8 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 
 Tooling deployed to `labs-ci-cd` project
 ```bash
-helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f -
-helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc -n labs-ci-cd apply -f-
 ```
 
 ### Bootstrap projects and ArgoCD 🍻
@@ -75,6 +75,18 @@ argocd app create bootstrap-journey \
     --dest-server https://kubernetes.default.svc \
     --repo https://github.com/rht-labs/ubiquitous-journey.git \
     --path "bootstrap" --values "values-bootstrap.yaml"
+```
+
+By default the ArgoCD service account use Cluster wide RoleBindings. Namespace control can be restricted in the bootstrap values. This will prevent certain actions by ArgoCD (e.g. operator CRD deployments) and not all of the listed applications may work (e.g. Tekton, CRW):
+```
+  # argocd rbac only in listed namespaces
+  namespaceRoleBinding:
+    enabled: true
+    namespaces:
+    - name: *ci_cd
+    - name: *dev
+    - name: *test
+    - name: *stage
 ```
 
 ### Tooling for Application Development 🦅

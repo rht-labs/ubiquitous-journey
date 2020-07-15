@@ -59,6 +59,15 @@ argocd-operator:
     prometheus:
       version: prometheusoperator.0.32.0
 
+  # argocd rbac only in listed namespaces
+  namespaceRoleBinding:
+    enabled: false
+    namespaces:
+    - name: *ci_cd
+    - name: *dev
+    - name: *test
+    - name: *stage
+
 sealed-secrets:
   # Disabled by default
   enabled: false
