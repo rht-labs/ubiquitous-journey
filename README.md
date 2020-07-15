@@ -86,6 +86,7 @@ By default the ArgoCD service account use Cluster wide RoleBindings. Namespace c
     - name: *ci_cd
     - name: *dev
     - name: *test
+    - name: *stage
 ```
 
 ### Tooling for Application Development 🦅
