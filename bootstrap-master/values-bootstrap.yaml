@@ -25,7 +25,7 @@ argocd-operator:
   # operator manages upgrades etc
   version: v1.6.1
   operator:
-    version: argocd-operator.v0.0.11
+    version: argocd-operator.v0.0.12
     channel: alpha
     name: argocd-operator
 
