@@ -118,20 +118,27 @@ owncloud_values: &owncloud_values
 vault_values: &vault_values
   global:
     tlsDisable: false
+    openshift: true
   injector:
     enabled: false
-  openshift: true
-  server:
     route:
+      enabled: true
       host: '""'
+  server:
+    service:
+      annotations:
+        service.beta.openshift.io/serving-cert-secret-name: vault-tls
+    extraVolumes:
+      - type: secret
+        name: vault-tls
     standalone:
       config: |
         ui = true
         listener "tcp" {
           address = "[::]:8200"
           cluster_address = "[::]:8201"
-          tls_cert_file = "/var/run/secrets/kubernetes.io/certs/tls.crt"
-          tls_key_file = "/var/run/secrets/kubernetes.io/certs/tls.key"
+          tls_cert_file = "/vault/userconfig/vault-tls/tls.crt"
+          tls_key_file  = "/vault/userconfig/vault-tls/tls.key"
         }
         storage "file" {
           path = "/vault/data"
@@ -356,9 +363,9 @@ applications:
       *owncloud_values
   - name: vault
     enabled: true
-    source: https://github.com/radudd/vault-helm.git
+    source: https://github.com/hashicorp/vault-helm.git
     source_path: .
-    source_ref: openshift
+    source_ref: "v0.7.0"   
     destination: *ci_cd_ns
     sync_policy:
       *sync_policy_true
