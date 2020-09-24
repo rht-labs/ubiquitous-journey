@@ -318,7 +318,7 @@ applications:
       *wekan_values
   - name: tekton
     enabled: true
-    destination: crw
+    destination: openshift-operators
     source: https://github.com/rht-labs/refactored-adventure
     source_path: tekton/base
     source_ref: master
