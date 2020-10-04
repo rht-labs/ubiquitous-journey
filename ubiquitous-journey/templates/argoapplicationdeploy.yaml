@@ -38,6 +38,7 @@ spec:
 {{- toYaml $app.sync_policy | nindent 2 }}
 {{- end }}
 {{- if $app.ignore_differences}}
+  ignoreDifferences:
 {{ toYaml $app.ignore_differences | indent 2 }}
 {{- end }}
 {{- end }}

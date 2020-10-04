@@ -35,9 +35,9 @@ applications:
     destination: *ci_cd_ns
     ignore_differences:
     - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
+      kind: Route
+      jsonPointers:
+      - /status/ingress
   # Jenkins
   - name: jenkins
     enabled: true
@@ -116,9 +116,9 @@ applications:
     no_helm: true
     ignore_differences:
     - group: org.eclipse.che
-    kind: CheCluster
-    jsonPointers:
-    - /spec
+      kind: CheCluster
+      jsonPointers:
+      - /spec
   # Zalenium
   - name: zalenium
     enabled: true
@@ -164,14 +164,14 @@ applications:
             hostname: ""
     ignore_differences:
     - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
-    - /spec/host
-  - group: apps/v1
-    kind: Deployment
-    jsonPointers:
-    - /spec/replicas
+      kind: Route
+      jsonPointers:
+      - /status/ingress
+      - /spec/host
+    - group: apps/v1
+      kind: Deployment
+      jsonPointers:
+      - /spec/replicas
   # Wekan
   - name: wekan
     enabled: true
@@ -239,14 +239,14 @@ applications:
       *sync_policy_no_selfheal
     ignore_differences:
     - group: apps.openshift.io
-    kind: DeploymentConfig
-    jsonPointers:
-    - /spec/template/spec/containers/0/image
-    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-  - group: ''
-    kind: ConfigMap
-    jsonPointers:
-    - /data
+      kind: DeploymentConfig
+      jsonPointers:
+      - /spec/template/spec/containers/0/image
+      - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+    - group: ''
+      kind: ConfigMap
+      jsonPointers:
+      - /data
   # Owncloud
   - name: owncloud
     enabled: true
@@ -262,10 +262,10 @@ applications:
       hostname: owncloud.apps.hivec.sandbox1559.opentlc.com
     ignore_differences:
     - group: apps.openshift.io
-    kind: DeploymentConfig
-    jsonPointers:
-    - /spec/template/spec/containers/0/image
-    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+      kind: DeploymentConfig
+      jsonPointers:
+      - /spec/template/spec/containers/0/image
+      - /spec/triggers/0/imageChangeParams/lastTriggeredImage
   # Hashicorp Vault
   - name: vault
     enabled: true
@@ -305,7 +305,7 @@ applications:
             }
     ignore_differences:
     - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
-    - /spec/host
+      kind: Route
+      jsonPointers:
+      - /status/ingress
+      - /spec/host
