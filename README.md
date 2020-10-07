@@ -116,7 +116,7 @@ argocd app create ubiquitous-journey \
 argocd app sync ubiquitous-journey
 ```
 
-*There is a separate set of tools which can also be added to your stack. These include some project management and supplimental things such as `Wekan` or `Mattermost`. By default they will be deployed to the `lab-pm` project. To create these run the following commmand:
+* There is a separate set of tools which can also be added to your stack. These include some project management and supplimental things such as `Wekan` or `Mattermost`. By default they will be deployed to the `lab-pm` project. To create these run the following commmand:
 ```bash
 argocd app create uj-extras \
     --dest-namespace labs-ci-cd \
