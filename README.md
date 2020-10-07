@@ -111,6 +111,18 @@ argocd app create ubiquitous-journey \
 argocd app sync ubiquitous-journey
 ```
 
+There is a separate set of tools which can also be added to your stack. These include some project management and supplimental things such as `Wekan` or `Mattermost`. By default they will be deployed to the `lab-pm` project. To create these run the following commmand:
+
+```bash
+argocd app create ubiquitous-journey-extras \
+    --dest-namespace labs-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/rht-labs/ubiquitous-journey.git \
+    --path "ubiquitous-journey" --values "values-extratooling.yaml"
+argocd app sync ubiquitous-journey
+```
+
+
 ##### (B) Deploy using helm ...
 ```bash
 helm template labs -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
@@ -150,6 +162,16 @@ argocd app sync ubiquitous-journey
 Or if you're using just helm3 cli to instead of `argocd` cli
 ```
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
+```
+
+If you're looking to deploy the extra tooling too, the command is the same as above but pointing to the correct project:
+```bash
+argocd app create ubiquitous-journey-extras \
+    --dest-namespace my-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/MY_FORK/ubiquitous-journey.git \
+    --path "ubiquitous-journey" --values "values-extratooling.yaml"
+argocd app sync ubiquitous-journey
 ```
 
 ## Example Application Deploy 🌮
