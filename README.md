@@ -11,7 +11,11 @@ There are three main components (one in each folder) to this repository. Each pa
 
 ## What's in the box? 👨
 
-- Bootstrap - Create new projects such as `labs-ci-cd`, `labs-dev`, `labs-test`, `labs-staging` and the rolebinding for groups. See the [bootstrap-project chart](https://github.com/redhat-cop/helm-charts/tree/master/charts/bootstrap-project) for more info.
+- Bootstrap - Create new projects and the rolebinding for groups. See the [bootstrap-project chart](https://github.com/redhat-cop/helm-charts/tree/master/charts/bootstrap-project) for more info. The following are created by default
+  - `labs-ci-cd` to house CI/CD tools such as `Jenkins` and `Nexus` etc
+  - `labs-dev`,  `labs-test` & `labs-staging` as target namespaces for deploying built artifacts
+  - `labs-pm` to house additional tools to help with project management such as `OwnCloud`, `Wekan` and `Mattermost`
+  - `labs-cluster-ops` to house cron tasks and other jobs for pruning images and maintaining a healthy platform.
 - ArgoCD - Deploys an OpenShift auth enabled Dex Server along with the Operator version of ArgoCD.
 - SealedSecrets - Encrypt your Secret into a [SealedSecret](https://github.com/bitnami-labs/sealed-secrets), which is safe to store - even to a public repository. 
 - Jenkins - Create new custom Jenkins instance along with all the CoP build agents. See the [Jenkins Chart](https://github.com/redhat-cop/helm-charts/tree/master/charts/jenkins) for more info.
@@ -41,11 +45,12 @@ For example - Nexus is being used for artifact management. Some teams may use Ar
 1. Install helm v3 (cli) or greater - https://helm.sh/docs/intro/quickstart
 2. Install Argo CD (cli) 1.4.2+ or greater - https://argoproj.github.io/argo-cd/getting_started/#2-download-argo-cd-cli
 
-### For the impatient 🤠
-
-Tooling deployed to `labs-ci-cd` project
+#### For the impatient 🤠
+A handy two liner to deploy all the artifacts in this project using their default values
 ```bash
+# bootstrap to install argocd and create projects
 helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+# give me ALL THE TOOLS, EXTRAS & OPSY THINGS !
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc -n labs-ci-cd apply -f-
 ```
 
@@ -101,7 +106,7 @@ Our standard approach is to deploy all the tooling to the `labs-ci-cd` namespace
 
 ##### (A) Deploy using argo app of apps ...
 See: [ArgoCD App of Apps approach](https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#app-of-apps)
-
+* Deploy the base tooling for building out CI/CD pipelines
 ```bash
 argocd app create ubiquitous-journey \
     --dest-namespace labs-ci-cd \
@@ -111,15 +116,24 @@ argocd app create ubiquitous-journey \
 argocd app sync ubiquitous-journey
 ```
 
-There is a separate set of tools which can also be added to your stack. These include some project management and supplimental things such as `Wekan` or `Mattermost`. By default they will be deployed to the `lab-pm` project. To create these run the following commmand:
-
+* There is a separate set of tools which can also be added to your stack. These include some project management and supplimental things such as `Wekan` or `Mattermost`. By default they will be deployed to the `lab-pm` project. To create these run the following commmand:
 ```bash
-argocd app create ubiquitous-journey-extras \
+argocd app create uj-extras \
     --dest-namespace labs-ci-cd \
     --dest-server https://kubernetes.default.svc \
     --repo https://github.com/rht-labs/ubiquitous-journey.git \
     --path "ubiquitous-journey" --values "values-extratooling.yaml"
-argocd app sync ubiquitous-journey
+argocd app sync uj-extras
+```
+
+* Deploy `day2ops` tasks to monitor and audit the cluster
+```bash
+argocd app create uj-day2ops \
+    --dest-namespace my-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/MY_FORK/ubiquitous-journey.git \
+    --path "ubiquitous-journey" --values "values-day2ops.yaml"
+argocd app sync uj-day2ops
 ```
 
 
@@ -166,12 +180,22 @@ helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc apply -f -
 
 If you're looking to deploy the extra tooling too, the command is the same as above but pointing to the correct project:
 ```bash
-argocd app create ubiquitous-journey-extras \
+argocd app create uj-extras \
     --dest-namespace my-ci-cd \
     --dest-server https://kubernetes.default.svc \
     --repo https://github.com/MY_FORK/ubiquitous-journey.git \
     --path "ubiquitous-journey" --values "values-extratooling.yaml"
-argocd app sync ubiquitous-journey
+argocd app sync uj-extras
+```
+
+7. Deploy `day2ops` tasks to monitor and audit the cluster
+```bash
+argocd app create uj-day2ops \
+    --dest-namespace my-ci-cd \
+    --dest-server https://kubernetes.default.svc \
+    --repo https://github.com/MY_FORK/ubiquitous-journey.git \
+    --path "ubiquitous-journey" --values "values-day2ops.yaml"
+argocd app sync uj-day2ops
 ```
 
 ## Example Application Deploy 🌮
