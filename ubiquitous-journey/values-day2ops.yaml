@@ -1,0 +1,52 @@
+destination: &ops_ns labs-cluster-ops
+
+##############
+# 🐙 Argo Sync Policy
+#############
+sync_policy_true: &sync_policy_true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      validate: true
+
+sync_policy_no_selfheal: &sync_policy_no_selfheal
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+      validate: true
+
+applications:
+  # Prune OpenShift Images
+  - name: prune-images
+    enabled: true
+    source: https://github.com/redhat-cop/openshift-management.git
+    source_path: charts/cronjob-prune-images/
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
+    source_ref: "v3.11.8"
+    values:
+      namespace: *ops_ns
+  # Prune OpenShift Builds
+  - name: prune-builds
+    enabled: true
+    source: https://github.com/ckavili/openshift-management.git
+    source_path: charts/cronjob-prune-builds-deployments/
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
+    source_ref: "master"
+    values:
+      namespace: *ops_ns
+      prune_type: builds
+  # Prune OpenShift Deployments
+  - name: prune-deployments
+    enabled: true
+    source: https://github.com/ckavili/openshift-management.git
+    source_path: charts/cronjob-prune-builds-deployments/
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
+    source_ref: "master"
+    values:
+      namespace: *ops_ns
+      prune_type: deployments
