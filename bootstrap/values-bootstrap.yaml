@@ -7,6 +7,7 @@ bootstrap-project:
   enabled: true
   ci_cd_namespace: &ci_cd "labs-ci-cd"
   pm_namespace: &pm "labs-pm"
+  ops_namespace: &ops "labs-cluster-ops"
   dev_namespace: &dev "labs-dev"
   test_namespace: &test "labs-test"
   staging_namespace: &stage "labs-staging"
@@ -27,6 +28,8 @@ bootstrap-project:
     - name: *ci_cd
       bindings: *binds
     - name: *pm
+      bindings: *binds
+    - name: *ops
       bindings: *binds
     - name: *dev
       bindings: *binds
@@ -63,6 +66,7 @@ argocd-operator:
     namespaces:
       - name: *ci_cd
       - name: *pm
+      - name: *ops
       - name: *dev
       - name: *test
       - name: *stage
