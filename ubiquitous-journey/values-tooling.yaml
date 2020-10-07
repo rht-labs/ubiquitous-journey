@@ -29,23 +29,21 @@ applications:
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonatype-nexus
     source_path: ""
-    source_ref: "0.0.4"
-    sync_policy:
-      *sync_policy_true
+    source_ref: "0.0.5"
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     ignore_differences:
-    - group: route.openshift.io
-      kind: Route
-      jsonPointers:
-      - /status/ingress
+      - group: route.openshift.io
+        kind: Route
+        jsonPointers:
+          - /status/ingress
   # Jenkins
   - name: jenkins
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-0.0.19"
-    sync_policy:
-      *sync_policy_true
+    source_ref: "jenkins-0.0.21"
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:
       persistence: false
@@ -60,49 +58,22 @@ applications:
           username: token
           password: aaa.bbb.ccc
     ignore_differences:
-    - group: apps.openshift.io
-      kind: DeploymentConfig
-      jsonPointers:
-      - /spec/template/spec/containers/0/image
-      - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-    - group: build.openshift.io
-      kind: BuildConfig
-      jsonPointers:
-      - /spec/triggers
-  # Pact-broker
-  - name: pact-broker
-    enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/pact-broker
-    source_ref: "pact-broker-0.0.3"
-    sync_policy:
-      *sync_policy_true
-    destination: *ci_cd_ns
-    values:
-      secrets:
-        name: pact-broker-secrets
-        keys:
-          pactBrokerDatabaseUsername: pact_broker_database_username
-          pactBrokerDatabasePassword: pact_broker_database_password
-          pactBrokerAdmin: pact_broker_admin
-          pactBrokerAdminPassword: pact_broker_admin_password
-          pactBrokerBasicAuthUsername: pact_broker_user
-          pactBrokerBasicAuthPassword: pact_broker_user_password
-        values:
-          pactBrokerDatabaseUsername: pact_broker_user
-          pactBrokerDatabasePassword: thisisdefinitelynotmypassword
-          pactBrokerAdmin: admin
-          pactBrokerAdminPassword: thisisdefinitelynotmypassword
-          pactBrokerBasicAuthUsername: dev
-          pactBrokerBasicAuthPassword: thisisdefinitelynotmypassword
+      - group: apps.openshift.io
+        kind: DeploymentConfig
+        jsonPointers:
+          - /spec/template/spec/containers/0/image
+          - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+      - group: build.openshift.io
+        kind: BuildConfig
+        jsonPointers:
+          - /spec/triggers
   # Sonarqube
   - name: sonarqube
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/sonarqube
-    source_ref: "sonarqube-0.0.6"
-    sync_policy:
-      *sync_policy_true
+    source_ref: "sonarqube-0.0.7"
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
   # CodeReady Workspaces
   - name: crw
@@ -111,22 +82,20 @@ applications:
     source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
     source_ref: master
-    sync_policy:
-      *sync_policy_no_selfheal
+    sync_policy: *sync_policy_no_selfheal
     no_helm: true
     ignore_differences:
-    - group: org.eclipse.che
-      kind: CheCluster
-      jsonPointers:
-      - /spec
+      - group: org.eclipse.che
+        kind: CheCluster
+        jsonPointers:
+          - /spec
   # Zalenium
   - name: zalenium
     enabled: true
     source: https://github.com/zalando/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
-    sync_policy:
-      *sync_policy_true
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:
       hub:
@@ -148,8 +117,7 @@ applications:
     enabled: true
     source: https://github.com/helm/charts.git
     source_path: incubator/hoverfly
-    sync_policy:
-      *sync_policy_true
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     source_ref: "master"
     values:
@@ -163,38 +131,40 @@ applications:
             enabled: true
             hostname: ""
     ignore_differences:
-    - group: route.openshift.io
-      kind: Route
-      jsonPointers:
-      - /status/ingress
-      - /spec/host
-    - group: apps/v1
-      kind: Deployment
-      jsonPointers:
-      - /spec/replicas
-  # Wekan
-  - name: wekan
+      - group: route.openshift.io
+        kind: Route
+        jsonPointers:
+          - /status/ingress
+          - /spec/host
+      - group: apps/v1
+        kind: Deployment
+        jsonPointers:
+          - /spec/replicas
+  # Pact-broker
+  - name: pact-broker
     enabled: true
-    source: https://github.com/wekan/wekan.git
-    source_path: helm/wekan
-    sync_policy:
-      *sync_policy_true
+    source: https://github.com/redhat-cop/helm-charts.git
+    source_path: charts/pact-broker
+    source_ref: "pact-broker-0.0.3"
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
-    source_ref: "v4.01"
     values:
-      service:
-        type: ClusterIP
-      autoscaling:
-        enabled: false
-      mongodb-replicaset:
-        replicas: 1
-        securityContext:
-          runAsUser: ""
-          fsGroup: ""
-      ingress:
-        enabled: false
-      route:
-        enabled: true
+      secrets:
+        name: pact-broker-secrets
+        keys:
+          pactBrokerDatabaseUsername: pact_broker_database_username
+          pactBrokerDatabasePassword: pact_broker_database_password
+          pactBrokerAdmin: pact_broker_admin
+          pactBrokerAdminPassword: pact_broker_admin_password
+          pactBrokerBasicAuthUsername: pact_broker_user
+          pactBrokerBasicAuthPassword: pact_broker_user_password
+        values:
+          pactBrokerDatabaseUsername: pact_broker_user
+          pactBrokerDatabasePassword: thisisdefinitelynotmypassword
+          pactBrokerAdmin: admin
+          pactBrokerAdminPassword: thisisdefinitelynotmypassword
+          pactBrokerBasicAuthUsername: dev
+          pactBrokerBasicAuthPassword: thisisdefinitelynotmypassword
   # Tekton
   - name: tekton
     enabled: true
@@ -202,110 +172,5 @@ applications:
     source: https://github.com/rht-labs/refactored-adventure
     source_path: tekton/base
     source_ref: master
-    sync_policy:
-      *sync_policy_true
+    sync_policy: *sync_policy_true
     no_helm: true
-  # Mattermost
-  - name: mattermost
-    enabled: true
-    source: https://github.com/mattermost/mattermost-helm.git
-    source_path: charts/mattermost-team-edition
-    destination: *ci_cd_ns
-    source_ref: "mattermost-team-edition-3.10.0"
-    values:
-      route:
-        enabled: true
-      mysql:
-        mysqlRootPassword: "mysqlpass"
-        mysqlUser: "mattermost"
-        mysqlPassword: "matterpass"
-  # Etherpad
-  - name: etherpad
-    enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/etherpad
-    destination: *ci_cd_ns
-    source_ref: "etherpad-0.0.2"
-    sync_policy:
-      *sync_policy_true
-  # Dev-Ex Dashboard
-  - name: dev-ex-dashboard
-    enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/dev-ex-dashboard
-    destination: *ci_cd_ns
-    source_ref: "dev-ex-dashboard-0.0.2"
-    sync_policy:
-      *sync_policy_no_selfheal
-    ignore_differences:
-    - group: apps.openshift.io
-      kind: DeploymentConfig
-      jsonPointers:
-      - /spec/template/spec/containers/0/image
-      - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-    - group: ''
-      kind: ConfigMap
-      jsonPointers:
-      - /data
-  # Owncloud
-  - name: owncloud
-    enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/owncloud
-    destination: *ci_cd_ns
-    source_ref: "owncloud-0.0.2"
-    sync_policy:
-      *sync_policy_true
-    values:
-      route:
-        enabled: true
-      hostname: owncloud.apps.hivec.sandbox1559.opentlc.com
-    ignore_differences:
-    - group: apps.openshift.io
-      kind: DeploymentConfig
-      jsonPointers:
-      - /spec/template/spec/containers/0/image
-      - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-  # Hashicorp Vault
-  - name: vault
-    enabled: true
-    source: https://github.com/hashicorp/vault-helm.git
-    source_path: .
-    source_ref: "v0.7.0"   
-    destination: *ci_cd_ns
-    sync_policy:
-      *sync_policy_true
-    values:
-      global:
-        tlsDisable: false
-        openshift: true
-      injector:
-        enabled: false
-        route:
-          enabled: true
-          host: '""'
-      server:
-        service:
-          annotations:
-            service.beta.openshift.io/serving-cert-secret-name: vault-tls
-        extraVolumes:
-          - type: secret
-            name: vault-tls
-        standalone:
-          config: |
-            ui = true
-            listener "tcp" {
-              address = "[::]:8200"
-              cluster_address = "[::]:8201"
-              tls_cert_file = "/vault/userconfig/vault-tls/tls.crt"
-              tls_key_file  = "/vault/userconfig/vault-tls/tls.key"
-            }
-            storage "file" {
-              path = "/vault/data"
-            }
-    ignore_differences:
-    - group: route.openshift.io
-      kind: Route
-      jsonPointers:
-      - /status/ingress
-      - /spec/host

@@ -1,0 +1,21 @@
+---
+# Source: ubiquitous-journey/templates/argoapplicationdeploy.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: example-deployment
+spec:
+  destination:
+    namespace: labs-ci-cd
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      releaseName: example-deployment
+      valueFiles:
+        - values-applications.yaml
+    path: example-deployment
+    repoURL: https://github.com/rht-labs/ubiquitous-journey.git
+    targetRevision: master
