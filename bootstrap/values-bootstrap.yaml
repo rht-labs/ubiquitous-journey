@@ -5,12 +5,12 @@
 
 bootstrap-project:
   enabled: true
-  ci_cd_namespace: &ci_cd "labs-ci-cd"
-  pm_namespace: &pm "labs-pm"
-  ops_namespace: &ops "labs-cluster-ops"
-  dev_namespace: &dev "labs-dev"
-  test_namespace: &test "labs-test"
-  staging_namespace: &stage "labs-staging"
+  ci_cd_namespace: &ci_cd "do101-cicd"
+  pm_namespace: &pm "do101-pm"
+  ops_namespace: &ops "do101-ops"
+  dev_namespace: &dev "do101-development"
+  test_namespace: &test "do101-testing"
+  staging_namespace: &stage "do101-production"
   bindings: &binds # this labs-devs is the GROUP NAME in IDM
     - name: labs-devs
       kind: Group

@@ -1,4 +1,4 @@
-destination: &ci_cd_ns labs-ci-cd
+destination: &ci_cd_ns do101-cicd
 
 ##############
 # 🐙 Argo Sync Policy

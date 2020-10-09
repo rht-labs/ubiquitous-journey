@@ -1,5 +1,5 @@
 destination_pm: &pm_ns labs-pm
-destination_ci_cd: &ci_cd_ns labs-ci-cd
+destination_ci_cd: &ci_cd_ns do101-cicd
 
 ##############
 # 🐙 Argo Sync Policy

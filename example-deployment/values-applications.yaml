@@ -1,5 +1,5 @@
 # Over rides for default values in Helm Charts
-destination: &test_ns labs-test
+destination: &test_ns do101-development
 ##############
 # Application Custom Values
 #############
@@ -10,7 +10,7 @@ pet_battle: &front_end_values
   # image_repository: image-registry.openshift-image-registry.svc:5000
   # image_name: pet-battle
   # image_namespace: labs-ci-cd
-  config_map: "'http://pet-battle-api-labs-test.apps.s45.core.rht-labs.com'"
+  config_map: "'http://pet-battle-api-do101-development.apps.s45.core.rht-labs.com'"
 
 pet_battle_api: &api_values
   appName: pet-battle-api

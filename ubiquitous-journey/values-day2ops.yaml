@@ -1,4 +1,4 @@
-destination: &ops_ns labs-cluster-ops
+destination: &ops_ns 
 
 ##############
 # 🐙 Argo Sync Policy
