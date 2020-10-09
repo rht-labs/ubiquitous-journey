@@ -25,7 +25,7 @@ sync_policy_no_selfheal: &sync_policy_no_selfheal
 applications:
   # Nexus
   - name: nexus
-    enabled: true
+    enabled: false
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonatype-nexus
     source_path: ""
@@ -39,7 +39,7 @@ applications:
           - /status/ingress
   # Jenkins
   - name: jenkins
-    enabled: true
+    enabled: false
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/jenkins
     source_ref: "jenkins-0.0.21"
@@ -69,7 +69,7 @@ applications:
           - /spec/triggers
   # Pact-broker
   - name: pact-broker
-    enabled: true
+    enabled: false
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/pact-broker
     source_ref: "pact-broker-0.0.3"
@@ -94,7 +94,7 @@ applications:
           pactBrokerBasicAuthPassword: thisisdefinitelynotmypassword
   # Sonarqube
   - name: sonarqube
-    enabled: true
+    enabled: false
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/sonarqube
     source_ref: "sonarqube-0.0.7"
@@ -102,7 +102,7 @@ applications:
     destination: *ci_cd_ns
   # CodeReady Workspaces
   - name: crw
-    enabled: true
+    enabled: false
     destination: crw
     source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
@@ -116,7 +116,7 @@ applications:
           - /spec
   # Zalenium
   - name: zalenium
-    enabled: true
+    enabled: false
     source: https://github.com/zalando/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
@@ -167,10 +167,48 @@ applications:
           - /spec/replicas
   # Tekton
   - name: tekton
-    enabled: true
+    enabled: false
     destination: openshift-operators
     source: https://github.com/rht-labs/refactored-adventure
     source_path: tekton/base
     source_ref: master
     sync_policy: *sync_policy_true
     no_helm: true
+
+  # tekton demo
+  - name: tekton-demo
+    enabled: true
+    destination: *ci_cd_ns
+    source: https://github.com/mvmaestri/helm-charts.git
+    source_path: charts/tekton-demo
+    source_ref: develop
+    sync_policy: *sync_policy_true
+    values:
+      cluster: apps.s45.core.rht-labs.com
+      application:
+        name: do101
+        runtime: nodejs:10
+        environments:
+          cicd: *ci_cd_ns
+          development: do101-development
+          production: do101-production
+        from:
+          git:
+            url: https://github.com/mvmaestri/do101-apps.git
+            revision: master
+            submodules: '"false"'
+            s2i:
+              context: weather
+      pipeline:
+        name: nodejs
+        sa:
+          default: pipeline
+          triggers: tekton-triggers-sa
+        webhook:
+          host: http://trigger-nodejs-tekton-cicd.apps.s45.core.rht-labs.com/
+          github: 
+            org: mvmaestri
+            user: mvmaestri
+            repo: do101-apps
+            secret: github-webhook-secret
+            key: github-deploy-secret
