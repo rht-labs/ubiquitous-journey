@@ -50,7 +50,7 @@ applications:
       source_secrets:
         - name: git-auth
           username: idm-sa
-          password: thisisdefinitelymypassword
+          password: thisisdefinitelynotmypassword🦆🦆🦆
         - name: nexus-password
           username: admin
           password: admin123
