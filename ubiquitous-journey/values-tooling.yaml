@@ -192,20 +192,16 @@ applications:
           cicd: *ci_cd_ns
           development: do101-development
           production: do101-production
-        from:
-          git:
-            url: https://github.com/mvmaestri/do101-apps.git
-            revision: master
-            submodules: '"false"'
-            s2i:
-              context: weather
+
       pipeline:
         name: nodejs
         sa:
           default: pipeline
           triggers: tekton-triggers-sa
+        build:
+          s2i:
+            context: weather
         webhook:
-          host: http://trigger-nodejs-tekton-cicd.apps.s45.core.rht-labs.com/
           github: 
             org: mvmaestri
             user: mvmaestri
