@@ -18,8 +18,8 @@ sync_policy_no_selfheal: &sync_policy_no_selfheal
       validate: true
 
 applications:
-  # tekton demo pipeline
-  - name: tekton-demo
+  # tekton nodejs demo pipeline using a strict implementation of gitflow on github
+  - name: tekton-github-nodejs
     enabled: true
     source: https://github.com/mvmaestri/helm-charts.git
     source_path: charts/tekton-demo
