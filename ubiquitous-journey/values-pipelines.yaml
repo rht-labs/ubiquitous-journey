@@ -1,0 +1,28 @@
+destination: &ci_cd_ns
+
+##############
+# 🐙 Argo Sync Policy
+#############
+sync_policy_true: &sync_policy_true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      validate: true
+
+sync_policy_no_selfheal: &sync_policy_no_selfheal
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+      validate: true
+
+applications:
+  # tekton demo pipeline
+  - name: tekton-demo
+    enabled: true
+    source: https://github.com/mvmaestri/helm-charts.git
+    source_path: charts/tekton-demo
+    sync_policy: *sync_policy_true
+    destination: *ci_cd_ns
+    source_ref: develop
