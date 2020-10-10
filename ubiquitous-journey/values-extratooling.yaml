@@ -21,7 +21,7 @@ sync_policy_no_selfheal: &sync_policy_no_selfheal
 applications:
   # Wekan
   - name: wekan
-    enabled: true
+    enabled: false
     source: https://github.com/wekan/wekan.git
     source_path: helm/wekan
     sync_policy: *sync_policy_true
@@ -43,7 +43,7 @@ applications:
         enabled: true
   # Mattermost
   - name: mattermost
-    enabled: true
+    enabled: false
     source: https://github.com/mattermost/mattermost-helm.git
     source_path: charts/mattermost-team-edition
     destination: *pm_ns
@@ -65,7 +65,7 @@ applications:
     sync_policy: *sync_policy_true
   # Dev-Ex Dashboard
   - name: dev-ex-dashboard
-    enabled: true
+    enabled: false
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/dev-ex-dashboard
     destination: *pm_ns
@@ -83,7 +83,7 @@ applications:
           - /data
   # Owncloud
   - name: owncloud
-    enabled: true
+    enabled: false
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/owncloud
     destination: *pm_ns
@@ -101,7 +101,7 @@ applications:
           - /spec/triggers/0/imageChangeParams/lastTriggeredImage
   # Hashicorp Vault
   - name: vault
-    enabled: true
+    enabled: false
     source: https://github.com/hashicorp/vault-helm.git
     source_path: .
     source_ref: "v0.7.0"

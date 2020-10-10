@@ -139,7 +139,7 @@ applications:
           app: zalenium
   # Hoverfly
   - name: hoverfly
-    enabled: true
+    enabled: false
     source: https://github.com/helm/charts.git
     source_path: incubator/hoverfly
     sync_policy: *sync_policy_true
