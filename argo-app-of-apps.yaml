@@ -3,21 +3,12 @@
 #############
 
 applications:
-  - name: ubiquitous-journey
-    destination: do101-cicd
+  - name: tekton-nodejs
+    destination: labs-ci-cd
     enabled: true
-    source: https://github.com/mvmaestri/ubiquitous-journey.git
-    source_path: ubiquitous-journey/
-    source_ref: feature/tekton-demo
-    sync_policy_automated: false
-    helm_values:
-      - values-tooling.yaml
-  - name: uj-extras
-    destination: do101-cicd
-    enabled: true
-    source: https://github.com/mvmaestri/ubiquitous-journey.git
-    source_path: feature/tekton-demo-journey/
+    source: https://github.com/mvmaestri/helm-charts.git
+    source_path: charts/tekton-demo
     source_ref: master
     sync_policy_automated: false
     helm_values:
-      - values-extratooling.yaml
+      - values-pipelines.yaml
