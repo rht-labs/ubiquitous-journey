@@ -3,7 +3,7 @@
 #############
 
 applications:
-  - name: tekton-nodejs
+  - name: tekton-github-nodejs
     destination: labs-ci-cd
     enabled: true
     source: https://github.com/mvmaestri/helm-charts.git
