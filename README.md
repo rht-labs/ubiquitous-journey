@@ -15,7 +15,7 @@ There are three main components (one in each folder) to this repository. Each pa
   - `labs-ci-cd` to house CI/CD tools such as `Jenkins` and `Nexus` etc
   - `labs-dev`,  `labs-test` & `labs-staging` as target namespaces for deploying built artifacts
   - `labs-pm` to house additional tools to help with project management such as `OwnCloud`, `Wekan` and `Mattermost`
-  - `labs-cluster-ops` to house cron tasks and other jobs for pruning images and maintaining a healthy platform.
+  - `labs-cluster-ops` to house cron tasks and other jobs for pruning images, network policies and maintaining a healthy platform.
 - ArgoCD - Deploys an OpenShift auth enabled Dex Server along with the Operator version of ArgoCD.
 - SealedSecrets - Encrypt your Secret into a [SealedSecret](https://github.com/bitnami-labs/sealed-secrets), which is safe to store - even to a public repository. 
 - Jenkins - Create new custom Jenkins instance along with all the CoP build agents. See the [Jenkins Chart](https://github.com/redhat-cop/helm-charts/tree/master/charts/jenkins) for more info.
@@ -135,6 +135,7 @@ argocd app create uj-day2ops \
     --path "ubiquitous-journey" --values "values-day2ops.yaml"
 argocd app sync uj-day2ops
 ```
+_The [network policy chart](https://github.com/redhat-cop/helm-charts/tree/master/charts/network-policy) is namespace-scoped and is needed to be applied for each namespace seperately._
 
 
 ##### (B) Deploy using helm ...
