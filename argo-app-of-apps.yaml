@@ -12,6 +12,24 @@ applications:
     sync_policy_automated: false
     helm_values:
       - values-tooling.yaml
+  - name: uj-extras
+    destination: labs-ci-cd
+    enabled: true
+    source: https://github.com/rht-labs/ubiquitous-journey.git
+    source_path: ubiquitous-journey/
+    source_ref: master
+    sync_policy_automated: false
+    helm_values:
+      - values-extratooling.yaml
+  - name: uj-day2ops
+    destination: labs-ci-cd
+    enabled: true
+    source: https://github.com/rht-labs/ubiquitous-journey.git
+    source_path: ubiquitous-journey/
+    source_ref: master
+    sync_policy_automated: false
+    helm_values:
+      - values-day2ops.yaml
   - name: example-deployment
     destination: labs-ci-cd
     enabled: false

@@ -1,217 +1,4 @@
-# Over rides for default values in Helm Charts
 destination: &ci_cd_ns labs-ci-cd
-
-##############
-# 🛎 Jenkins Custom Values
-#############
-jenkins_values: &jenkins_values
-  persistence: false
-  source_secrets:
-    - name: git-auth
-      username: idm-sa
-      password: thisisdefinitelymypassword
-    - name: nexus-password
-      username: admin
-      password: admin123
-    - name: argocd-token
-      username: token
-      password: aaa.bbb.ccc
-
-##############
-# 🛎 Pact Broker Custom Values
-#############
-pact_broker_values: &pact_broker_values
-  secrets:
-    name: pact-broker-secrets
-    keys:
-      pactBrokerDatabaseUsername: pact_broker_database_username
-      pactBrokerDatabasePassword: pact_broker_database_password
-      pactBrokerAdmin: pact_broker_admin
-      pactBrokerAdminPassword: pact_broker_admin_password
-      pactBrokerBasicAuthUsername: pact_broker_user
-      pactBrokerBasicAuthPassword: pact_broker_user_password
-    values:
-      pactBrokerDatabaseUsername: pact_broker_user
-      pactBrokerDatabasePassword: thisisdefinitelynotmypassword
-      pactBrokerAdmin: admin
-      pactBrokerAdminPassword: thisisdefinitelynotmypassword
-      pactBrokerBasicAuthUsername: dev
-      pactBrokerBasicAuthPassword: thisisdefinitelynotmypassword
-
-##############
-# 🛎 Zalenium Custom Values
-#############
-## TODO: Update source URL as upstream when ArgoCD version is greater 1.5.0 or above
-zalenium_values: &zalenium_values
-  hub:
-    serviceType: ClusterIP
-    openshift:
-      deploymentConfig:
-        enabled: true
-      route:
-        enabled: true
-    persistence:
-      enabled: false
-    serviceAccount:
-      create: false
-    desiredContainers: 0
-    podAnnotations:
-      app: zalenium
-
-##############
-# 🛎 Hoverfly Custom Values
-# Values reference https://github.com/helm/charts/tree/master/incubator/hoverfly
-#############
-hoverfly_values: &hoverfly_values
-  replicaCount: "1"
-  openshift:
-    route:
-      admin:
-        enabled: true
-        hostname: ""
-      proxy:
-        enabled: true
-        hostname: ""
-
-##############
-# 🛎 Wekan Custom Values
-# Values reference https://github.com/wekan/wekan/tree/master/helm/wekan
-#############
-wekan_values: &wekan_values
-  service:
-    type: ClusterIP
-  autoscaling:
-    enabled: false
-  mongodb-replicaset:
-    replicas: 1
-    securityContext:
-      runAsUser: ""
-      fsGroup: ""
-  ingress:
-    enabled: false
-  route:
-    enabled: true
-
-##############
-# 🛎 Mattermost Custom Values
-# Values reference https://github.com/mattermost/mattermost-helm
-#############
-mattermost_values: &mattermost_values
-  route:
-    enabled: true
-  mysql:
-    mysqlRootPassword: "mysqlpass"
-    mysqlUser: "mattermost"
-    mysqlPassword: "matterpass"
-
-##############
-# 🛎 Owncloud Custom Values
-#############
-owncloud_values: &owncloud_values
-  route:
-    enabled: true
-  hostname: owncloud.apps.hivec.sandbox1559.opentlc.com
-
-#######################
-# Vault Custom Values #
-#######################
-vault_values: &vault_values
-  global:
-    tlsDisable: false
-    openshift: true
-  injector:
-    enabled: false
-    route:
-      enabled: true
-      host: '""'
-  server:
-    service:
-      annotations:
-        service.beta.openshift.io/serving-cert-secret-name: vault-tls
-    extraVolumes:
-      - type: secret
-        name: vault-tls
-    standalone:
-      config: |
-        ui = true
-        listener "tcp" {
-          address = "[::]:8200"
-          cluster_address = "[::]:8201"
-          tls_cert_file = "/vault/userconfig/vault-tls/tls.crt"
-          tls_key_file  = "/vault/userconfig/vault-tls/tls.key"
-        }
-        storage "file" {
-          path = "/vault/data"
-        }
-
-##############
-# 🐙 Argo Ignore Differences
-#############
-jenkins_ignore_differences: &jenkins_ignore_differences
-  ignoreDifferences:
-  - group: apps.openshift.io
-    kind: DeploymentConfig
-    jsonPointers:
-    - /spec/template/spec/containers/0/image
-    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-  - group: build.openshift.io
-    kind: BuildConfig
-    jsonPointers:
-    - /spec/triggers
-
-nexus_ignore_differences: &nexus_ignore_differences
-  ignoreDifferences:
-  - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
-
-hoverflyignore_differences: &hoverfly_ignore_differences
-  ignoreDifferences:
-  - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
-    - /spec/host
-  - group: apps/v1
-    kind: Deployment
-    jsonPointers:
-    - /spec/replicas
-
-crw_ignore_differences: &crw_ignore_differences
-  ignoreDifferences:
-  - group: org.eclipse.che
-    kind: CheCluster
-    jsonPointers:
-    - /spec
-
-dev-ex-dashboard_ignore_differences: &dev-ex-dashboard_ignore_differences
-  ignoreDifferences:
-  - group: apps.openshift.io
-    kind: DeploymentConfig
-    jsonPointers:
-    - /spec/template/spec/containers/0/image
-    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-  - group: ''
-    kind: ConfigMap
-    jsonPointers:
-    - /data
-
-owncloud_ignore_differences: &owncloud_ignore_differences
-  ignoreDifferences:
-  - group: apps.openshift.io
-    kind: DeploymentConfig
-    jsonPointers:
-    - /spec/template/spec/containers/0/image
-    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-
-vault_ignore_differences: &vault_ignore_differences
-  ignoreDifferences:
-  - group: route.openshift.io
-    kind: Route
-    jsonPointers:
-    - /status/ingress
-    - /spec/host
 
 ##############
 # 🐙 Argo Sync Policy
@@ -233,142 +20,157 @@ sync_policy_no_selfheal: &sync_policy_no_selfheal
 ##############
 # 🛎 Argo App of Apps declaration
 #############
-
 # enabled true on an app is to tell helm to create an argo app cr for this item
+# Custom values override the default values in Helm Charts
 applications:
+  # Nexus
   - name: nexus
     enabled: true
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonatype-nexus
     source_path: ""
-    source_ref: "0.0.4"
-    sync_policy:
-      *sync_policy_true
+    source_ref: "0.0.5"
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
-    ignore_differences: *nexus_ignore_differences
+    ignore_differences:
+      - group: route.openshift.io
+        kind: Route
+        jsonPointers:
+          - /status/ingress
+  # Jenkins
   - name: jenkins
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-0.0.19"
-    sync_policy:
-      *sync_policy_true
+    source_ref: "jenkins-0.0.21"
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:
-      *jenkins_values
-    ignore_differences: *jenkins_ignore_differences
+      persistence: false
+      source_secrets:
+        - name: git-auth
+          username: idm-sa
+          password: thisisdefinitelynotmypassword🦆🦆🦆
+        - name: nexus-password
+          username: admin
+          password: admin123
+        - name: argocd-token
+          username: token
+          password: aaa.bbb.ccc
+    ignore_differences:
+      - group: apps.openshift.io
+        kind: DeploymentConfig
+        jsonPointers:
+          - /spec/template/spec/containers/0/image
+          - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+      - group: build.openshift.io
+        kind: BuildConfig
+        jsonPointers:
+          - /spec/triggers
+  # Pact-broker
   - name: pact-broker
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/pact-broker
     source_ref: "pact-broker-0.0.3"
-    sync_policy:
-      *sync_policy_true
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:
-      *pact_broker_values
+      secrets:
+        name: pact-broker-secrets
+        keys:
+          pactBrokerDatabaseUsername: pact_broker_database_username
+          pactBrokerDatabasePassword: pact_broker_database_password
+          pactBrokerAdmin: pact_broker_admin
+          pactBrokerAdminPassword: pact_broker_admin_password
+          pactBrokerBasicAuthUsername: pact_broker_user
+          pactBrokerBasicAuthPassword: pact_broker_user_password
+        values:
+          pactBrokerDatabaseUsername: pact_broker_user
+          pactBrokerDatabasePassword: thisisdefinitelynotmypassword
+          pactBrokerAdmin: admin
+          pactBrokerAdminPassword: thisisdefinitelynotmypassword
+          pactBrokerBasicAuthUsername: dev
+          pactBrokerBasicAuthPassword: thisisdefinitelynotmypassword
+  # Sonarqube
   - name: sonarqube
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/sonarqube
-    source_ref: "sonarqube-0.0.6"
-    sync_policy:
-      *sync_policy_true
+    source_ref: "sonarqube-0.0.7"
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
+  # CodeReady Workspaces
   - name: crw
     enabled: true
     destination: crw
     source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
     source_ref: master
-    sync_policy:
-      *sync_policy_no_selfheal
+    sync_policy: *sync_policy_no_selfheal
     no_helm: true
-    ignore_differences: *crw_ignore_differences
+    ignore_differences:
+      - group: org.eclipse.che
+        kind: CheCluster
+        jsonPointers:
+          - /spec
+  # Zalenium
   - name: zalenium
     enabled: true
     source: https://github.com/zalando/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
-    sync_policy:
-      *sync_policy_true
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:
-      *zalenium_values
+      hub:
+        serviceType: ClusterIP
+        openshift:
+          deploymentConfig:
+            enabled: true
+          route:
+            enabled: true
+        persistence:
+          enabled: false
+        serviceAccount:
+          create: false
+        desiredContainers: 0
+        podAnnotations:
+          app: zalenium
+  # Hoverfly
   - name: hoverfly
     enabled: true
     source: https://github.com/helm/charts.git
     source_path: incubator/hoverfly
-    sync_policy:
-      *sync_policy_true
+    sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     source_ref: "master"
     values:
-      *hoverfly_values
-    ignore_differences: *hoverfly_ignore_differences
-  - name: wekan
-    enabled: true
-    source: https://github.com/wekan/wekan.git
-    source_path: helm/wekan
-    sync_policy:
-      *sync_policy_true
-    destination: *ci_cd_ns
-    source_ref: "v4.01"
-    values:
-      *wekan_values
+      replicaCount: "1"
+      openshift:
+        route:
+          admin:
+            enabled: true
+            hostname: ""
+          proxy:
+            enabled: true
+            hostname: ""
+    ignore_differences:
+      - group: route.openshift.io
+        kind: Route
+        jsonPointers:
+          - /status/ingress
+          - /spec/host
+      - group: apps/v1
+        kind: Deployment
+        jsonPointers:
+          - /spec/replicas
+  # Tekton
   - name: tekton
     enabled: true
-    destination: crw
+    destination: openshift-operators
     source: https://github.com/rht-labs/refactored-adventure
     source_path: tekton/base
     source_ref: master
-    sync_policy:
-      *sync_policy_true
+    sync_policy: *sync_policy_true
     no_helm: true
-  - name: mattermost
-    enabled: true
-    source: https://github.com/mattermost/mattermost-helm.git
-    source_path: charts/mattermost-team-edition
-    destination: *ci_cd_ns
-    source_ref: "mattermost-team-edition-3.10.0"
-    values:
-      *mattermost_values
-  - name: etherpad
-    enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/etherpad
-    destination: *ci_cd_ns
-    source_ref: "etherpad-0.0.2"
-    sync_policy:
-      *sync_policy_true
-  - name: dev-ex-dashboard
-    enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/dev-ex-dashboard
-    destination: *ci_cd_ns
-    source_ref: "dev-ex-dashboard-0.0.2"
-    sync_policy:
-      *sync_policy_no_selfheal
-    ignore_differences: *dev-ex-dashboard_ignore_differences
-  - name: owncloud
-    enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/owncloud
-    destination: *ci_cd_ns
-    source_ref: "owncloud-0.0.2"
-    sync_policy:
-      *sync_policy_true
-    ignore_differences: *owncloud_ignore_differences
-    values:
-      *owncloud_values
-  - name: vault
-    enabled: true
-    source: https://github.com/hashicorp/vault-helm.git
-    source_path: .
-    source_ref: "v0.7.0"   
-    destination: *ci_cd_ns
-    sync_policy:
-      *sync_policy_true
-    ignore_differences: *vault_ignore_differences
-    values:
-      *vault_values
