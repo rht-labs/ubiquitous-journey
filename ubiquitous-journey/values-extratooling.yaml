@@ -9,14 +9,16 @@ sync_policy_true: &sync_policy_true
     automated:
       prune: true
       selfHeal: true
-      validate: true
+    syncOptions:
+    - Validate=true
 
 sync_policy_no_selfheal: &sync_policy_no_selfheal
   syncPolicy:
     automated:
       prune: true
       selfHeal: false
-      validate: true
+    syncOptions:
+    - Validate=true
 
 applications:
   # Wekan

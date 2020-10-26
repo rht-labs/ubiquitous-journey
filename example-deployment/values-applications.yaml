@@ -27,7 +27,8 @@ sync_policy_true: &sync_policy_true
     automated:
       prune: true
       selfHeal: true
-      validate: true
+    syncOptions:
+    - Validate=true
 
 ##############
 # Argo App of Apps declaration
