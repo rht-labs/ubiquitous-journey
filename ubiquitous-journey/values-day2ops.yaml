@@ -52,3 +52,12 @@ applications:
     values:
       namespace: *ops_ns
       prune_type: deployments
+  # Network Policies for Emulating Multitenancy
+  - name: network-policy
+    enabled: false
+    source: https://github.com/redhat-cop/helm-charts.git
+    source_path: charts/network-policy
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
+    source_ref: "networkpolicy-1.0.0"
+

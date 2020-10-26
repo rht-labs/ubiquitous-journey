@@ -9,7 +9,6 @@ There are three main components (one in each folder) to this repository. Each pa
 2. Ubiquitous Journey - Contains all the tools, collaboration software and day2ops to be deployed on Red Hat OpenShift. This includes chat applications, task management apps and tools to support CI/CD workflows and testing. For the complete list and details: [What's in the box?👨](docs/whats-in-the-box.md)
 3. An example (pet-battle) to show how the same structure can be used to implement GitOps for a simple three tiered app stack.
 
-
 ## How do I run it? 🏃‍♀️
 
 ### Prereq 
@@ -32,7 +31,6 @@ If you want to find out all the magic behind, how to override the default values
 
 ### ArgoCD Master and Child 👩‍👦
 We can create a master ArgoCD instance in the cluster that can bootstrap other "child" ArgoCD instance(s) for any given project team. This is a good approach if you want each project team to own and operate their own software development tools (jenkins, sonar, argocd, etc) but restrict any elevated permissions they may need e.g.creating argocd Custom Resources Definitions (`CRD's`) or limiting project creation. See [ArgoCD Master and Child Deployment](docs/argocd-master-child.md)
-
 
 ## How can I bring my own tooling?
 
