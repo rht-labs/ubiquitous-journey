@@ -29,7 +29,8 @@ helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc -n labs-ci-cd ap
 ### Bootstrap projects and ArgoCD 🍻
 If you want to find out all the magic behind, how to override the default values, deploy an example application through ArgoCD and collect metrics, let's meet [here!](docs/bootstrap-argocd.md)🧙‍♀️
 
-## ArgoCD Master and Child 👩‍👦
+
+### ArgoCD Master and Child 👩‍👦
 We can create a master ArgoCD instance in the cluster that can bootstrap other "child" ArgoCD instance(s) for any given project team. This is a good approach if you want each project team to own and operate their own software development tools (jenkins, sonar, argocd, etc) but restrict any elevated permissions they may need e.g.creating argocd Custom Resources Definitions (`CRD's`) or limiting project creation. See [ArgoCD Master and Child Deployment](docs/argocd-master-child.md)
 
 
@@ -38,14 +39,6 @@ We can create a master ArgoCD instance in the cluster that can bootstrap other "
 TODO - add some instructions for adding:
 1) new helm charts
 2) new Operators etc
-
-
-## Dashboard 📃
-
-The [Developer Experience Dashboard](https://github.com/rht-labs/dev-ex-dashboard) is deployed but requires a `ConfigMap` to be generated once all of the applications have been deployed. For now run this script to generate the config map in the `labs-ci-cd` project:
-```bash
-bash <(curl -s https://raw.githubusercontent.com/rht-labs/dev-ex-dashboard/master/regenerate-config-map.sh)
-```
 
 ## Contributing
 
