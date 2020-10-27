@@ -1,0 +1,145 @@
+destination_pm: &pm_ns labs-pm
+destination_ci_cd: &ci_cd_ns labs-ci-cd
+
+##############
+# 🐙 Argo Sync Policy
+#############
+sync_policy_true: &sync_policy_true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - Validate=true
+
+sync_policy_no_selfheal: &sync_policy_no_selfheal
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+    - Validate=true
+
+applications:
+  # Wekan
+  - name: wekan
+    enabled: true
+    source: https://github.com/wekan/wekan.git
+    source_path: helm/wekan
+    sync_policy: *sync_policy_true
+    destination: *pm_ns
+    source_ref: "v4.41"
+    values:
+      service:
+        type: ClusterIP
+      autoscaling:
+        enabled: false
+      mongodb-replicaset:
+        replicas: 1
+        securityContext:
+          runAsUser: ""
+          fsGroup: ""
+      ingress:
+        enabled: false
+      route:
+        enabled: true
+  # Mattermost
+  - name: mattermost
+    enabled: true
+    source: https://github.com/mattermost/mattermost-helm.git
+    source_path: charts/mattermost-team-edition
+    destination: *pm_ns
+    source_ref: "mattermost-team-edition-3.16.0"
+    values:
+      route:
+        enabled: true
+      mysql:
+        mysqlRootPassword: "mysqlpass"
+        mysqlUser: "mattermost"
+        mysqlPassword: "matterpass"
+  # Etherpad
+  - name: etherpad
+    enabled: true
+    source: https://github.com/redhat-cop/helm-charts.git
+    source_path: charts/etherpad
+    destination: *pm_ns
+    source_ref: "etherpad-0.0.2"
+    sync_policy: *sync_policy_true
+  # Dev-Ex Dashboard
+  - name: dev-ex-dashboard
+    enabled: true
+    source: https://github.com/redhat-cop/helm-charts.git
+    source_path: charts/dev-ex-dashboard
+    destination: *pm_ns
+    source_ref: "dev-ex-dashboard-0.0.2"
+    sync_policy: *sync_policy_no_selfheal
+    ignore_differences:
+      - group: apps.openshift.io
+        kind: DeploymentConfig
+        jsonPointers:
+          - /spec/template/spec/containers/0/image
+          - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+      - group: ""
+        kind: ConfigMap
+        jsonPointers:
+          - /data
+  # Owncloud
+  - name: owncloud
+    enabled: true
+    source: https://github.com/redhat-cop/helm-charts.git
+    source_path: charts/owncloud
+    destination: *pm_ns
+    source_ref: "owncloud-0.0.2"
+    sync_policy: *sync_policy_true
+    values:
+      route:
+        enabled: true
+      hostname: owncloud.apps.hivec.sandbox1559.opentlc.com
+    ignore_differences:
+      - group: apps.openshift.io
+        kind: DeploymentConfig
+        jsonPointers:
+          - /spec/template/spec/containers/0/image
+          - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+  # Hashicorp Vault
+  - name: vault
+    enabled: true
+    source: https://github.com/hashicorp/vault-helm.git
+    source_path: .
+    source_ref: "v0.7.0"
+    destination: *ci_cd_ns
+    sync_policy: *sync_policy_true
+    values:
+      global:
+        tlsDisable: false
+        openshift: true
+      injector:
+        enabled: false
+        route:
+          enabled: true
+          host: '""'
+      server:
+        service:
+          annotations:
+            service.beta.openshift.io/serving-cert-secret-name: vault-tls
+        extraVolumes:
+          - type: secret
+            name: vault-tls
+        standalone:
+          config: |
+            ui = true
+            listener "tcp" {
+              address = "[::]:8200"
+              cluster_address = "[::]:8201"
+              tls_cert_file = "/vault/userconfig/vault-tls/tls.crt"
+              tls_key_file  = "/vault/userconfig/vault-tls/tls.key"
+            }
+            storage "file" {
+              path = "/vault/data"
+            }
+    ignore_differences:
+      - group: route.openshift.io
+        kind: Route
+        jsonPointers:
+          - /status/ingress
+          - /spec/host

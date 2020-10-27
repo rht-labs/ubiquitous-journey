@@ -23,13 +23,13 @@ argocd-operator:
   instancelabel: rht-labs.com/master-argocd
   
   # operator manages upgrades etc
-  version: v1.6.1
+  version: v1.7.7
   operator:
-    version: argocd-operator.v0.0.11
+    version: argocd-operator.v0.0.14
     channel: alpha
     name: argocd-operator
 
   metrics:
     enabled: true
     prometheus:
-      version: prometheusoperator.0.32.0
+      version: prometheusoperator.0.37.0

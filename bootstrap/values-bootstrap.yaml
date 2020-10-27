@@ -6,11 +6,12 @@
 bootstrap-project:
   enabled: true
   ci_cd_namespace: &ci_cd "labs-ci-cd"
+  pm_namespace: &pm "labs-pm"
+  ops_namespace: &ops "labs-cluster-ops"
   dev_namespace: &dev "labs-dev"
   test_namespace: &test "labs-test"
   staging_namespace: &stage "labs-staging"
-  bindings: &binds
-      # this labs-devs is the GROUP NAME in IDM
+  bindings: &binds # this labs-devs is the GROUP NAME in IDM
     - name: labs-devs
       kind: Group
       role: edit
@@ -24,40 +25,51 @@ bootstrap-project:
       namespace: *ci_cd
 
   namespaces:
-  - name: *ci_cd
-    bindings:
-      *binds
-  - name: *dev
-    bindings:
-      *binds
-  - name: *test
-    bindings:
-      *binds
-  - name: *stage
-    bindings:
-      *binds
+    - name: *ci_cd
+      bindings: *binds
+    - name: *pm
+      bindings: *binds
+    - name: *ops
+      bindings: *binds
+    - name: *dev
+      bindings: *binds
+    - name: *test
+      bindings: *binds
+    - name: *stage
+      bindings: *binds
 
   serviceaccounts:
-  - name: jenkins
-    namespace: *ci_cd
+    - name: jenkins
+      namespace: *ci_cd
 
 argocd-operator:
   enabled: true
   name: argocd
   namespace: *ci_cd
   instancelabel: rht-labs.com/uj
-  
+
   # operator manages upgrades etc
-  version: v1.6.1
+  version: v1.7.7
   operator:
-    version: argocd-operator.v0.0.11
+    version: argocd-operator.v0.0.14
     channel: alpha
     name: argocd-operator
 
   metrics:
     enabled: true
     prometheus:
-      version: prometheusoperator.0.32.0
+      version: prometheusoperator.0.37.0
+
+  # argocd rbac only in listed namespaces
+  namespaceRoleBinding:
+    enabled: false
+    namespaces:
+      - name: *ci_cd
+      - name: *pm
+      - name: *ops
+      - name: *dev
+      - name: *test
+      - name: *stage
 
 sealed-secrets:
   # Disabled by default

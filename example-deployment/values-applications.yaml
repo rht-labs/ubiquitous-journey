@@ -10,7 +10,7 @@ pet_battle: &front_end_values
   # image_repository: image-registry.openshift-image-registry.svc:5000
   # image_name: pet-battle
   # image_namespace: labs-ci-cd
-  config_map: "'http://pet-battle-api-labs-test.apps.s43.core.rht-labs.com'"
+  config_map: "'http://pet-battle-api-labs-test.apps.s45.core.rht-labs.com'"
 
 pet_battle_api: &api_values
   appName: pet-battle-api
@@ -20,16 +20,16 @@ pet_battle_api: &api_values
   image_version: latest
 
 ##############
-# Argo Ignore Differences
+# 🐙 Argo Sync Policy
 #############
-ignore_differences: &ignore_differences
-  ignoreDifferences:
-  - group: apps.openshift.io
-    kind: DeploymentConfig
-    jsonPointers:
-    - /spec/template/spec/containers/0/image
-    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-    - /spec/triggers/1/imageChangeParams/lastTriggeredImage
+sync_policy_true: &sync_policy_true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - Validate=true
+
 ##############
 # Argo App of Apps declaration
 #############
@@ -38,17 +38,24 @@ applications:
   enabled: true
   source: https://github.com/springdo/pet-battle.git
   source_path: chart
-  sync_policy_automated: true
+  sync_policy:
+    *sync_policy_true
   destination: *test_ns
   source_ref: master
   values: *front_end_values
-  ignore_differences: *ignore_differences
 - name: pet-battle-api
   enabled: true
   source: https://github.com/eformat/pet-battle-api.git
   source_path: chart
-  sync_policy_automated: true
+  sync_policy:
+    *sync_policy_true
   destination: *test_ns
   source_ref: master
   values: *api_values
-  ignore_differences: *ignore_differences
+  ignore_differences:
+  - group: apps.openshift.io
+    kind: DeploymentConfig
+    jsonPointers:
+    - /spec/template/spec/containers/0/image
+    - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+    - /spec/triggers/1/imageChangeParams/lastTriggeredImage
