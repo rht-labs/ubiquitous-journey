@@ -13,7 +13,7 @@
 - Hoverfly - Deploy Hoverfly for Service Virtualisation. See the [Hoverfly Chart](https://github.com/helm/charts/tree/master/incubator/hoverfly) for more info.
 - PactBroker - Deploy PactBroker for Contract Testing. See the [Pact Broker Chart](https://github.com/redhat-cop/helm-charts/tree/master/charts/pact-broker) for more info.
 - CodeReadyWorkspaces - Deploy Red Hat CodeReadyWorkspaces for an IDE hosted on OpenShift. See the [CRW Kustomize](https://github.com/rht-labs/refactored-adventure) for more info.
-- Zalenium - Deploy Zalenium for Selenium Grid Testing on Kubernetes. See the [Zalenium Chart](https://github.com/ckavili/zalenium) for more info.
+- Zalenium - Deploy Zalenium for Selenium Grid Testing on Kubernetes. See the [Zalenium Chart](https://github.com/zalando/zalenium/tree/master/charts/zalenium) for more info.
 - Etherpad - Deploy Etherpad Lite for a real-time collaborative text editor. See [Etherpad Lite](https://github.com/ether/etherpad-lite) for more info.
 - Mattermost - Deploy Mattermost Team Edition for team collaboration and messaging See the [Mattermost Chart](https://github.com/mattermost/mattermost-helm) for more info.
 - Vault - Deploy Vault to securely store and access your secrets. See the [Vault Chart](https://github.com/hashicorp/vault-helm) for more info.
