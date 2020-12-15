@@ -180,7 +180,7 @@ applications:
   - name: pelorus
     enabled: true
     source: https://github.com/redhat-cop/pelorus.git
-    source_path: charts/deploy
+    source_path: charts/pelorus
     source_ref: master
     destination: pelorus
     sync_policy:
