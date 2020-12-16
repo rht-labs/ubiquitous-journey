@@ -99,20 +99,11 @@ applications:
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/sonarqube
-    source_ref: "sonarqube-0.0.8"
+    source_ref: "sonarqube-0.0.7"
     sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:
       initContainers: true
-      plugins:
-        install:
-          - https://github.com/checkstyle/sonar-checkstyle/releases/download/8.35/checkstyle-sonar-plugin-8.35.jar
-          - https://repo1.maven.org/maven2/org/sonarsource/java/sonar-java-plugin/6.3.2.22818/sonar-java-plugin-6.3.2.22818.jar
-          - https://repo1.maven.org/maven2/org/sonarsource/jacoco/sonar-jacoco-plugin/1.1.0.898/sonar-jacoco-plugin-1.1.0.898.jar
-          - https://github.com/dependency-check/dependency-check-sonar-plugin/releases/download/2.0.6/sonar-dependency-check-plugin-2.0.6.jar
-          - https://github.com/SonarSource/SonarJS/releases/download/6.2.2.13315/sonar-javascript-plugin-6.2.2.13315.jar
-          - https://github.com/SonarSource/SonarTS/releases/download/2.1.0.4359/sonar-typescript-plugin-2.1.0.4362.jar
-          - https://github.com/SonarSource/sonar-php/releases/download/3.11.0.6645/sonar-php-plugin-3.11.0.6645.jar
   # CodeReady Workspaces
   - name: crw
     enabled: true
