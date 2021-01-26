@@ -9,11 +9,11 @@ appVersion: 0.0.1
 dependencies:
   - name: bootstrap-project
     version: "0.0.7"
-    repository: https://redhat-cop.github.io/helm-charts
+    repository: https://redhat-cop.github.io/helm-charts/redhat-cop
   - name: argocd-operator
     version: "0.0.21"
-    repository: https://redhat-cop.github.io/helm-charts
+    repository: https://redhat-cop.github.io/helm-charts/redhat-cop
   - name: sealed-secrets
     version: "1.10.2"
-    repository: https://kubernetes-charts.storage.googleapis.com/
+    repository: https://bitnami-labs.github.io/sealed-secrets
     condition: sealed-secrets.enabled
