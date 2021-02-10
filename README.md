@@ -20,7 +20,7 @@ There are three main components (one in each folder) to this repository. Each pa
 A handy two liner to deploy all the artifacts in this project using their default values
 ```bash
 # bootstrap to install argocd and create projects
-helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm upgrade --install bootstrap -f bootstrap/values-bootstrap.yaml bootstrap --create-namespace --namespace labs-bootstrap
 # give me ALL THE TOOLS, EXTRAS & OPSY THINGS !
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc -n labs-ci-cd apply -f-
 ```
