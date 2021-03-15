@@ -9,7 +9,7 @@ If you want to override namespaces see [Deploy to a custom namespace](deploy-cus
 
 1. Bring down the chart dependencies and install `bootstrap` helm chart in a sweet oneliner 🍾:
 ```bash
-helm template bootstrap --dependency-update  -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f -
+helm upgrade --install bootstrap -f bootstrap/values-bootstrap.yaml bootstrap --create-namespace --namespace labs-bootstrap
 ```
 
 2. Because this is GitOps we should manage the config of these roles, projects and ArgoCD itself by adding it to our newly created ArgoCD instance. This means all future changes to these can be tracked and managed in Git! Login to Argo and run the following command.
@@ -42,6 +42,11 @@ By default the ArgoCD service account use Cluster wide RoleBindings. Namespace c
     - name: *dev
     - name: *test
     - name: *stage
+```
+
+You can cleanup the boostrap by running:
+```bash
+helm delete bootstrap --namespace labs-bootstrap --debug
 ```
 
 ### Tooling for Application Development 🦅
