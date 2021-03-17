@@ -38,8 +38,8 @@ Uninstall and delete all resources in the various projects
 ```bash
 # delete ubiquitous-journey
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc -n labs-ci-cd delete -f-
-# delete and clean-up bootstrap, run:
-helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc delete -f-
+# uninstall and clean-up bootstrap, run:
+helm uninstall bootstrap --namespace labs-bootstrap
 ```
 
 
