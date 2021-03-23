@@ -20,7 +20,7 @@ There are three main components (one in each folder) to this repository. Each pa
 A handy two liner to deploy all the artifacts in this project using their default values
 ```bash
 # bootstrap to install argocd and create projects
-helm template bootstrap --dependency-update -f bootstrap/values-bootstrap.yaml bootstrap | oc apply -f-
+helm upgrade --install bootstrap -f bootstrap/values-bootstrap.yaml bootstrap --create-namespace --namespace labs-bootstrap
 # give me ALL THE TOOLS, EXTRAS & OPSY THINGS !
 helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc -n labs-ci-cd apply -f-
 ```
@@ -31,6 +31,17 @@ If you want to find out all the magic behind, how to override the default values
 
 ### ArgoCD Master and Child 👩‍👦
 We can create a master ArgoCD instance in the cluster that can bootstrap other "child" ArgoCD instance(s) for any given project team. This is a good approach if you want each project team to own and operate their own software development tools (jenkins, sonar, argocd, etc) but restrict any elevated permissions they may need e.g.creating argocd Custom Resources Definitions (`CRD's`) or limiting project creation. See [ArgoCD Master and Child Deployment](docs/argocd-master-child.md)
+
+
+### Cleanup 
+Uninstall and delete all resources in the various projects
+```bash
+# delete ubiquitous-journey
+helm template -f argo-app-of-apps.yaml ubiquitous-journey/ | oc -n labs-ci-cd delete -f-
+# uninstall and clean-up bootstrap, run:
+helm uninstall bootstrap --namespace labs-bootstrap
+```
+
 
 ## How can I bring my own tooling?
 
