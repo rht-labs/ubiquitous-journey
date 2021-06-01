@@ -19,6 +19,8 @@ There are three main components (one in each folder) to this repository. Each pa
 #### For the impatient 🤠
 A handy two liner to deploy all the artifacts in this project using their default values
 ```bash
+# pull the chart dependencies
+helm dep up bootstrap
 # bootstrap to install argocd and create projects
 helm upgrade --install bootstrap -f bootstrap/values-bootstrap.yaml bootstrap --create-namespace --namespace labs-bootstrap
 # give me ALL THE TOOLS, EXTRAS & OPSY THINGS !
