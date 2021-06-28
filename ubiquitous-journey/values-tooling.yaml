@@ -145,6 +145,10 @@ applications:
             enabled: true
           route:
             enabled: true
+            tls:
+              termination: edge
+              insecureEdgeTerminationPolicy: Redirect
+
         persistence:
           enabled: false
         serviceAccount:
