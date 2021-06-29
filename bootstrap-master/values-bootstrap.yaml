@@ -23,9 +23,8 @@ argocd-operator:
   instancelabel: rht-labs.com/master-argocd
   
   # operator manages upgrades etc
-  version: v1.8.7
   operator:
-    version: argocd-operator.v0.0.14
+    version: argocd-operator.v0.0.15
     channel: alpha
     name: argocd-operator
 
@@ -33,3 +32,36 @@ argocd-operator:
     enabled: true
     prometheus:
       version: prometheusoperator.0.37.0
+
+  # https://argocd-operator.readthedocs.io/en/latest/reference/argocd/
+  argocd_cr:
+    version: v2.0.2
+    accounts:
+      accounts.admin: login, apiKey
+    applicationInstanceLabelKey: rht-labs.com/uj
+    grafana:
+      enabled: true
+      route:
+        enabled: true
+      size: 1
+    prometheus:
+      enabled: true
+      route:
+        enabled: true
+      size: 1
+    ha:
+      enabled: false
+    rbac:
+      defaultPolicy: role:admin
+    secrets: []
+    server:
+      route:
+        enabled: true
+      autoscale:
+        enabled: false
+      service:
+        type: ClusterIP
+    initialRepositories: |
+      - name: redhat-cop
+        type: helm
+        url: https://redhat-cop.github.io/helm-charts
