@@ -31,7 +31,7 @@ argocd-operator:
   metrics:
     enabled: true
     prometheus:
-      version: prometheusoperator.0.37.0
+      version: prometheusoperator.0.47.0
 
   # https://argocd-operator.readthedocs.io/en/latest/reference/argocd/
   argocd_cr:
