@@ -27,7 +27,7 @@ sync_policy_no_selfheal: &sync_policy_no_selfheal
 applications:
   # Nexus
   - name: nexus
-    enabled: true
+    enabled: false
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonatype-nexus
     source_path: ""
