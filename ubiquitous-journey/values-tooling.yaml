@@ -228,10 +228,10 @@ applications:
           - /spec/host
   # Microcks
   - name: microcks
-    enabled: true
+    enabled: false
     destination: microcks
-    source: https://github.com/fmenesesg/refactored-adventure
+    source: https://github.com/rht-labs/refactored-adventure
     source_path: microcks/base
-    source_ref: add-microcks
+    source_ref: master
     sync_policy: *sync_policy_true
     no_helm: true
