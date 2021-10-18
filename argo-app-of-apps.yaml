@@ -19,7 +19,7 @@ applications:
     enabled: true
     source: https://github.com/rht-labs/ubiquitous-journey.git
     source_path: ubiquitous-journey/
-    source_ref: workshopcaio
+    source_ref: master
     sync_policy: *sync_policy_true
     helm_values:
       - values-tooling.yaml
