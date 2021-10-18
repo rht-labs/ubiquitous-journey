@@ -17,7 +17,7 @@ applications:
   - name: ubiquitous-journey
     destination: labs-ci-cd
     enabled: true
-    source: https://github.com/fmenesesg/ubiquitous-journey.git
+    source: https://github.com/rht-labs/ubiquitous-journey.git
     source_path: ubiquitous-journey/
     source_ref: workshopcaio
     sync_policy: *sync_policy_true
