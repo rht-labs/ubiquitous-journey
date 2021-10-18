@@ -27,7 +27,7 @@ sync_policy_no_selfheal: &sync_policy_no_selfheal
 applications:
   # Nexus
   - name: nexus
-    enabled: true
+    enabled: false
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonatype-nexus
     source_path: ""
@@ -226,3 +226,12 @@ applications:
         jsonPointers:
           - /status/ingress
           - /spec/host
+  # Microcks
+  - name: microcks
+    enabled: false
+    destination: microcks
+    source: https://github.com/rht-labs/refactored-adventure
+    source_path: microcks/base
+    source_ref: master
+    sync_policy: *sync_policy_true
+    no_helm: true
