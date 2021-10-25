@@ -31,7 +31,7 @@ applications:
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonatype-nexus
     source_path: ""
-    source_ref: "0.0.5"
+    source_ref: "1.1.1"
     sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:
@@ -102,7 +102,7 @@ applications:
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/sonarqube
-    source_ref: "sonarqube-0.0.9"
+    source_ref: "sonarqube-0.0.17"
     sync_policy: *sync_policy_true
     destination: *ci_cd_ns
     values:

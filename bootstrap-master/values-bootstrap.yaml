@@ -35,7 +35,7 @@ argocd-operator:
 
   # https://argocd-operator.readthedocs.io/en/latest/reference/argocd/
   argocd_cr:
-    version: v2.0.5
+    version: v2.1.5
     accounts:
       accounts.admin: login, apiKey
     applicationInstanceLabelKey: rht-labs.com/uj
