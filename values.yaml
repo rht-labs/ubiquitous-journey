@@ -1,0 +1,52 @@
+# Tell ArgoCD where to find the ubiquitous-journey project
+source: https://github.com/rht-labs/ubiquitous-journey.git
+team: labs
+release: ci-cd
+
+applications:
+  # Tooling to support CI/CD
+  - name: ubiquitous-journey
+    enabled: true
+    source_path: "."
+    helm_values:
+      - ubiquitous-journey/values-tooling.yaml
+
+  # Test app of app
+  - name: test-app-of-pb
+    enabled: true
+    source_path: "."
+    helm_values:
+      - pet-battle/test/values.yaml
+
+
+###########################################
+#  🐌 Apps here are disabled by default 🐌 #
+###########################################
+
+  # Staging App of Apps for Pet Battle
+  - name: staging-app-of-pb
+    enabled: false
+    source_path: "."
+    helm_values:
+      - pet-battle/stage/values.yaml
+  
+  # Extra tooling such as task management and chat apps
+  - name: ubiquitous-journey-extra
+    enabled: false
+    source_path: "."
+    helm_values:
+      - ubiquitous-journey/values-extratooling.yaml
+
+  # Extra tooling such as task management and chat apps
+  - name: uj-extras
+    enabled: false
+    source_path: "."
+    helm_values:
+      - ubiquitous-journey/values-day2ops.yaml
+
+  # Extra Ops tasks such as image pruning and network policy
+  - name: uj-day2ops
+    enabled: false
+    source_path: "."
+    helm_values:
+      - ubiquitous-journey/values-day2ops.yaml

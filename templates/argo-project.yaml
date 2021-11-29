@@ -1,0 +1,23 @@
+{{- if .Values.argocd_projects }}
+{{- range $project := .Values.argocd_projects }}
+{{- if $project.enabled }}
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ $project.name }}
+  name: {{ $project.name }}
+spec:
+  sourceRepos:
+  - '*'
+{{- if $project.destinations }}
+  destinations:
+{{- toYaml $project.destinations | nindent 2 }}
+{{- end }}
+
+{{- end }}
+{{- end }}
+{{- end }}

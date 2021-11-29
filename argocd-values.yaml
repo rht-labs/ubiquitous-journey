@@ -1,0 +1,20 @@
+ignoreHelmHooks: true
+
+#  if using the rh-gitops operator :P
+# operator: []
+# namespaces:
+#  - labs-ci-cd
+#  - labs-dev
+#  - labs-test
+#  - labs-stage
+
+argocd_cr:
+  repositoryCredentials: |
+    - url: https://gitlab-ce.apps.openshift-498-bd8hw.do500.redhatlabs.dev
+      type: git
+      passwordSecret:
+        key: password
+        name: git-auth
+      usernameSecret:
+        key: username
+        name: git-auth

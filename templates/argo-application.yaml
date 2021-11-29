@@ -1,0 +1,92 @@
+{{- if .Values.applications }}
+{{- $release := .Values.release }}
+{{- $source := .Values.source }}
+{{- $team := .Values.team }}
+{{- range $app := .Values.applications }}
+{{- if $app.source }}
+{{- $source = $app.source }}
+{{- end }}
+{{- if $app.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+{{- if or (eq $release "ci-cd") (eq $release "cluster-ops") (eq $release "pm") }}
+  name: {{ .name }}
+{{- else }}
+  name: {{ $release }}-{{ .name }}
+{{- end }}
+  labels:
+{{- if .values }}
+{{- if .values.fullnameOverride }}
+{{- if contains .values.fullnameOverride .name }}
+    app.kubernetes.io/instance: {{ .values.fullnameOverride }}
+{{- end }}
+{{- else }}
+    app.kubernetes.io/instance: {{ .name }}
+{{- end }}
+{{- end }}
+spec:
+  destination:
+    namespace: {{ .destination | default (printf "%s-%s" $team $release) }}
+    server: {{ .cluster_api | default "https://kubernetes.default.svc" }}
+  project: {{ .project | default "default" }}
+  source:
+{{- if not .no_helm }}
+    helm:
+      releaseName: {{ .name }}
+{{- if .helm_values }}
+      valueFiles:
+{{- toYaml .helm_values | nindent 8 }}
+{{- end }}
+{{- if .values }}
+      values: |
+{{- toYaml .values | nindent 8 }}
+{{- end }}
+{{- end }}
+    {{- if .source_path }}
+    path: {{ .source_path | default "." }}
+    {{- end }}
+    repoURL: {{ $source }}
+    targetRevision: {{ .source_ref | default "main" | quote }}
+    {{- if not .source_path }}
+    chart: {{ .chart_name | default .name }}
+    {{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Validate=true
+  ignoreDifferences:
+    - group: apps.openshift.io
+      kind: DeploymentConfig
+      jsonPointers:
+        - /spec/replicas
+        - /spec/template/spec/containers/0/image
+        - /spec/triggers/0/imageChangeParams/lastTriggeredImage
+        - /spec/triggers/1/imageChangeParams/lastTriggeredImage
+        - /spec/template/metadata/annotations/rollme
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+        - /spec/template/spec/containers/0/image
+        - /spec/template/spec/containers/1/image
+    - group: build.openshift.io
+      kind: BuildConfig
+      jsonPointers:
+        - /spec/triggers
+    - group: route.openshift.io
+      kind: Route
+      jsonPointers:
+        - /status/ingress
+    - group: integreatly.org
+      kind: GrafanaDataSource
+      jsonPointers:
+        - /spec/datasources/0/secureJsonData/httpHeaderValue1
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,8 +1,0 @@
-apiVersion: v2
-name: Example Deployment
-description: Example definition for deploying customer apps
-type: application
-# This is the chart version. This version number should be incremented each time you make changes
-version: 1.0.1
-# This is the version number of the application being deployed. This version number should be
-appVersion: 0.0.1
