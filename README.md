@@ -52,8 +52,9 @@ helm upgrade --install uj --namespace labs-ci-cd .
 ```
 
 
-If you Open your instance of ArgoCD in the UI (`echo https://$(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd)`) - you should see lots of things spinning up 
-![argocd-ui]()
+If you Open your instance of ArgoCD in the UI (`echo https://$(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd)`) - you should see lots of things spinning up
+
+![argocd-ui](docs/images/argocd-uj.png)
 
 To deploy the whole thing AND the kitchen sink... you can set `enabled: true` on all of the definitions in the `values.yaml` file 🧨 .... 💥
 
