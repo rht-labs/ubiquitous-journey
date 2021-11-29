@@ -22,7 +22,7 @@ helm repo add redhat-cop https://redhat-cop.github.io/helm-charts
 helm upgrade --install argocd \
   --create-namespace \
   --namespace labs-ci-cd \
-  charts/argocd-operator
+  redhat-cop/argocd-operator
 ```
 
 2. Use the Red Hat supported GitOps Operator
@@ -40,7 +40,7 @@ helm upgrade --install argocd \
   --create-namespace \
   --namespace labs-ci-cd \
   -f argocd-values.yaml \
-  charts/argocd-operator
+  redhat-cop/argocd-operator
 ```
 
 3. Go to the Operator Hub on OpenShift and hit install... But remember, you should try to back up the configuration of the ArgoCD Custom Resource instance for repeatability...
@@ -50,6 +50,10 @@ A handy one liner to deploy all the default software artifacts in this project u
 ```bash
 helm upgrade --install uj --namespace labs-ci-cd .
 ```
+
+
+If you Open your instance of ArgoCD in the UI (`echo https://$(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd)`) - you should see lots of things spinning up 
+![argocd-ui]()
 
 To deploy the whole thing AND the kitchen sink... you can set `enabled: true` on all of the definitions in the `values.yaml` file 🧨 .... 💥
 
@@ -62,10 +66,9 @@ helm uninstall uj --namespace labs-ci-cd
 ### Debug
 To debug one of the ubiquitous-journey values files, just to see values are passing as expected etc and get a view of what argocd is going to roll out. Run 
 ```
-
-
+# example debugging the ArgoCD `Application` manifests from the example deployment 
+helm install debug --dry-run -f pet-battle/test/values.yaml . 
 ```
-
 
 ## How can I bring my own tooling?
 
