@@ -34,9 +34,21 @@ helm upgrade --install argocd \
   redhat-cop/gitops-operator
 ```
 
+**NOTE**
+```bash
+Error: rendered manifests contain a resource that already exists. Unable to continue with install: Subscription "openshift-gitops-operator" in namespace "openshift-operators" exists and cannot be imported into the current release: invalid ownership metadata;.....
+```
+If you get an error such as this when installing argocd; it is because the o`penshift-gitops-operator` has already been installed. This means the APIs provided by it such as `ArgoCD`, `Application`, `ArgoProject` etc) are already available for us to consume. We just need to update the Cluster instance of ArgoCD to allow it deploy a new instance to our namespace.
+```bash
+./patch-gitops-operator.sh labs-ci-cd
+```
+
+Then simply run the install command by passing in the parameter `--set operator=null` to the chart to not install the operator but only create an instance in your provided namespace.
+
+
 OR
 
-2. Go to the Operator Hub on OpenShift and hit install... Make it a Cluster Scoped Operator. But remember, you should try to back up the configuration of the ArgoCD Custom Resource instance for repeatability...
+1. Go to the Operator Hub on OpenShift and hit install... Make it a Cluster Scoped Operator. But remember, you should try to back up the configuration of the ArgoCD Custom Resource instance for repeatability...
 
 #### 🤠 Deploying the Ubiquitous Journey
 A handy one liner to deploy all the default software artifacts in this project using their default values. Just make sure the namespace you set below is the same one as where your ArgoCD from the prereqs is running :)
@@ -63,9 +75,10 @@ helm upgrade --install uj \
 Uninstall and delete all resources in the various projects
 ```bash
 # remove the ubiquitous-journey project from ArgoCD
+# This may take a minute or two so it's best to keep an eye on the resources in ArgoCD before removing it  
 helm uninstall uj --namespace labs-ci-cd
 
-# remove your ArgoCD instance 
+# remove your ArgoCD instance
 helm uninstall argocd
 
 # to cleanup all the namespaces created

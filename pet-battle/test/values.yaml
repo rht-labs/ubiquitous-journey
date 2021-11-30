@@ -23,6 +23,8 @@ applications:
     chart_name: pet-battle-api
     source_ref: 1.1.1 # helm chart version
     values:
+      # hpa:
+      #   enabled: false
       image_name: pet-battle-api
       image_version: latest # container image version
 

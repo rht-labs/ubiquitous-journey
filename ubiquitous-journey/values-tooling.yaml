@@ -179,8 +179,10 @@ applications:
         route:
           admin:
             enabled: true
+            hostname: ''
           proxy:
             enabled: true
+            hostname: ''
 
 ###########################################
 #  🐌 Apps here are disabled by default 🐌 #
