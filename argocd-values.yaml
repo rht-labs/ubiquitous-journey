@@ -1,12 +1,16 @@
 ignoreHelmHooks: true
 
-#  if using the rh-gitops operator :P
-# operator: []
-# namespaces:
-#  - labs-ci-cd
-#  - labs-dev
-#  - labs-test
-#  - labs-stage
+#  if using the rh-gitops operator and you want to change the location for the ArgoCD instance to be deployed to:
+# It's defaulted to labs-ci-cd on the chart anyways
+namespaces:
+ - labs-ci-cd
+
+# example
+secrets:
+  - name: git-auth
+    username: 'user'
+    password: 'pass1234'
+    sshPrivateKey: ''
 
 argocd_cr:
   repositoryCredentials: |

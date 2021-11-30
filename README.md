@@ -16,16 +16,7 @@ There are two components (one in each folder) to this repository. Each part can 
 
 Install an instance of ArgoCD. There are several methods to install ArgoCD in OpenShift. Pick your favourite flavour 🍦
 
-1. Use the community Operator for ArgoCD with some defaults to get up and running.
-```bash
-helm repo add redhat-cop https://redhat-cop.github.io/helm-charts
-helm upgrade --install argocd \
-  --create-namespace \
-  --namespace labs-ci-cd \
-  redhat-cop/argocd-operator
-```
-
-2. Use the Red Hat supported GitOps Operator
+1. Use the Red Hat supported GitOps Operator (configured by default as cluster wide and to deploy the operator and an instance in `labs-ci-cd`)
 ```bash
 helm repo add redhat-cop https://redhat-cop.github.io/helm-charts
 helm upgrade --install argocd \
@@ -34,7 +25,7 @@ helm upgrade --install argocd \
   redhat-cop/gitops-operator
 ```
 
-If you use either of the helm approaches, I strongly recommend you get a copy of the `values.yaml` and make edits that way. This values file can be checked in to this repo and be kept if further changes are needed such as adding in private `repositoryCredentials` or other handy stuff. eg
+If using helm, it's **strongly** recommend you get a copy of the `values.yaml` and make edits that way. This values file can be checked in to this repo and be kept if further changes are needed such as adding in private `repositoryCredentials` or other handy stuff such as `secrets` and `namespaces` etc... eg
 ```bash
 helm upgrade --install argocd \
   --create-namespace \
@@ -43,7 +34,9 @@ helm upgrade --install argocd \
   redhat-cop/argocd-operator
 ```
 
-3. Go to the Operator Hub on OpenShift and hit install... But remember, you should try to back up the configuration of the ArgoCD Custom Resource instance for repeatability...
+OR
+
+2. Go to the Operator Hub on OpenShift and hit install... Make it a Cluster Scoped Operator. But remember, you should try to back up the configuration of the ArgoCD Custom Resource instance for repeatability...
 
 #### 🤠 Deploying the Ubiquitous Journey
 A handy one liner to deploy all the default software artifacts in this project using their default values. Just make sure the namespace you set below is the same one as where your ArgoCD from the prereqs is running :)
@@ -58,10 +51,25 @@ If you Open your instance of ArgoCD in the UI (`echo https://$(oc get route argo
 
 To deploy the whole thing AND the kitchen sink... you can set `enabled: true` on all of the definitions in the `values.yaml` file 🧨 .... 💥
 
+
+If you want to make changes to the repo and do proper GITOPS then fork and make your changes in the fork. Just update the `source` in values.yaml to make sure ArgoCD is pulling from the correct source. If  you've already forked the repo and want to deploy quickly you can also run:
+```
+helm upgrade --install uj \
+  --set source=https://github.com/<YOUR_FORK>/ubiquitous-journey.git \
+  --namespace labs-ci-cd .
+```
+
 ### Cleanup 
 Uninstall and delete all resources in the various projects
 ```bash
+# remove the ubiquitous-journey project from ArgoCD
 helm uninstall uj --namespace labs-ci-cd
+
+# remove your ArgoCD instance 
+helm uninstall argocd
+
+# to cleanup all the namespaces created
+TEAM_NAME=labs; oc delete projects ${TEAM_NAME}-ci-cd ${TEAM_NAME}-dev ${TEAM_NAME}-test ${TEAM_NAME}-stage ${TEAM_NAME}-clusterops ${TEAM_NAME}-pm
 ```
 
 ### Debug
