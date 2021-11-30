@@ -23,7 +23,6 @@ bootstrap-project:
       kind: ServiceAccount
       role: admin
       namespace: *ci_cd
-
   namespaces:
     - name: *ci_cd
       bindings: *binds
@@ -47,12 +46,6 @@ argocd-operator:
   name: argocd
   namespace: *ci_cd
   instancelabel: rht-labs.com/uj
-
-  # operator manages upgrades etc
-  operator:
-    version: argocd-operator.v0.0.15
-    channel: alpha
-    name: argocd-operator
 
   metrics:
     enabled: true

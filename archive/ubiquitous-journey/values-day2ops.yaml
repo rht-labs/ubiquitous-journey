@@ -1,4 +1,23 @@
-release: "cluster-ops"
+destination: &ops_ns labs-cluster-ops
+
+##############
+# 🐙 Argo Sync Policy
+#############
+sync_policy_true: &sync_policy_true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - Validate=true
+
+sync_policy_no_selfheal: &sync_policy_no_selfheal
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+    - Validate=true
 
 applications:
   # Prune OpenShift Images
@@ -6,6 +25,8 @@ applications:
     enabled: true
     source: https://github.com/redhat-cop/openshift-management.git
     source_path: charts/cronjob-prune-images/
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
     source_ref: "v3.11.8"
     values:
       namespace: *ops_ns
@@ -14,6 +35,8 @@ applications:
     enabled: true
     source: https://github.com/redhat-cop/openshift-management.git
     source_path: charts/cronjob-prune-builds-deployments/
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
     source_ref: "master"
     values:
       namespace: *ops_ns
@@ -23,14 +46,18 @@ applications:
     enabled: true
     source: https://github.com/redhat-cop/openshift-management.git
     source_path: charts/cronjob-prune-builds-deployments/
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
     source_ref: "master"
     values:
       namespace: *ops_ns
       prune_type: deployments
-
   # Network Policies for Emulating Multitenancy
   - name: network-policy
     enabled: false
     source: https://github.com/redhat-cop/helm-charts.git
+    source_path: charts/network-policy
+    sync_policy: *sync_policy_true
+    destination: *ops_ns
     source_ref: "networkpolicy-1.0.0"
 

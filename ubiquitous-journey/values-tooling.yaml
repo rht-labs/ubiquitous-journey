@@ -1,120 +1,127 @@
-destination: &ci_cd_ns labs-ci-cd
 
-##############
-# 🐙 Argo Sync Policy
-#############
-sync_policy_true: &sync_policy_true
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - Validate=true
+# gloabl vars
+ci_cd_namespace: &ci_cd "labs-ci-cd"
+pm_namespace: &pm "labs-pm"
+ops_namespace: &ops "labs-cluster-ops"
+dev_namespace: &dev "labs-dev"
+test_namespace: &test "labs-test"
+staging_namespace: &stage "labs-staging"
 
-sync_policy_no_selfheal: &sync_policy_no_selfheal
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: false
-    syncOptions:
-    - Validate=true
-
-##############
-# 🛎 Argo App of Apps declaration
-#############
-# enabled true on an app is to tell helm to create an argo app cr for this item
-# Custom values override the default values in Helm Charts
+# App of applications list
 applications:
-  # Nexus
-  - name: nexus
-    enabled: false
+  # Bootstrap Project
+  - name: bootstrap
+    enabled: true
     source: https://redhat-cop.github.io/helm-charts
-    chart_name: sonatype-nexus
-    source_path: ""
-    source_ref: "1.1.1"
-    sync_policy: *sync_policy_true
-    destination: *ci_cd_ns
+    chart_name: bootstrap-project
+    source_ref: "1.0.1"
     values:
-      persistence:
-        storageSize: 16Gi
-    ignore_differences:
-      - group: route.openshift.io
-        kind: Route
-        jsonPointers:
-          - /status/ingress
+      bindings: &binds # this labs-devs is the GROUP NAME in IDM
+        - name: labs-devs
+          kind: Group
+          role: edit
+        # this labs-admins is the GROUP NAME in IDM
+        - name: labs-admins
+          kind: Group
+          role: admin
+        - name: jenkins
+          kind: ServiceAccount
+          role: admin
+          namespace: *ci_cd
+      namespaces:
+        - name: *ci_cd
+          bindings: *binds
+        - name: *dev
+          bindings: *binds
+        - name: *test
+          bindings: *binds
+        - name: *stage
+          bindings: *binds
+        # optional extra namespaces for cluster ops and PM tools
+        - name: *pm
+          bindings: *binds
+        - name: *ops
+          bindings: *binds
+
   # Jenkins
   - name: jenkins
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-0.0.21"
-    sync_policy: *sync_policy_true
-    destination: *ci_cd_ns
+    source_ref: "jenkins-1.0.6"
     values:
       persistence: false
       source_secrets:
-        - name: git-auth
-          username: idm-sa
-          password: thisisdefinitelynotmypassword🦆🦆🦆
         - name: nexus-password
           username: admin
           password: admin123
-        - name: argocd-token
-          username: token
-          password: aaa.bbb.ccc
-    ignore_differences:
-      - group: apps.openshift.io
-        kind: DeploymentConfig
-        jsonPointers:
-          - /spec/template/spec/containers/0/image
-          - /spec/triggers/0/imageChangeParams/lastTriggeredImage
-      - group: build.openshift.io
-        kind: BuildConfig
-        jsonPointers:
-          - /spec/triggers
-  # Pact-broker
-  - name: pact-broker
+
+  # Nexus
+  - name: nexus
     enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/pact-broker
-    source_ref: "pact-broker-0.0.3"
-    sync_policy: *sync_policy_true
-    destination: *ci_cd_ns
+    source: https://redhat-cop.github.io/helm-charts
+    chart_name: sonatype-nexus
+    source_ref: "1.1.2"
+    values:
+      service:
+        name: nexus
+
+  # Sealed Secrets Controller
+  # Note you can only have one of these per cluster so be careful 
+  - name: sealed-secrets-controller
+    enabled: true
+    source: https://bitnami-labs.github.io/sealed-secrets
+    source_ref: "1.16.1"
+    values:
+      nameOverride: sealed-secrets
+      fullnameOverride: sealed-secrets
+      # namespace must exist, so we use labs-ci-cd by default.
+      namespace: *ci_cd
+      # Dont touch the security context values, deployment will fail in OpenShift otherwise.
+      securityContext:
+        runAsUser: ""
+        fsGroup: ""
+      commandArgs:
+        - "--update-status=true"
+
+
+  # Sealed Secrets
+  # example of an actual secret ...
+  - name: sealed-secrets
+    enabled: false
+    source: https://redhat-cop.github.io/helm-charts
+    chart_name: helper-sealed-secrets
+    source_ref: "1.0.2"
     values:
       secrets:
-        name: pact-broker-secrets
-        keys:
-          pactBrokerDatabaseUsername: pact_broker_database_username
-          pactBrokerDatabasePassword: pact_broker_database_password
-          pactBrokerAdmin: pact_broker_admin
-          pactBrokerAdminPassword: pact_broker_admin_password
-          pactBrokerBasicAuthUsername: pact_broker_user
-          pactBrokerBasicAuthPassword: pact_broker_user_password
-        values:
-          pactBrokerDatabaseUsername: pact_broker_user
-          pactBrokerDatabasePassword: thisisdefinitelynotmypassword
-          pactBrokerAdmin: admin
-          pactBrokerAdminPassword: thisisdefinitelynotmypassword
-          pactBrokerBasicAuthUsername: dev
-          pactBrokerBasicAuthPassword: thisisdefinitelynotmypassword
+        # Additional secrets can be appended to this list. See the docs for generating the Sealed Secret
+        - name: git-auth
+          type: kubernetes.io/basic-auth
+          annotations:
+            tekton.dev/git-0: https://<GIT_SERVER>
+          labels:
+            credential.sync.jenkins.openshift.io: "true"
+          data:
+            username: <YOUR_SEALED_SECRET_USERNAME>
+            password: <YOUR_SEALED_SECRET_PASSWORD>
+  
   # Sonarqube
   - name: sonarqube
     enabled: true
-    source: https://github.com/redhat-cop/helm-charts.git
-    source_path: charts/sonarqube
-    source_ref: "sonarqube-0.0.17"
-    sync_policy: *sync_policy_true
-    destination: *ci_cd_ns
+    source: https://redhat-cop.github.io/helm-charts
+    chart_name: sonarqube
+    source_ref: "0.0.17"
     values:
+      # if integrating into an existing sealed secret or other cluster secret 
+      # account:
+      #   existingSecret: sonarqube-auth
       initContainers: true
       plugins:
         install:
-          - https://github.com/checkstyle/sonar-checkstyle/releases/download/8.35/checkstyle-sonar-plugin-8.38.jar
-          - https://repo1.maven.org/maven2/org/sonarsource/java/sonar-java-plugin/6.9.0.23563/sonar-java-plugin-6.9.0.23563.jar
-          - https://repo1.maven.org/maven2/org/sonarsource/jacoco/sonar-jacoco-plugin/1.1.0.898/sonar-jacoco-plugin-1.1.0.898.jar
-          - https://github.com/dependency-check/dependency-check-sonar-plugin/releases/download/2.0.7/sonar-dependency-check-plugin-2.0.7.jar
-          - https://github.com/SonarSource/SonarJS/releases/download/6.2.2.13315/sonar-javascript-plugin-6.2.2.13315.jar
-          - https://github.com/SonarSource/SonarTS/releases/download/2.1.0.4359/sonar-typescript-plugin-2.1.0.4362.jar
+          - https://github.com/checkstyle/sonar-checkstyle/releases/download/8.40/checkstyle-sonar-plugin-8.40.jar
+          - https://github.com/dependency-check/dependency-check-sonar-plugin/releases/download/2.0.8/sonar-dependency-check-plugin-2.0.8.jar
+
+
   # CodeReady Workspaces
   - name: crw
     enabled: true
@@ -122,21 +129,16 @@ applications:
     source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
     source_ref: master
-    sync_policy: *sync_policy_no_selfheal
     no_helm: true
-    ignore_differences:
-      - group: org.eclipse.che
-        kind: CheCluster
-        jsonPointers:
-          - /spec
+
+  # Allure
+
   # Zalenium
   - name: zalenium
     enabled: true
     source: https://github.com/zalando/zalenium.git
     source_path: charts/zalenium
     source_ref: "master"
-    sync_policy: *sync_policy_true
-    destination: *ci_cd_ns
     values:
       hub:
         serviceType: ClusterIP
@@ -148,7 +150,6 @@ applications:
             tls:
               termination: edge
               insecureEdgeTerminationPolicy: Redirect
-
         persistence:
           enabled: false
         serviceAccount:
@@ -156,76 +157,37 @@ applications:
         desiredContainers: 0
         podAnnotations:
           app: zalenium
-  # Hoverfly
+
+  # Pact-broker
+  - name: pact-broker
+    enabled: true
+    source: https://redhat-cop.github.io/helm-charts
+    source_ref: "0.0.8"
+    values:
+      # update the passwords :)
+ 
+   # Hoverfly
   - name: hoverfly
     enabled: true
     source: https://github.com/helm/charts.git
     source_path: incubator/hoverfly
-    sync_policy: *sync_policy_true
-    destination: *ci_cd_ns
     source_ref: "master"
     values:
-      replicaCount: "1"
+      image:
+        tag: v1.3.3
       openshift:
         route:
           admin:
             enabled: true
-            hostname: ""
+            hostname: ''
           proxy:
             enabled: true
-            hostname: ""
-    ignore_differences:
-      - group: route.openshift.io
-        kind: Route
-        jsonPointers:
-          - /status/ingress
-          - /spec/host
-      - group: apps/v1
-        kind: Deployment
-        jsonPointers:
-          - /spec/replicas
-  # Tekton
-  - name: tekton
-    enabled: true
-    destination: openshift-operators
-    source: https://github.com/rht-labs/refactored-adventure
-    source_path: tekton/base
-    source_ref: master
-    sync_policy: *sync_policy_true
-    no_helm: true
-  # Pelorus-operators
-  - name: pelorus-operators
-    enabled: true
-    source: https://github.com/konveyor/pelorus.git
-    source_path: charts/operators
-    source_ref: master
-    destination: *ci_cd_ns
-    sync_policy:
-      *sync_policy_true
-    ignore_differences:
-      - group: route.openshift.io
-        kind: Route
-        jsonPointers:
-          - /status/ingress
-          - /spec/host
-  # Pelorus
-  - name: pelorus
-    enabled: true
-    source: https://github.com/konveyor/pelorus.git
-    source_path: charts/pelorus
-    source_ref: master
-    destination: *ci_cd_ns
-    sync_policy:
-      *sync_policy_true
-    values:
-      openshift_prometheus_htpasswd_auth: internal:{SHA}TIYUhgUHdhYp1zfn3WRbwAxr478=
-      openshift_prometheus_basic_auth_pass: thisisdefinitelynotmypassword
-    ignore_differences:
-      - group: route.openshift.io
-        kind: Route
-        jsonPointers:
-          - /status/ingress
-          - /spec/host
+            hostname: ''
+
+###########################################
+#  🐌 Apps here are disabled by default 🐌 #
+###########################################
+
   # Microcks
   - name: microcks
     enabled: false
@@ -233,5 +195,21 @@ applications:
     source: https://github.com/rht-labs/refactored-adventure
     source_path: microcks/base
     source_ref: master
-    sync_policy: *sync_policy_true
     no_helm: true
+
+  # Pelorus-operators
+  - name: pelorus-operators
+    enabled: false
+    source: https://github.com/konveyor/pelorus.git
+    source_path: charts/operators
+    source_ref: master
+
+  # Pelorus
+  - name: pelorus
+    enabled: false
+    source: https://github.com/konveyor/pelorus.git
+    source_path: charts/pelorus
+    source_ref: master
+    values:
+      openshift_prometheus_htpasswd_auth: internal:{SHA}TIYUhgUHdhYp1zfn3WRbwAxr478=
+      openshift_prometheus_basic_auth_pass: thisisdefinitelynotmypassword

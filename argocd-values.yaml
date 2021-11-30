@@ -1,0 +1,24 @@
+ignoreHelmHooks: true
+
+#  if using the rh-gitops operator and you want to change the location for the ArgoCD instance to be deployed to:
+# It's defaulted to labs-ci-cd on the chart anyways
+namespaces:
+ - labs-ci-cd
+
+# example
+secrets:
+  - name: git-auth
+    username: 'user'
+    password: 'pass1234'
+    sshPrivateKey: ''
+
+argocd_cr:
+  repositoryCredentials: |
+    - url: https://gitlab-ce.apps.openshift-498-bd8hw.do500.redhatlabs.dev
+      type: git
+      passwordSecret:
+        key: password
+        name: git-auth
+      usernameSecret:
+        key: username
+        name: git-auth

@@ -1,0 +1,8 @@
+# so we dont include these in our chart secret
+docs/
+tekton/
+docs/
+archive/
+quick-starts/
+README.md
+.git
