@@ -25,7 +25,7 @@ helm upgrade --install argocd \
   redhat-cop/gitops-operator
 ```
 
-If using helm, it's **strongly** recommend you get a copy of the `values.yaml` and make edits that way. This values file can be checked in to this repo and be kept if further changes are needed such as adding in private `repositoryCredentials` or other handy stuff such as `secrets` and `namespaces` etc... eg
+If using helm, it's **strongly** recommend you get a copy of the `values.yaml` and make edits that way. This values file can be checked in to this repo and be kept if further changes are needed such as adding in private `repositoryCredentials` or other handy stuff such as `secrets` and `namespaces` etc. For example, you have `argocd-values.yaml` file with your changes:
 ```bash
 helm upgrade --install argocd \
   --create-namespace \
@@ -47,7 +47,7 @@ Then simply run the install command by passing in the parameter `--set operator=
 
 OR
 
-1. Go to the Operator Hub on OpenShift and hit install... Make it a Cluster Scoped Operator. But remember, you should try to back up the configuration of the ArgoCD Custom Resource instance for repeatability... You'll also need to edit the subscription to disable the default argocd instance and allow ClusterScoped ones be created in any project.
+1. Go to the Operator Hub on OpenShift and install via UI. But remember, you should store the configuration of the ArgoCD Custom Resource instance definition for repeatability. You'll also need to edit the subscription to disable the default argocd instance and allow ClusterScoped ones be created in any project.
 ```yaml
 # oc edit subscription/openshift-gitops-operator -n openshift-operators
 spec:
