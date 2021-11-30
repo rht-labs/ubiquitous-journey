@@ -31,7 +31,7 @@ helm upgrade --install argocd \
   --create-namespace \
   --namespace labs-ci-cd \
   -f argocd-values.yaml \
-  redhat-cop/argocd-operator
+  redhat-cop/gitops-operator
 ```
 
 OR
