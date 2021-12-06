@@ -1,4 +1,4 @@
-ignoreHelmHooks: true
+ignoreHelmHooks: false
 
 #  if using the rh-gitops operator and you want to change the location for the ArgoCD instance to be deployed to:
 # It's defaulted to labs-ci-cd on the chart anyways
