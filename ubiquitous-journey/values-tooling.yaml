@@ -31,17 +31,23 @@ applications:
       namespaces:
         - name: *ci_cd
           bindings: *binds
+          operatorgroup: false
         - name: *dev
           bindings: *binds
+          operatorgroup: true
         - name: *test
           bindings: *binds
+          operatorgroup: true
         - name: *stage
           bindings: *binds
+          operatorgroup: true
         # optional extra namespaces for cluster ops and PM tools
         - name: *pm
           bindings: *binds
+          operatorgroup: false
         - name: *ops
           bindings: *binds
+          operatorgroup: false
 
   # Jenkins
   - name: jenkins
