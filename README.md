@@ -1,19 +1,18 @@
-# 🦄 ubiquitous-journey 🔥
+# 🦄 Ubiquitous Journey 🔥
 
 🧰 This repo embodies a GitOps approach to deploying application code, middleware infrastructure and supporting CI/CD tools. 🧰
 
-At its simplest, the repo is an [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/) which references [other helm charts](https://github.com/redhat-cop/helm-charts.git) and [other kustomize definitions](https://github.com/rht-labs/refactored-adventure) to deploy.
+At its simplest, the repo is an [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/) which references [other helm charts](https://github.com/redhat-cop/helm-charts.git) and [other kustomize definitions](https://github.com/rht-labs/refactored-adventure) to deploy applications.
 
-The idea is to reference other Charts, Kustomize, YAML snippets from within this framework which keeps things `pluggable` to suit the needs of your team.
+The idea is to reference other Charts, Kustomize, YAML snippets from within this framework. This keeps things `pluggable` to suit the needs of your team.
 
-🎨 We have evolved the design from the original [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git). The `UJ` project represents a major milestone in moving to a GitOps approach to tooling, application management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
+🎨 We have evolved the design from the original [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git) project. The  Ubiquitous Journey (`UJ`) represents a major milestone in moving to a GitOps approach to tooling, application management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
 
 ## Components
 
-The folder structure of this repo is split up like this:
+The folder structure of this repo is split as follows:
 
 ```bash
-.
 ├── archive                            <===  💀 where the skeletons live. archived material.
 ├── docs                               <===  📖 supporting documentation for UJ.
 ├── pet-battle                         <===  📖 the example application `pet-battle`
@@ -23,11 +22,12 @@ The folder structure of this repo is split up like this:
 └── values.yaml                        <===  📖 UJ's helm chart values
 ```
 
-There are two main components to this repository. Each part can be used independently of each other but sequentially they create a full stack.
+There are two main components to this repository:
 
 1. `Ubiquitous Journey` - Contains all the tools, collaboration software and day2ops to be deployed on Red Hat OpenShift. This includes chat applications, task management apps and tools to support CI/CD workflows and testing. For the complete list and details: [What's in the box?👨](docs/whats-in-the-box.md)
 2. An example application called `pet-battle` - to show you how the UJ structure can be used to implement GitOps for a simple three tiered app stack.
 
+Each part can be used independently of each other but sequentially they create a full stack.
 ## How do I run it? 🏃‍♀️
 
 If you already have an ArgoCD instance running and you want just want to add the tooling to it, [move to part 2](docs/bootstrap-argocd.md#tooling-for-application-development-🦅) in the docs.
