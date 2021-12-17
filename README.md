@@ -1,22 +1,50 @@
 # 🦄 ubiquitous-journey 🔥
 
-🧰 This repo is an Argo App definition which references [other helm charts](https://github.com/redhat-cop/helm-charts.git). It should not exclusively run Helm Templates but be a more generic Argo App which could reference Kustomize or Operators etc.
+🧰 This repo embodies a GitOps approach to deploying application code, middleware infrastructure and supporting CI/CD tools. 🧰
 
-🎨 This is the new home for the evolution of what was [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git). This project represents a major milestone in moving away from the 3.x OpenShift clusters to a new GitOps approach to tooling, app management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
+At its simplest, the repo is an [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/) which references [other helm charts](https://github.com/redhat-cop/helm-charts.git) and [other kustomize definitions](https://github.com/rht-labs/refactored-adventure) to deploy.
 
-There are two components (one in each folder) to this repository. Each part can be used independently of each other but sequentially they create the full stack. If you already have an ArgoCD instance you want to add the tooling to just [move to part 2](docs/bootstrap-argocd.md#tooling-for-application-development-🦅):
-1. Ubiquitous Journey - Contains all the tools, collaboration software and day2ops to be deployed on Red Hat OpenShift. This includes chat applications, task management apps and tools to support CI/CD workflows and testing. For the complete list and details: [What's in the box?👨](docs/whats-in-the-box.md)
-2. An example (`pet-battle`) to show how the same structure can be used to implement GitOps for a simple three tiered app stack.
+The idea is to reference other Charts, Kustomize, YAML snippets from within this framework which keeps things `pluggable` to suit the needs of your team.
+
+🎨 We have evolved the design from the original [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git). The `UJ` project represents a major milestone in moving to a GitOps approach to tooling, application management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
+
+## Components
+
+The folder structure of this repo is split up like this:
+
+```bash
+.
+├── archive                            <===  💀 where the skeletons live. archived material.
+├── docs                               <===  📖 supporting documentation for UJ.
+├── pet-battle                         <===  📖 the example application `pet-battle`
+├── templates                          <===  📖 helm templates to create ArgoCD Applications and Projects for UJ
+├── ubiquitous-journey                 <===  📖 helm values files containing applications we wish to deploy
+├── Chart.yaml                         <===  📖 we deploy UJ using a helm chart
+└── values.yaml                        <===  📖 UJ's helm chart values
+```
+
+There are two main components to this repository. Each part can be used independently of each other but sequentially they create a full stack.
+
+1. `Ubiquitous Journey` - Contains all the tools, collaboration software and day2ops to be deployed on Red Hat OpenShift. This includes chat applications, task management apps and tools to support CI/CD workflows and testing. For the complete list and details: [What's in the box?👨](docs/whats-in-the-box.md)
+2. An example application called `pet-battle` - to show you how the UJ structure can be used to implement GitOps for a simple three tiered app stack.
 
 ## How do I run it? 🏃‍♀️
 
-### Prereq 
-0. OpenShift 4.6 or greater (cluster admin user required) - https://try.openshift.com
-1. Install helm v3 (cli) or greater - https://helm.sh/docs/intro/quickstart
+If you already have an ArgoCD instance running and you want just want to add the tooling to it, [move to part 2](docs/bootstrap-argocd.md#tooling-for-application-development-🦅) in the docs.
 
-Install an instance of ArgoCD. There are several methods to install ArgoCD in OpenShift. Pick your favourite flavour 🍦
+### Prerequisites
 
-1. Use the Red Hat supported GitOps Operator (configured by default as cluster wide and to deploy the operator and an instance in `labs-ci-cd`)
+You will need:
+
+- OpenShift 4.6+ or greater (cluster admin user required) - https://try.openshift.com
+- Install helm v3+ (cli) or greater - https://helm.sh/docs/intro/quickstart
+
+### Let's go, installing ArgoCD 🏃🏻
+
+Install an instance of ArgoCD. There are several methods to install ArgoCD in OpenShift. Pick your favorite flavour 🍦
+
+Use the Red Hat supported GitOps Operator (configured by default as cluster wide and to deploy the operator and an instance in `labs-ci-cd`)
+
 ```bash
 helm repo add redhat-cop https://redhat-cop.github.io/helm-charts
 helm upgrade --install argocd \
@@ -25,7 +53,8 @@ helm upgrade --install argocd \
   redhat-cop/gitops-operator
 ```
 
-If using helm, it's **strongly** recommend you get a copy of the `values.yaml` and make edits that way. This values file can be checked in to this repo and be kept if further changes are needed such as adding in private `repositoryCredentials` or other handy stuff such as `secrets` and `namespaces` etc. For example, you have `argocd-values.yaml` file with your changes:
+⛷️ We **strongly** recommend that you make a copy of the `values.yaml` file and make edits that way. This values file can be checked in to this repo and be kept if further changes are needed such as adding in private `repositoryCredentials` or other handy stuff such as `secrets` and `namespaces` etc. For example, you have `argocd-values.yaml` file with your changes:
+
 ```bash
 helm upgrade --install argocd \
   --create-namespace \
@@ -34,87 +63,55 @@ helm upgrade --install argocd \
   redhat-cop/gitops-operator
 ```
 
-**NOTE**
-```bash
-Error: rendered manifests contain a resource that already exists. Unable to continue with install: Subscription "openshift-gitops-operator" in namespace "openshift-operators" exists and cannot be imported into the current release: invalid ownership metadata;.....
-```
-If you get an error such as this when installing argocd; it is because the `openshift-gitops-operator` has already been installed. This means the APIs provided by it (such as `ArgoCD`, `Application`, `ArgoProject` etc) are already available for us to consume. We just need to update the Cluster instance of ArgoCD to allow it deploy a new ClusterScoped instance to our namespace.
-```bash
-./patch-gitops-operator.sh labs-ci-cd
-```
-Then simply run the install command by passing in the parameter `--set operator=null` to the chart to not install the operator but only create an instance in your provided namespace.
+If you have trouble 😵‍💫 - we have documented some common errors [when installing ArgoCD](docs/argocd-install.md) which may help.
 
+### 🤠 Deploying the Ubiquitous Journey
 
-OR
+A handy one liner to deploy all the default software artifacts in this project using their default values. Just make sure the namespace you set below is the same as your ArgoCD namespace from the previous step.
 
-1. Go to the Operator Hub on OpenShift and install via UI. But remember, you should store the configuration of the ArgoCD Custom Resource instance definition for repeatability. You'll also need to edit the subscription to disable the default argocd instance and allow ClusterScoped ones be created in any project.
-```yaml
-# oc edit subscription/openshift-gitops-operator -n openshift-operators
-spec:
-  config:
-    env:
-    - name: DISABLE_DEFAULT_ARGOCD_INSTANCE
-      value: "true"
-    - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
-      value: labs-ci-cd # YOUR LIST OF NAMESPACES THAT YOU WANT CLUSTER SCOPED ARGOCD IN
-  channel: stable
-  installPlanApproval: Automatic
-  name: openshift-gitops-operator
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-  startingCSV: openshift-gitops-operator.v1.3.1
-```
-
-#### 🤠 Deploying the Ubiquitous Journey
-A handy one liner to deploy all the default software artifacts in this project using their default values. Just make sure the namespace you set below is the same one as where your ArgoCD from the prereqs is running :)
 ```bash
 helm upgrade --install uj --namespace labs-ci-cd .
 ```
 
+If you login to ArgoCD using the UI here:
 
-If you Open your instance of ArgoCD in the UI (`echo https://$(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd)`) - you should see lots of things spinning up
+```bash
+echo https://$(oc get route argocd-server --template='{{ .spec.host }}' -n labs-ci-cd)
+```
+
+you should see lots of things spinning up
 
 ![argocd-ui](docs/images/argocd-uj.png)
 
-To deploy the whole thing AND the kitchen sink... you can set `enabled: true` on all of the definitions in the `values.yaml` file 🧨 .... 💥
+You can set `enabled: true` on all of the application definitions in the `values-*.yaml` file if you want to deploy everything 🧨 .... 💥
 
+Fork the repo and make your changes in the fork if you wish to GitOp enable things. Update the `source` in values.yaml to make sure ArgoCD is pulling from the correct source repo (your fork). If you've already forked the repo and want to deploy quickly you can also run:
 
-If you want to make changes to the repo and do proper GITOPS then fork and make your changes in the fork. Just update the `source` in values.yaml to make sure ArgoCD is pulling from the correct source. If  you've already forked the repo and want to deploy quickly you can also run:
-```
+```bash
 helm upgrade --install uj \
   --set source=https://github.com/<YOUR_FORK>/ubiquitous-journey.git \
   --namespace labs-ci-cd .
 ```
 
-### Cleanup 
+### Cleanup 🧤
+
 Uninstall and delete all resources in the various projects
 ```bash
-# remove the ubiquitous-journey project from ArgoCD
-# This may take a minute or two so it's best to keep an eye on the resources in ArgoCD before removing it  
+# This may take a while:
 helm uninstall uj --namespace labs-ci-cd
 
-# remove your ArgoCD instance
+# Then remove your ArgoCD instance
 helm uninstall argocd
 
-# to cleanup all the namespaces created
+# Cleanup all the namespaces created
 TEAM_NAME=labs; oc delete projects ${TEAM_NAME}-ci-cd ${TEAM_NAME}-dev ${TEAM_NAME}-test ${TEAM_NAME}-stage ${TEAM_NAME}-clusterops ${TEAM_NAME}-pm
 ```
 
-### Debug
-To debug one of the ubiquitous-journey values files, just to see values are passing as expected etc and get a view of what argocd is going to roll out. Run 
-```
+### Debugging 🤺
+
+Run the following command to debug one of the UJ values files to see which values are being passed:
+
+```bash
 # example debugging the ArgoCD `Application` manifests from the example deployment 
 helm install debug --dry-run -f pet-battle/test/values.yaml . 
 ```
-
-## How can I bring my own tooling?
-
-TODO - add some instructions for adding:
-1) new helm charts
-2) new Operators etc
-
-## Contributing
-
-## Help
-
-You can find low hanging fruit to help [here](docs/help.md).
