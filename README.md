@@ -102,7 +102,7 @@ Uninstall and delete all resources in the various projects
 helm uninstall uj --namespace labs-ci-cd
 
 # Then remove your ArgoCD instance
-helm uninstall argocd
+helm uninstall argocd --namespace labs-ci-cd
 ```
 
 ### Debugging 🤺
