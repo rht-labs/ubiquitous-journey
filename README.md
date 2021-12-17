@@ -8,43 +8,6 @@ The idea is to reference other Charts, Kustomize, YAML snippets from within this
 
 🎨 We have evolved the design from the original [Labs CI / CD](https://github.com/rht-labs/labs-ci-cd.git) project. The  Ubiquitous Journey (`UJ`) represents a major milestone in moving to a GitOps approach to tooling, application management and configuration drift using [ArgoCD](https://argoproj.github.io/argo-cd/).
 
-## Table of Contents
-
-- [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct)
-  * [Our Pledge](./CODE_OF_CONDUCT.md#our-pledge)
-  * [Our Standards](./CODE_OF_CONDUCT.md#our-standards)
-  * [Our Responsibilities](./CODE_OF_CONDUCT.md#our-responsibilities)
-  * [Scope](./CODE_OF_CONDUCT.md#scope)
-  * [Enforcement](./CODE_OF_CONDUCT.md#enforcement)
-  * [Attribution](./CODE_OF_CONDUCT.md#attribution)
-- [🦄 Ubiquitous Journey 🔥](./README.md#%F0%9F%A6%84-ubiquitous-journey-%F0%9F%94%A5)
-  * [Components](./README.md#components)
-  * [How do I run it? 🏃‍♀️](./README.md#how-do-i-run-it-%F0%9F%8F%83%E2%80%8D%E2%99%80%EF%B8%8F)
-    + [Prerequisites](./README.md#prerequisites)
-    + [Let's go, installing ArgoCD 🏃🏻](./README.md#lets-go-installing-argocd-%F0%9F%8F%83%F0%9F%8F%BB)
-    + [🤠 Deploying the Ubiquitous Journey](./README.md#%F0%9F%A4%A0-deploying-the-ubiquitous-journey)
-    + [Cleanup 🧤](./README.md#cleanup-%F0%9F%A7%A4)
-    + [Debugging 🤺](./README.md#debugging-%F0%9F%A4%BA)
-- [Common Errors when installing ArgoCD](./docs%2Fargocd-install.md#common-errors-when-installing-argocd)
-- [ArgoCD Master and Child 👩‍👦](./docs%2Fargocd-master-child.md#argocd-master-and-child-%F0%9F%91%A9%E2%80%8D%F0%9F%91%A6)
-- [Restricted Children](./docs%2Fargocd-master-child.md#restricted-children)
-- [Bootstrap projects and ArgoCD 🍻](./docs%2Fbootstrap-argocd.md#bootstrap-projects-and-argocd-%F0%9F%8D%BB)
-  * [Tooling for Application Development 🦅](./docs%2Fbootstrap-argocd.md#tooling-for-application-development-%F0%9F%A6%85)
-      - [(A) Deploy using argo app of apps ...](./docs%2Fbootstrap-argocd.md#a-deploy-using-argo-app-of-apps-)
-      - [(B) Deploy using helm ...](./docs%2Fbootstrap-argocd.md#b-deploy-using-helm-)
-- [Example Application Deploy 🌮](./docs%2Fbootstrap-argocd.md#example-application-deploy-%F0%9F%8C%AE)
-- [Cleaning up ArgoCD Apps 🧹](./docs%2Fbootstrap-argocd.md#cleaning-up-argocd-apps-%F0%9F%A7%B9)
-- [Metrics 📉](./docs%2Fbootstrap-argocd.md#metrics-%F0%9F%93%89)
-- [Deploy to a custom namespace 🦴](./docs%2Fdeploy-custom-namespace.md#deploy-to-a-custom-namespace-%F0%9F%A6%B4)
-- [Help me](./docs%2Fhelp.md#help-me)
-  * [Not automated yet ...](./docs%2Fhelp.md#not-automated-yet-)
-- [Sealed Secrets Help](./docs%2Fsealed-secrets.md#sealed-secrets-help)
-  * [🕵️‍♀️ Generate Sealed Secrets:](./docs%2Fsealed-secrets.md#%F0%9F%95%B5%EF%B8%8F%E2%80%8D%E2%99%80%EF%B8%8F-generate-sealed-secrets)
-  * [📝 Bring your own certs](./docs%2Fsealed-secrets.md#%F0%9F%93%9D-bring-your-own-certs)
-- [What's in the box? 👨](./docs%2Fwhats-in-the-box.md#whats-in-the-box-%F0%9F%91%A8)
-- [What it's not...🤷🏻‍♀️](./docs%2Fwhats-in-the-box.md#what-its-not%F0%9F%A4%B7%F0%9F%8F%BB%E2%80%8D%E2%99%80%EF%B8%8F)
-- [Dashboard 📃](./docs%2Fwhats-in-the-box.md#dashboard-%F0%9F%93%83)
-
 ## Components
 
 The folder structure of this repo is split as follows:
