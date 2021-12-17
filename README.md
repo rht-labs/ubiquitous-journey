@@ -84,7 +84,7 @@ you should see lots of things spinning up
 
 ![argocd-ui](docs/images/argocd-uj.png)
 
-You can set `enabled: true` on all of the application definitions in the `values-*.yaml` file if you want to deploy everything 🧨 .... 💥
+You can set `enabled: true` on all of the application definitions in the `values-*.yaml` files if you want to deploy everything 🧨 .... 💥
 
 Fork the repo and make your changes in the fork if you wish to GitOp enable things. Update the `source` in values.yaml to make sure ArgoCD is pulling from the correct source repo (your fork). If you've already forked the repo and want to deploy quickly you can also run:
 
@@ -103,9 +103,6 @@ helm uninstall uj --namespace labs-ci-cd
 
 # Then remove your ArgoCD instance
 helm uninstall argocd
-
-# Cleanup all the namespaces created
-TEAM_NAME=labs; oc delete projects ${TEAM_NAME}-ci-cd ${TEAM_NAME}-dev ${TEAM_NAME}-test ${TEAM_NAME}-stage ${TEAM_NAME}-clusterops ${TEAM_NAME}-pm
 ```
 
 ### Debugging 🤺
