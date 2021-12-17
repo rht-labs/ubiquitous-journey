@@ -10,7 +10,7 @@ The idea is to reference other Charts, Kustomize, YAML snippets from within this
 
 ## Table of Contents
 
-- [Contributor Covenant Code of Conduct](./code_of_conduct.html#contributor-covenant-code-of-conduct)
+- [Contributor Covenant Code of Conduct](./code-of-conduct.html#contributor-covenant-code-of-conduct)
   * [Our Pledge](./code-of-conduct.html#our-pledge)
   * [Our Standards](./code-of-conduct.html#our-standards)
   * [Our Responsibilities](./code-of-conduct.html#our-responsibilities)
