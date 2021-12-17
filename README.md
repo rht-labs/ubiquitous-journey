@@ -25,9 +25,10 @@ The folder structure of this repo is split as follows:
 There are two main components to this repository:
 
 1. `Ubiquitous Journey` - Contains all the tools, collaboration software and day2ops to be deployed on Red Hat OpenShift. This includes chat applications, task management apps and tools to support CI/CD workflows and testing. For the complete list and details: [What's in the box?👨](docs/whats-in-the-box.md)
-2. An example application called `pet-battle` - to show you how the UJ structure can be used to implement GitOps for a simple three tiered app stack.
+2. An demo application called [`pet-battle`](https://github.com/petbattle) that shows you how to use the UJ structure with a three tiered application stack.
 
 Each part can be used independently of each other but sequentially they create a full stack.
+
 ## How do I run it? 🏃‍♀️
 
 If you already have an ArgoCD instance running and you want just want to add the tooling to it, [move to part 2](docs/bootstrap-argocd.md#tooling-for-application-development-🦅) in the docs.
@@ -36,8 +37,8 @@ If you already have an ArgoCD instance running and you want just want to add the
 
 You will need:
 
-- OpenShift 4.6+ or greater (cluster admin user required) - https://try.openshift.com
-- Install helm v3+ (cli) or greater - https://helm.sh/docs/intro/quickstart
+- OpenShift 4.6+ or greater (cluster admin user required) - [Try OpenShift](https://try.openshift.com)
+- Install helm v3+ (cli) or greater - [Helm Quickstart](https://helm.sh/docs/intro/quickstart)
 
 ### Let's go, installing ArgoCD 🏃🏻
 
