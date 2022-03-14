@@ -135,7 +135,6 @@ applications:
     source: https://github.com/rht-labs/refactored-adventure
     source_path: crw/base
     source_ref: master
-    no_helm: true
 
   # Allure
 
@@ -201,7 +200,6 @@ applications:
     source: https://github.com/rht-labs/refactored-adventure
     source_path: microcks/base
     source_ref: master
-    no_helm: true
 
   # Pelorus-operators
   - name: pelorus-operators

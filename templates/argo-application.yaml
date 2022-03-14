@@ -34,9 +34,8 @@ spec:
     server: {{ .cluster_api | default "https://kubernetes.default.svc" }}
   project: {{ .project | default "default" }}
   source:
-{{- if not .no_helm }}
+{{- if or .helm_values .values }}
     helm:
-      releaseName: {{ .name }}
 {{- if .helm_values }}
       valueFiles:
 {{- toYaml .helm_values | nindent 8 }}
