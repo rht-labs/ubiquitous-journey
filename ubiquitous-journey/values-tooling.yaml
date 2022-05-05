@@ -54,7 +54,7 @@ applications:
     enabled: true
     source: https://github.com/redhat-cop/helm-charts.git
     source_path: charts/jenkins
-    source_ref: "jenkins-1.0.6"
+    source_ref: "jenkins-1.0.7"
     values:
       persistence: false
       source_secrets:
@@ -67,7 +67,7 @@ applications:
     enabled: true
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonatype-nexus
-    source_ref: "1.1.2"
+    source_ref: "1.1.4"
     values:
       service:
         name: nexus
@@ -99,7 +99,7 @@ applications:
     enabled: false
     source: https://redhat-cop.github.io/helm-charts
     chart_name: helper-sealed-secrets
-    source_ref: "1.0.2"
+    source_ref: "1.0.3"
     values:
       secrets:
         # Additional secrets can be appended to this list. See the docs for generating the Sealed Secret
@@ -118,7 +118,7 @@ applications:
     enabled: true
     source: https://redhat-cop.github.io/helm-charts
     chart_name: sonarqube
-    source_ref: "0.0.17"
+    source_ref: "0.1.0"
     values:
       # if integrating into an existing sealed secret or other cluster secret 
       # account:
