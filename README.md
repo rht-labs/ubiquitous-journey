@@ -10,13 +10,13 @@ The idea is to reference other Charts, Kustomize, YAML snippets from within this
 
 ## Table of Contents
 
-- [Contributor Covenant Code of Conduct](./code-of-conduct.html#contributor-covenant-code-of-conduct)
-  * [Our Pledge](./code-of-conduct.html#our-pledge)
-  * [Our Standards](./code-of-conduct.html#our-standards)
-  * [Our Responsibilities](./code-of-conduct.html#our-responsibilities)
-  * [Scope](./code-of-conduct.html#scope)
-  * [Enforcement](./code-of-conduct.html#enforcement)
-  * [Attribution](./code-of-conduct.html#attribution)
+- [Contributor Covenant Code of Conduct](./code-of-conduct.md#contributor-covenant-code-of-conduct)
+  * [Our Pledge](./code-of-conduct.md#our-pledge)
+  * [Our Standards](./code-of-conduct.md#our-standards)
+  * [Our Responsibilities](./code-of-conduct.md#our-responsibilities)
+  * [Scope](./code-of-conduct.md#scope)
+  * [Enforcement](./code-of-conduct.md#enforcement)
+  * [Attribution](./code-of-conduct.md#attribution)
 - [🦄 Ubiquitous Journey 🔥](./index.html#%F0%9F%A6%84-ubiquitous-journey-)
   * [Components](./index.html#components)
   * [How do I run it? 🏃‍♀️](./index.html#how-do-i-run-it-)
